@@ -1,0 +1,161 @@
+package com.intrbiz.snmp.model.v2;
+
+import org.bouncycastle.asn1.ASN1EncodableVector;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DEREncodable;
+import org.bouncycastle.asn1.DERInteger;
+import org.bouncycastle.asn1.DEROctetString;
+import org.bouncycastle.asn1.DERSequence;
+
+import com.intrbiz.snmp.SNMPContext;
+import com.intrbiz.snmp.model.asn1.Counter32;
+import com.intrbiz.snmp.model.asn1.TimeTicks;
+import com.intrbiz.snmp.util.SNMPUtil;
+
+public class VarBind
+{
+    private String objectName;
+
+    private DEREncodable objectValue;
+
+    public VarBind()
+    {
+        super();
+    }
+    
+    public VarBind(String name)
+    {
+        super();
+        this.objectName = name;
+    }
+    
+    public VarBind(String name, DEREncodable value)
+    {
+        super();
+        this.objectName = name;
+        this.objectValue = value;
+    }
+    
+    public VarBind(String name, String str)
+    {
+        super();
+        this.objectName = name;
+        this.setStringValue(str);
+    }
+    
+    public VarBind(String name, int val)
+    {
+        super();
+        this.objectName = name;
+        this.setIntValue(val);
+    }
+
+    public String getObjectName()
+    {
+        return objectName;
+    }
+
+    public void setObjectName(String objectName)
+    {
+        this.objectName = objectName;
+    }
+
+    public DEREncodable getObjectValue()
+    {
+        return objectValue;
+    }
+
+    public void setObjectValue(DEREncodable objectValue)
+    {
+        this.objectValue = objectValue;
+    }
+    
+    public void setStringValue(String str)
+    {
+        this.objectValue = SNMPUtil.encodeString(str);
+    }
+    
+    public void setIntValue(int val)
+    {
+        this.objectValue = new DERInteger(val);
+    }
+    
+    public String getStringValue()
+    {
+        return SNMPUtil.decodeString((DEROctetString) this.objectValue);
+    }
+    
+    public boolean isStringValue()
+    {
+        return this.objectValue instanceof DEROctetString;
+    }
+    
+    public int getIntValue()
+    {
+        return SNMPUtil.decodeInt((DERInteger) this.objectValue);
+    }
+    
+    public boolean isIntValue()
+    {
+        return this.objectValue instanceof DERInteger;
+    }
+    
+    public boolean isTimeTicksValue()
+    {
+        return this.objectValue instanceof TimeTicks;
+    }
+    
+    public TimeTicks getTimeTicksValue()
+    {
+        return (TimeTicks) this.objectValue;
+    }
+    
+    public boolean isCounter32Value()
+    {
+        return this.objectValue instanceof Counter32;
+    }
+    
+    public Counter32 getCounter32Value()
+    {
+        return (Counter32) this.objectValue;
+    }
+    
+    //
+
+    public String valueToString()
+    {
+        if (this.isStringValue())
+        {
+            return this.getStringValue();
+        }
+        else if (this.isIntValue())
+        {
+            return String.valueOf(this.getIntValue());
+        }
+        return String.valueOf(this.objectValue);
+    }
+    
+    //
+    
+    public DEREncodable encode(SNMPContext ctx)
+    {
+        ASN1EncodableVector vec = new ASN1EncodableVector();
+        vec.add(new ASN1ObjectIdentifier(this.objectName));
+        vec.add(this.objectValue);
+        return new DERSequence(vec);
+    }
+
+    public void decode(DERSequence seq, SNMPContext ctx)
+    {
+        this.objectName  = SNMPUtil.decodeOid(seq, 0).getId();
+        this.objectValue = SNMPUtil.decodeApplicationSpecific(SNMPUtil.decodeValue(seq, 1));
+    }
+
+    public String toString()
+    {
+        return "VarBind[\n" + 
+               "   objectName: " + this.objectName + ";\n" + 
+               "   objectValue: " + this.valueToString() + ";\n" + 
+               "  ]";
+    }
+}
