@@ -15,6 +15,12 @@ import com.intrbiz.snmp.util.SNMPUtil;
 
 public class HeaderData extends SNMPTranscodable
 {
+    public static byte FLAG_AUTH   = 0x01;
+    public static byte FLAG_PRIV   = 0x02;
+    public static byte FLAG_REPORT = 0x04;
+    
+    public static int DEFAULT_MAX_MESSAGE_SIZE = 1500;
+    
     private int id;
 
     private int maxSize;
@@ -27,9 +33,9 @@ public class HeaderData extends SNMPTranscodable
     {
         super();
         this.id = SNMPRequestIDManager.getInstance().nextId();
-        this.maxSize = 1500;
-        this.flags = 0x04; // default to reported
-        this.securityModel = 3;
+        this.maxSize = DEFAULT_MAX_MESSAGE_SIZE;
+        this.flags = FLAG_REPORT;
+        this.securityModel = USMSecurityParameters.SECURITY_MODEL;
     }
 
     public HeaderData(byte[] data, SNMPContext ctx) throws IOException
@@ -70,32 +76,32 @@ public class HeaderData extends SNMPTranscodable
 
     public boolean isAuth()
     {
-        return (this.flags & 0x01) != 0;
+        return (this.flags & FLAG_AUTH) != 0;
     }
     
     public void setAuth()
     {
-        this.flags = (byte) (this.flags | 0x01);
+        this.flags = (byte) (this.flags | FLAG_AUTH);
     }
 
     public boolean isPriv()
     {
-        return (this.flags & 0x02) != 0;
+        return (this.flags & FLAG_PRIV) != 0;
     }
     
     public void setPriv()
     {
-        this.flags = (byte) (this.flags | 0x02);
+        this.flags = (byte) (this.flags | FLAG_PRIV);
     }
 
     public boolean isReportable()
     {
-        return (this.flags & 0x04) != 0;
+        return (this.flags & FLAG_REPORT) != 0;
     }
     
     public void setReportable()
     {
-        this.flags = (byte) (this.flags | 0x04);
+        this.flags = (byte) (this.flags | FLAG_REPORT);
     }
 
     public void setFlags(byte flags)
@@ -111,6 +117,11 @@ public class HeaderData extends SNMPTranscodable
     public void setSecurityModel(int securityModel)
     {
         this.securityModel = securityModel;
+    }
+    
+    public boolean isUserSecurityModel()
+    {
+        return this.securityModel == USMSecurityParameters.SECURITY_MODEL;
     }
 
     public DEREncodable encode(SNMPContext ctx)

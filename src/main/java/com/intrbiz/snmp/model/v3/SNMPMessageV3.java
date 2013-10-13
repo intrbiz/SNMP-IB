@@ -14,6 +14,7 @@ import com.intrbiz.snmp.SNMPV3Context;
 import com.intrbiz.snmp.SNMPVersion;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v2.PDU;
+import com.intrbiz.snmp.security.SNMPAuthMode;
 import com.intrbiz.snmp.util.SNMPUtil;
 
 public class SNMPMessageV3 extends SNMPMessage
@@ -118,19 +119,32 @@ public class SNMPMessageV3 extends SNMPMessage
         this.version = SNMPVersion.fromTag(SNMPUtil.decodeInt(seq, 0));
         this.header = new HeaderData((DERObject) SNMPUtil.decodeValue(seq, 1), ctx);
         // decode the security params
-        if (this.header.getSecurityModel() == 3)
+        if (this.header.isUserSecurityModel())
+        {
             this.securityParameters = new USMSecurityParameters(SNMPUtil.decodeByteString(seq, 2), ctx);
+        }
         else
+        {
             throw new IOException("Currently only USM security model is supported");
+        }
         // decode the PDU wrapper
         if (this.header.isPriv())
+        {
             this.scopedPdu = new ScopedPDU(v3ctx.getPrivacyProvider().decrypt(this, SNMPUtil.decodeByteString(seq, 3)), ctx);
+        }
         else
+        {
             this.scopedPdu = new ScopedPDU((DERObject) SNMPUtil.decodeValue(seq, 3), ctx);
+        }
         // check the validity of this message
-        boolean authentic = v3ctx.getAuthProvider().authenticateMessage(this);
-        Logger.getLogger(SNMPMessageV3.class).debug("Message is authentic: " + authentic);
-        if (!authentic) throw new IOException("Message is not authentic!");
+        if (v3ctx.getAuthProvider().getAuthMode() != SNMPAuthMode.NULL)
+        {
+            if (! this.header.isAuth()) throw new IOException("Got unauthenticated message but an authenticated message was expected.");
+            // check the message hash
+            boolean authentic = v3ctx.getAuthProvider().authenticateMessage(this);
+            Logger.getLogger(SNMPMessageV3.class).debug("Message is authentic: " + authentic);
+            if (!authentic) throw new IOException("Message is not authentic!");
+        }
     }
 
     /**

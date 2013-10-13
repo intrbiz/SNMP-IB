@@ -14,6 +14,8 @@ import com.intrbiz.snmp.util.SNMPUtil;
 
 public class USMSecurityParameters extends SecurityParameters
 {
+    public static int SECURITY_MODEL = 3;
+    
     private byte[] authoritativeEngineId;
 
     private int authoritativeEngineBoots;
