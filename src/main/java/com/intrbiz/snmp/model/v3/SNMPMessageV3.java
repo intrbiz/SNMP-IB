@@ -17,7 +17,7 @@ import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.util.SNMPUtil;
 
 public class SNMPMessageV3 extends SNMPMessage
-{   
+{
     private SNMPVersion version;
 
     private HeaderData header;
@@ -103,8 +103,10 @@ public class SNMPMessageV3 extends SNMPMessage
         // security parameters
         vec.add(SNMPUtil.encodeByteString(this.securityParameters.encodeToBytes(ctx)));
         // data
-        if (this.header.isPriv()) vec.add(SNMPUtil.encodeByteString(v3ctx.getPrivacyProvider().encrypt(this, this.scopedPdu.encodeToBytes(ctx))));
-        else vec.add(this.scopedPdu.encode(ctx));
+        if (this.header.isPriv())
+            vec.add(SNMPUtil.encodeByteString(v3ctx.getPrivacyProvider().encrypt(this, this.scopedPdu.encodeToBytes(ctx))));
+        else
+            vec.add(this.scopedPdu.encode(ctx));
         return new DERSequence(vec);
     }
 
@@ -116,15 +118,19 @@ public class SNMPMessageV3 extends SNMPMessage
         this.version = SNMPVersion.fromTag(SNMPUtil.decodeInt(seq, 0));
         this.header = new HeaderData((DERObject) SNMPUtil.decodeValue(seq, 1), ctx);
         // decode the security params
-        if (this.header.getSecurityModel() == 3) this.securityParameters = new USMSecurityParameters(SNMPUtil.decodeByteString(seq, 2), ctx);
-        else throw new IOException("Currently only USM security model is supported");
+        if (this.header.getSecurityModel() == 3)
+            this.securityParameters = new USMSecurityParameters(SNMPUtil.decodeByteString(seq, 2), ctx);
+        else
+            throw new IOException("Currently only USM security model is supported");
         // decode the PDU wrapper
-        if (this.header.isPriv()) this.scopedPdu = new ScopedPDU(v3ctx.getPrivacyProvider().decrypt(this, SNMPUtil.decodeByteString(seq, 3)), ctx);
-        else this.scopedPdu = new ScopedPDU((DERObject) SNMPUtil.decodeValue(seq, 3), ctx);
+        if (this.header.isPriv())
+            this.scopedPdu = new ScopedPDU(v3ctx.getPrivacyProvider().decrypt(this, SNMPUtil.decodeByteString(seq, 3)), ctx);
+        else
+            this.scopedPdu = new ScopedPDU((DERObject) SNMPUtil.decodeValue(seq, 3), ctx);
         // check the validity of this message
         boolean authentic = v3ctx.getAuthProvider().authenticateMessage(this);
         Logger.getLogger(SNMPMessageV3.class).debug("Message is authentic: " + authentic);
-        if (! authentic) throw new IOException("Message is not authentic!");
+        if (!authentic) throw new IOException("Message is not authentic!");
     }
 
     /**
@@ -133,12 +139,16 @@ public class SNMPMessageV3 extends SNMPMessage
     @Override
     public byte[] encodeToBytes(SNMPContext ctx) throws IOException
     {
-        // ensure the auth params are zeroed
-        ((USMSecurityParameters) this.securityParameters).setAuthenticationParameters(new byte[12]);
-        // encode the message
-        byte[] encoded = super.encodeToBytes(ctx);
-        // authenticate the message
-        return ((SNMPV3Context) ctx).getAuthProvider().hashMessage(this, encoded);
+        if (this.header.isAuth())
+        {
+            // ensure the auth params are zeroed
+            ((USMSecurityParameters) this.securityParameters).setAuthenticationParameters(new byte[12]);
+            // encode the message
+            byte[] encoded = super.encodeToBytes(ctx);
+            // authenticate the message
+            return ((SNMPV3Context) ctx).getAuthProvider().hashMessage(this, encoded);
+        }
+        return super.encodeToBytes(ctx);
     }
 
     public String toString()

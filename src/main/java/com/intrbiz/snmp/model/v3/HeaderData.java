@@ -28,7 +28,7 @@ public class HeaderData extends SNMPTranscodable
         super();
         this.id = SNMPRequestIDManager.getInstance().nextId();
         this.maxSize = 1500;
-        this.flags = 0x03;
+        this.flags = 0x04; // default to reported
         this.securityModel = 3;
     }
 

@@ -23,6 +23,7 @@ public class SNMPRequestIDManager
     
     public int nextId()
     {
-        return ((random.nextInt() & 0xFFFF) << 16) | (idSequence.incrementAndGet() & 0xFFFF);
+        // For V3 the request ID cannot be < 0
+        return ((random.nextInt() & 0x7FFF) << 16) | (idSequence.incrementAndGet() & 0xFFFF);
     }
 }

@@ -112,13 +112,13 @@ public class SNMPV3Context extends SNMPContext
     {
         this.lastEngineTimeUpdate = lastEngineTimeUpdate;
     }
-    
+
     public int computeCurrentEngineTime()
     {
         if (this.lastEngineTimeUpdate == 0) return 0;
-        return ((int) ((System.currentTimeMillis() - this.lastEngineTimeUpdate)/1000)) + this.engineTime;
+        return ((int) ((System.currentTimeMillis() - this.lastEngineTimeUpdate) / 1000)) + this.engineTime;
     }
-    
+
     //
 
     public void setUser(String username, SNMPAuthMode authMode, String authPassword, SNMPPrivMode privMode)
@@ -141,18 +141,37 @@ public class SNMPV3Context extends SNMPContext
         // create the SNMPV3Message and send it
         SNMPMessageV3 message = new SNMPMessageV3();
         // setup
+        message.getHeader().setFlags((byte) 0x04);
+        // setup security parameters
         USMSecurityParameters spar = (USMSecurityParameters) message.getSecurityParameters();
         spar.setAuthoritativeEngineId(this.getEngineId());
         spar.setAuthoritativeEngineBoots(this.getEngineBoots());
         spar.setAuthoritativeEngineTime(this.computeCurrentEngineTime());
         spar.setUserName(this.getUsername());
-        spar.setAuthenticationParameters(new byte[12]);
-        spar.setPrivacyParameters(this.getPrivacyProvider().genSalt());
+        // setup auth parameters
+        if (this.authProvider.getAuthMode() != SNMPAuthMode.NULL)
+        {
+            message.getHeader().setAuth();
+            spar.setAuthenticationParameters(new byte[0]);
+        }
+        else
+        {
+            spar.setAuthenticationParameters(new byte[12]);
+        }
+        // setup priv parameters
+        if (this.privacyProvider.getPrivMode() != SNMPPrivMode.NULL)
+        {
+            message.getHeader().setPriv();
+            spar.setPrivacyParameters(this.getPrivacyProvider().genSalt());
+        }
+        else
+        {
+            spar.setPrivacyParameters(new byte[0]);
+        }
         //
         message.getScopedPdu().setContextEngineId(this.getEngineId());
         message.getScopedPdu().setPdu(pdu);
         //
         this.transport.send(message, this, callback);
     }
-
 }
