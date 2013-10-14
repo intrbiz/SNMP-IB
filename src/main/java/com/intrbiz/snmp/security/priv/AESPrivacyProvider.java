@@ -77,9 +77,9 @@ public class AESPrivacyProvider extends PrivacyProvider
         {
             Cipher aes = Cipher.getInstance("AES/CFB/NoPadding");
             aes.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(aesKey, "AES"), new IvParameterSpec(aesIV));
-            byte[] decrypted = aes.doFinal(data);
-            logger.debug("Encrypted: " + SNMPUtil.dumpArray(decrypted));
-            return decrypted;
+            byte[] encrypted = aes.doFinal(data);
+            logger.debug("Encrypted: " + SNMPUtil.dumpArray(encrypted));
+            return encrypted;
         }
         catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e)
         {
