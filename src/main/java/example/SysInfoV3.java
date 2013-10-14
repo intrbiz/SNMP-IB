@@ -21,7 +21,8 @@ public class SysInfoV3
         // A context represents an Agent we are going to contact, or which is going to contact us
         SNMPV3Context swAgent    = new SNMPV3Context(InetAddress.getByName("172.30.12.1"));
         swAgent.setEngineId("8000002B0016E0357E406877");
-        swAgent.setUser("admin", SNMPAuthMode.SHA1, "abcde12345", SNMPPrivMode.AES128);
+        // swAgent.setUser("admin", SNMPAuthMode.SHA1, "abcde12345", SNMPPrivMode.AES128);
+        swAgent.setUser("testdes", SNMPAuthMode.SHA1, "abcde12345", SNMPPrivMode.DES);
         
         SNMPV3Context sw2Agent    = new SNMPV3Context(InetAddress.getByName("172.30.12.3"));
         sw2Agent.setEngineId("0000002b0300051ad8f88000");
@@ -34,7 +35,7 @@ public class SysInfoV3
         // Use the context to send messages
         // The callback will be executed when a response to a request is received
         swAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
-        swAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        // sw2Agent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         
         // Run our transport to send and receive messages
         transport.run();
