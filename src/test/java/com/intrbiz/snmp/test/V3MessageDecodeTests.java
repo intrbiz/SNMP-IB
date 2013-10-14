@@ -26,19 +26,35 @@ public class V3MessageDecodeTests
     private static final byte[] MSG_2_1 = SNMPUtil.fromHex("308200bd0201033010020438da0cd3020205dc040100020103042f302d040c8000002b0016e0357e406877020119020315eda0040561646d696e040c00000000000000000000000004003075040c8000002b0016e0357e4068770400a263020474de8c750201000201003055305306082b06010201010100044733436f6d2053776974636820353530302d45492032382d506f7274205420536f6674776172652056657273696f6e2033436f6d204f532056332e30332e30327331363865703231");
     
     private static final SNMPV3Context CTX = createContext();
+    private static final SNMPV3Context PLAIN_CTX = createPlainContext();
     
     public static final SNMPV3Context createContext()
     {
-        SNMPV3Context ctx = new SNMPV3Context();
-        ctx.setUser("admin", SNMPAuthMode.SHA1, "abcde12345", SNMPPrivMode.AES128);
+        SNMPV3Context ctx = new SNMPV3Context(null, null, 0);
+        ctx.setUser("admin", SNMPAuthMode.SHA1, SNMPPrivMode.AES128, "abcde12345");
         ctx.setEngineId("8000002B0016E0357E406877");
         return ctx;
+    }
+    
+    public static final SNMPV3Context createPlainContext()
+    {
+        SNMPV3Context ctx = new SNMPV3Context(null, null, 0);
+        ctx.setUser("admin", SNMPAuthMode.NULL, SNMPPrivMode.NULL, "abcde12345");
+        ctx.setEngineId("8000002B0016E0357E406877");
+        return ctx;
+    }
+    
+    public static final byte[] clone(byte[] msg)
+    {
+        byte[] b = new byte[msg.length];
+        System.arraycopy(msg, 0, b, 0, msg.length);
+        return b;
     }
     
     @Test
     public void testMessage_0_3() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(MSG_0_3, CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_0_3), CTX);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));   
     }
@@ -46,7 +62,7 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_1_0() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(MSG_1_0, CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_0), CTX);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));   
     }
@@ -54,7 +70,7 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_1_1() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(MSG_1_1, CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_1), CTX);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));   
     }
@@ -62,7 +78,7 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_1_2() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(MSG_1_2, CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_2), CTX);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));   
     }
@@ -70,7 +86,7 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_1_3() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(MSG_1_3, CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_3), CTX);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));   
     }
@@ -78,14 +94,14 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_2_0() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(MSG_2_0, CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_2_0), PLAIN_CTX);
         System.out.println(msg);
     }
     
     @Test
     public void testMessage_2_1() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(MSG_2_1, CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_2_1), PLAIN_CTX);
         System.out.println(msg);
     }
     
@@ -94,7 +110,7 @@ public class V3MessageDecodeTests
     @Test
     public void decodeEncodeDecodeTest_0_3() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(MSG_0_3, CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_0_3), CTX);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));
         //
