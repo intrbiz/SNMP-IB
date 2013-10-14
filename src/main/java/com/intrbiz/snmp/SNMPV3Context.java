@@ -3,7 +3,9 @@ package com.intrbiz.snmp;
 import java.io.IOException;
 import java.net.InetAddress;
 
+import com.intrbiz.snmp.handler.ReceiveHandler;
 import com.intrbiz.snmp.handler.ResponseHandler;
+import com.intrbiz.snmp.handler.TrapHandler;
 import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.model.v3.SNMPMessageV3;
 import com.intrbiz.snmp.model.v3.USMSecurityParameters;
@@ -29,23 +31,9 @@ public class SNMPV3Context extends SNMPContext
 
     private long lastEngineTimeUpdate = 0;
 
-    public SNMPV3Context()
+    public SNMPV3Context(SNMPTransport transport, InetAddress agent, int port)
     {
-        super(SNMPVersion.V3);
-    }
-
-    public SNMPV3Context(InetAddress agent)
-    {
-        super(SNMPVersion.V3);
-        this.setAgent(agent);
-    }
-
-    public SNMPV3Context(InetAddress agent, int port, String community)
-    {
-        super(SNMPVersion.V3);
-        this.setAgent(agent);
-        this.setPort(port);
-        this.setCommunity(community);
+        super(SNMPVersion.V3, transport, agent, port);
     }
 
     public AuthProvider getAuthProvider()
@@ -57,15 +45,59 @@ public class SNMPV3Context extends SNMPContext
     {
         return privacyProvider;
     }
+    
+    public boolean isAuth()
+    {
+        return this.authProvider.getAuthMode() != SNMPAuthMode.NULL;
+    }
+    
+    public boolean isPriv()
+    {
+        return this.privacyProvider.getPrivMode() != SNMPPrivMode.NULL;
+    }
+    
+    //
+
+    @Override
+    public SNMPV3Context setTimeOut(long timeOut)
+    {
+        super.setTimeOut(timeOut);
+        return this;
+    }
+
+    @Override
+    public SNMPV3Context setResendCount(int resendCount)
+    {
+        super.setResendCount(resendCount);
+        return this;
+    }
+
+    @Override
+    public SNMPV3Context setTrapHandler(TrapHandler trapHandler)
+    {
+        super.setTrapHandler(trapHandler);
+        return this;
+    }
+
+    @Override
+    public SNMPV3Context setReceiveHandler(ReceiveHandler receiveHandler)
+    {
+        super.setReceiveHandler(receiveHandler);
+        return this;
+    }
+
+    @Override
+    public SNMPV3Context setUserContext(Object userContext)
+    {
+        super.setUserContext(userContext);
+        return this;
+    }
+    
+    //
 
     public String getUsername()
     {
         return username;
-    }
-
-    public void setUsername(String username)
-    {
-        this.username = username;
     }
 
     public byte[] getEngineId()
@@ -73,15 +105,51 @@ public class SNMPV3Context extends SNMPContext
         return engineId;
     }
 
-    public void setEngineId(byte[] engineId)
+    public SNMPV3Context setEngineId(byte[] engineId)
     {
         this.engineId = engineId;
+        return this;
     }
 
-    public void setEngineId(String engineId)
+    public SNMPV3Context setEngineId(String engineId)
     {
         this.engineId = SNMPUtil.fromHex(engineId);
+        return this;
     }
+    
+    public SNMPV3Context setUser(String username, SNMPAuthMode authMode, SNMPPrivMode privMode, String authPassword, String privPassword)
+    {
+        this.username = username;
+        this.authProvider = AuthProvider.open(authMode, authPassword);
+        this.privacyProvider = PrivacyProvider.open(authMode, privMode, privPassword);
+        return this;
+    }
+    
+    public SNMPV3Context setUser(String username, SNMPAuthMode authMode, SNMPPrivMode privMode, String password)
+    {
+        this.username = username;
+        this.authProvider = AuthProvider.open(authMode, password);
+        this.privacyProvider = PrivacyProvider.open(authMode, privMode, password);
+        return this;
+    }
+    
+    public SNMPV3Context setUser(String username, SNMPAuthMode authMode, String password)
+    {
+        this.username = username;
+        this.authProvider = AuthProvider.open(authMode, password);
+        this.privacyProvider = PrivacyProvider.open(authMode, SNMPPrivMode.NULL, password);
+        return this;
+    }
+    
+    public SNMPV3Context setUser(String username)
+    {
+        this.username = username;
+        this.authProvider = AuthProvider.open(SNMPAuthMode.NULL, null);
+        this.privacyProvider = PrivacyProvider.open(SNMPAuthMode.NULL, SNMPPrivMode.NULL, null);
+        return this;
+    }
+    
+    //
 
     public int getEngineBoots()
     {
@@ -117,20 +185,6 @@ public class SNMPV3Context extends SNMPContext
     {
         if (this.lastEngineTimeUpdate == 0) return 0;
         return ((int) ((System.currentTimeMillis() - this.lastEngineTimeUpdate) / 1000)) + this.engineTime;
-    }
-
-    //
-
-    public void setUser(String username, SNMPAuthMode authMode, String authPassword, SNMPPrivMode privMode)
-    {
-        this.setUser(username, authMode, authPassword, privMode, authPassword);
-    }
-
-    public void setUser(String username, SNMPAuthMode authMode, String authPassword, SNMPPrivMode privMode, String privPassword)
-    {
-        this.username = username;
-        this.authProvider = AuthProvider.open(authMode, authPassword);
-        this.privacyProvider = PrivacyProvider.open(authMode, privMode, privPassword);
     }
 
     // actions

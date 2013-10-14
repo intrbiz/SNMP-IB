@@ -301,9 +301,8 @@ public final class AsyncUDPTransport extends SNMPTransport
     }
 
     @Override
-    void register(SNMPContext context)
+    protected void register(SNMPContext context)
     {
-        if (context.getTransport() != this) throw new IllegalStateException("Use SNMPContext.register()!");
         this.putContext(context);
     }
 

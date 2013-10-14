@@ -20,13 +20,11 @@ public abstract class SNMPContext
 {
     protected final SNMPVersion version;
 
-    protected InetAddress agent;
+    protected final InetAddress agent;
 
-    protected int port = 161;
+    protected final int port;
 
-    protected String community = "public";
-
-    protected SNMPTransport transport;
+    protected final SNMPTransport transport;
 
     protected TrapHandler trapHandler;
 
@@ -50,10 +48,13 @@ public abstract class SNMPContext
 
     //
 
-    protected SNMPContext(SNMPVersion version)
+    protected SNMPContext(SNMPVersion version, SNMPTransport transport, InetAddress agent, int port)
     {
         super();
         this.version = version;
+        this.transport = transport;
+        this.agent = agent;
+        this.port = port;
     }
 
     public SNMPVersion getVersion()
@@ -81,11 +82,6 @@ public abstract class SNMPContext
         return agent;
     }
 
-    public void setAgent(InetAddress agent)
-    {
-        this.agent = agent;
-    }
-
     public SocketAddress getAgentSocketAddress()
     {
         return new InetSocketAddress(this.agent, this.port);
@@ -96,29 +92,15 @@ public abstract class SNMPContext
         return port;
     }
 
-    public void setPort(int port)
-    {
-        this.port = port;
-    }
-
-    public String getCommunity()
-    {
-        return community;
-    }
-
-    public void setCommunity(String community)
-    {
-        this.community = community;
-    }
-
     public long getTimeOut()
     {
         return timeOut;
     }
 
-    public void setTimeOut(long timeOut)
+    public SNMPContext setTimeOut(long timeOut)
     {
         this.timeOut = timeOut;
+        return this;
     }
 
     public int getResendCount()
@@ -126,9 +108,10 @@ public abstract class SNMPContext
         return resendCount;
     }
 
-    public void setResendCount(int resendCount)
+    public SNMPContext setResendCount(int resendCount)
     {
         this.resendCount = resendCount;
+        return this;
     }
 
     public TrapHandler getTrapHandler()
@@ -136,9 +119,10 @@ public abstract class SNMPContext
         return trapHandler;
     }
 
-    public void setTrapHandler(TrapHandler trapHandler)
+    public SNMPContext setTrapHandler(TrapHandler trapHandler)
     {
         this.trapHandler = trapHandler;
+        return this;
     }
 
     public ReceiveHandler getReceiveHandler()
@@ -146,21 +130,21 @@ public abstract class SNMPContext
         return receiveHandler;
     }
 
-    public void setReceiveHandler(ReceiveHandler receiveHandler)
+    public SNMPContext setReceiveHandler(ReceiveHandler receiveHandler)
     {
         this.receiveHandler = receiveHandler;
+        return this;
     }
-
-    //
 
     public Object getUserContext()
     {
         return userContext;
     }
 
-    public void setUserContext(Object userContext)
+    public SNMPContext setUserContext(Object userContext)
     {
         this.userContext = userContext;
+        return this;
     }
 
     //
@@ -203,22 +187,6 @@ public abstract class SNMPContext
     public void setNaughtyDevice(boolean naughtyDevice)
     {
         this.naughtyDevice = naughtyDevice;
-    }
-
-    public void setTransport(SNMPTransport transport)
-    {
-        this.transport = transport;
-    }
-    
-    //
-
-    /**
-     * Register this context with the given transport
-     */
-    public void register(SNMPTransport transport)
-    {
-        this.transport = transport;
-        this.transport.register(this);
     }
 
     public SNMPTransport getTransport()

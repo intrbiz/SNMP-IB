@@ -1,6 +1,8 @@
 package com.intrbiz.snmp;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import com.intrbiz.snmp.handler.ResponseHandler;
 import com.intrbiz.snmp.model.SNMPMessage;
@@ -35,4 +37,45 @@ public abstract class SNMPTransport implements Runnable
         return new AsyncUDPTransport();
     }
 
+    // Context creation methods
+    
+    /**
+     * Create a context for a SNMP V2 device registered with this transport
+     */
+    public SNMPV2Context openV2Context(InetAddress agent, int port)
+    {
+       SNMPV2Context ctx = new SNMPV2Context(this, agent, port);
+       this.register(ctx);
+       return ctx;
+    }
+    
+    public SNMPV2Context openV2Context(InetAddress agent)
+    {
+        return this.openV2Context(agent, 161);
+    }
+    
+    public SNMPV2Context openV2Context(String agent) throws UnknownHostException
+    {
+        return this.openV2Context(InetAddress.getByName(agent));
+    }
+    
+    /**
+     * Create a context for a SNMP V3 device registered with this transport
+     */
+    public SNMPV3Context openV3Context(InetAddress agent, int port)
+    {
+        SNMPV3Context ctx = new SNMPV3Context(this, agent, port);
+        this.register(ctx);
+        return ctx;
+    }
+    
+    public SNMPV3Context openV3Context(InetAddress agent)
+    {
+        return this.openV3Context(agent, 161);
+    }
+    
+    public SNMPV3Context openV3Context(String agent) throws UnknownHostException
+    {
+        return this.openV3Context(InetAddress.getByName(agent));
+    }
 }

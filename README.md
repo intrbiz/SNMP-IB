@@ -19,8 +19,8 @@ the network level and as such is non-blocking, callback based.  One instance
 ### What does it support
 SNMP-IB currently offers: Get, GetNext, GetBulk and Set requests for both V2c 
 and V3.  Only the user security model of V3 is supported.  With V3, MD5 and SHA1 
-are support for authentication and AES is supported for privacy (DES will be 
-added soon).
+are supported for authentication and DES (56bit) and AES (128bit) are supported 
+for privacy.
 
 The code is currently experimental, it only implements the basics that I need 
 at the moment. I'm planning to add more features going forward - trap handling 
@@ -35,12 +35,8 @@ following will fetch the system description and uptime from two devices:
         SNMPTransport transport = SNMPTransport.open();
         
         // A context represents an Agent we are going to contact, or which is going to contact us
-        SNMPV2Context lcAgent = new SNMPV2Context(InetAddress.getByName("127.0.0.1"));
-        SNMPV2Context swAgent = new SNMPV2Context(InetAddress.getByName("172.30.12.1"));
-        
-        // Register the context with the transport so we can send messages
-        lcAgent.register(transport);
-        swAgent.register(transport);
+        SNMPV2Context lcAgent  = transport.openV2Context("127.0.0.1").setCommunity("public");
+        SNMPV2Context swAgent  = transport.openV2Context("172.30.12.1").setCommunity("public");
         
         // Use the context to send messages
         // The callback will be executed when a response to a request is received

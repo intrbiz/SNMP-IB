@@ -139,8 +139,8 @@ public class SNMPMessageV3 extends SNMPMessage
         // check the validity of this message
         if (v3ctx.getAuthProvider().getAuthMode() != SNMPAuthMode.NULL)
         {
-            if (! this.header.isAuth()) throw new IOException("Got unauthenticated message but an authenticated message was expected.");
             // check the message hash
+            if (! this.header.isAuth()) throw new IOException("Got unauthenticated message but an authenticated message was expected.");
             boolean authentic = v3ctx.getAuthProvider().authenticateMessage(this);
             Logger.getLogger(SNMPMessageV3.class).debug("Message is authentic: " + authentic);
             if (!authentic) throw new IOException("Message is not authentic!");
