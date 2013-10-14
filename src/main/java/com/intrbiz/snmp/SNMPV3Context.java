@@ -48,12 +48,12 @@ public class SNMPV3Context extends SNMPContext
     
     public boolean isAuth()
     {
-        return this.authProvider.getAuthMode() != SNMPAuthMode.NULL;
+        return this.authProvider.getAuthMode() != SNMPAuthMode.NONE;
     }
     
     public boolean isPriv()
     {
-        return this.privacyProvider.getPrivMode() != SNMPPrivMode.NULL;
+        return this.privacyProvider.getPrivMode() != SNMPPrivMode.NONE;
     }
     
     //
@@ -137,15 +137,15 @@ public class SNMPV3Context extends SNMPContext
     {
         this.username = username;
         this.authProvider = AuthProvider.open(authMode, password);
-        this.privacyProvider = PrivacyProvider.open(authMode, SNMPPrivMode.NULL, password);
+        this.privacyProvider = PrivacyProvider.open(authMode, SNMPPrivMode.NONE, password);
         return this;
     }
     
     public SNMPV3Context setUser(String username)
     {
         this.username = username;
-        this.authProvider = AuthProvider.open(SNMPAuthMode.NULL, null);
-        this.privacyProvider = PrivacyProvider.open(SNMPAuthMode.NULL, SNMPPrivMode.NULL, null);
+        this.authProvider = AuthProvider.open(SNMPAuthMode.NONE, null);
+        this.privacyProvider = PrivacyProvider.open(SNMPAuthMode.NONE, SNMPPrivMode.NONE, null);
         return this;
     }
     
@@ -203,7 +203,7 @@ public class SNMPV3Context extends SNMPContext
         spar.setAuthoritativeEngineTime(this.computeCurrentEngineTime());
         spar.setUserName(this.getUsername());
         // setup auth parameters
-        if (this.authProvider.getAuthMode() != SNMPAuthMode.NULL)
+        if (this.authProvider.getAuthMode() != SNMPAuthMode.NONE)
         {
             message.getHeader().setAuth();
             spar.setAuthenticationParameters(new byte[0]);
@@ -213,7 +213,7 @@ public class SNMPV3Context extends SNMPContext
             spar.setAuthenticationParameters(new byte[12]);
         }
         // setup priv parameters
-        if (this.privacyProvider.getPrivMode() != SNMPPrivMode.NULL)
+        if (this.privacyProvider.getPrivMode() != SNMPPrivMode.NONE)
         {
             message.getHeader().setPriv();
             spar.setPrivacyParameters(this.getPrivacyProvider().genSalt());

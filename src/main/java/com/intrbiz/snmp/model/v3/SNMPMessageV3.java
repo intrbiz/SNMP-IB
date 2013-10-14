@@ -137,7 +137,7 @@ public class SNMPMessageV3 extends SNMPMessage
             this.scopedPdu = new ScopedPDU((DERObject) SNMPUtil.decodeValue(seq, 3), ctx);
         }
         // check the validity of this message
-        if (v3ctx.getAuthProvider().getAuthMode() != SNMPAuthMode.NULL)
+        if (v3ctx.getAuthProvider().getAuthMode() != SNMPAuthMode.NONE)
         {
             // check the message hash
             if (! this.header.isAuth()) throw new IOException("Got unauthenticated message but an authenticated message was expected.");

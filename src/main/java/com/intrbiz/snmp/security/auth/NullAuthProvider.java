@@ -8,7 +8,7 @@ public class NullAuthProvider extends AuthProvider
 {
     public NullAuthProvider(KeyProvider keyProvider)
     {
-        super(SNMPAuthMode.NULL, keyProvider);
+        super(SNMPAuthMode.NONE, keyProvider);
     }
 
     @Override

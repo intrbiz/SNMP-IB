@@ -23,7 +23,7 @@ public class SysInfoV3
                 
         SNMPV3Context sw2Agent    = transport.openV3Context("172.30.12.3")
                                     .setEngineId("0000002b0300051ad8f88000")
-                                    .setUser("test3des", SNMPAuthMode.SHA1, SNMPPrivMode.NULL, "abcde12345");
+                                    .setUser("test3des", SNMPAuthMode.SHA1, SNMPPrivMode.NONE, "abcde12345");
         
         SNMPV3Context sw3Agent    = transport.openV3Context("172.30.14.1")
                                     .setEngineId("8000002B0016E0357E406877")

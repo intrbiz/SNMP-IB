@@ -45,7 +45,7 @@ public abstract class PrivacyProvider
     public static PrivacyProvider open(SNMPAuthMode authMode, SNMPPrivMode privMode, String password)
     {
         KeyProvider keyProv = KeyProvider.open(authMode, password);
-        if (SNMPPrivMode.NULL == privMode) return new NullPrivacyProvider(keyProv);
+        if (SNMPPrivMode.NONE == privMode) return new NullPrivacyProvider(keyProv);
         else if (SNMPPrivMode.AES128 == privMode) return new AESPrivacyProvider(keyProv);
         else if (SNMPPrivMode.DES == privMode) return new DESPrivacyProvider(keyProv);
         return null;

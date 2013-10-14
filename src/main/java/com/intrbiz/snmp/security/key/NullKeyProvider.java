@@ -6,7 +6,7 @@ public class NullKeyProvider extends KeyProvider
 {
     public NullKeyProvider(String password)
     {
-        super(SNMPAuthMode.NULL, password);
+        super(SNMPAuthMode.NONE, password);
     }
 
     @Override

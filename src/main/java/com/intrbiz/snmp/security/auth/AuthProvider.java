@@ -44,7 +44,7 @@ public abstract class AuthProvider
     public static AuthProvider open(SNMPAuthMode authMode, String password)
     {
         KeyProvider keyProv = KeyProvider.open(authMode, password);
-        if (SNMPAuthMode.NULL == authMode) return new NullAuthProvider(keyProv);
+        if (SNMPAuthMode.NONE == authMode) return new NullAuthProvider(keyProv);
         else if (SNMPAuthMode.MD5 == authMode) return new MD5AuthProvider(keyProv);
         else if (SNMPAuthMode.SHA1 == authMode) return new SHA1AuthProvider(keyProv);
         return null;

@@ -1,5 +1,5 @@
 package com.intrbiz.snmp.security;
 
 public enum SNMPPrivMode {
-    NULL, AES128, DES
+    NONE, AES128, DES
 }

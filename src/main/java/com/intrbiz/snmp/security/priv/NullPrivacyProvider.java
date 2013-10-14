@@ -10,7 +10,7 @@ public class NullPrivacyProvider extends PrivacyProvider
 {
     public NullPrivacyProvider(KeyProvider keyProvider)
     {
-        super(SNMPPrivMode.NULL, keyProvider);
+        super(SNMPPrivMode.NONE, keyProvider);
     }
 
     @Override

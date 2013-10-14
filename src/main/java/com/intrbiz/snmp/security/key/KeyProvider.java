@@ -51,7 +51,7 @@ public abstract class KeyProvider
     
     public static KeyProvider open(SNMPAuthMode mode, String password)
     {
-        if (SNMPAuthMode.NULL == mode) return new NullKeyProvider(password);
+        if (SNMPAuthMode.NONE == mode) return new NullKeyProvider(password);
         else if (SNMPAuthMode.MD5 == mode) return new MD5KeyProvider(password);
         else if (SNMPAuthMode.SHA1 == mode) return new SHA1KeyProvider(password);
         return null;

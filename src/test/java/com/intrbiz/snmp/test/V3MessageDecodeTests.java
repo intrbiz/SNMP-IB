@@ -39,7 +39,7 @@ public class V3MessageDecodeTests
     public static final SNMPV3Context createPlainContext()
     {
         SNMPV3Context ctx = new SNMPV3Context(null, null, 0);
-        ctx.setUser("admin", SNMPAuthMode.NULL, SNMPPrivMode.NULL, "abcde12345");
+        ctx.setUser("admin", SNMPAuthMode.NONE, SNMPPrivMode.NONE, "abcde12345");
         ctx.setEngineId("8000002B0016E0357E406877");
         return ctx;
     }
