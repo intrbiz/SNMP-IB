@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 
 import com.intrbiz.snmp.handler.ResponseHandler;
 import com.intrbiz.snmp.model.SNMPMessage;
+import com.intrbiz.snmp.transport.AsyncUDPTransport;
 
 /**
  * A transport sends and received SNMPMessages
@@ -22,12 +23,12 @@ public abstract class SNMPTransport implements Runnable
     /**
      * Internal method, use SNMPContext.register()
      */
-    abstract void register(SNMPContext context);
+    protected abstract void register(SNMPContext context);
 
     /**
      * Internal method, use SNMPContext.send()
      */
-    abstract void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException;
+    protected abstract void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException;
 
     /**
      * Create a default SNMPTransport implementation
@@ -44,7 +45,13 @@ public abstract class SNMPTransport implements Runnable
      */
     public SNMPV2Context openV2Context(InetAddress agent, int port)
     {
-       SNMPV2Context ctx = new SNMPV2Context(this, agent, port);
+       SNMPV2Context ctx = new SNMPV2Context(agent, port) {
+        @Override
+        protected void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException
+        {
+            SNMPTransport.this.send(message, context, callback);
+        }
+       };
        this.register(ctx);
        return ctx;
     }
@@ -64,7 +71,13 @@ public abstract class SNMPTransport implements Runnable
      */
     public SNMPV3Context openV3Context(InetAddress agent, int port)
     {
-        SNMPV3Context ctx = new SNMPV3Context(this, agent, port);
+        SNMPV3Context ctx = new SNMPV3Context(agent, port) {
+            @Override
+            protected void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException
+            {
+                SNMPTransport.this.send(message, context, callback);
+            }
+           };
         this.register(ctx);
         return ctx;
     }

@@ -1,4 +1,4 @@
-package com.intrbiz.snmp;
+package com.intrbiz.snmp.transport;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -18,6 +18,10 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.apache.log4j.Logger;
 
+import com.intrbiz.snmp.SNMPContext;
+import com.intrbiz.snmp.SNMPTransport;
+import com.intrbiz.snmp.SNMPV3Context;
+import com.intrbiz.snmp.SNMPVersion;
 import com.intrbiz.snmp.handler.ResponseHandler;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v2.GetBulkRequestPDU;
@@ -260,10 +264,9 @@ public final class AsyncUDPTransport extends SNMPTransport
     }
 
     @Override
-    void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException
+    protected void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException
     {
         if (this.closed) throw new IOException("Transport is closed, cannot send message");
-        if (context.getTransport() != this) throw new IOException("The SNMPContext must first be registered with this SNMPTransport");
         // serialise
         EnqueuedMessage emsg = new EnqueuedMessage();
         emsg.context = context;

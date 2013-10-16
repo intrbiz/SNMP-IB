@@ -15,7 +15,7 @@ import com.intrbiz.snmp.security.auth.AuthProvider;
 import com.intrbiz.snmp.security.priv.PrivacyProvider;
 import com.intrbiz.snmp.util.SNMPUtil;
 
-public class SNMPV3Context extends SNMPContext
+public abstract class SNMPV3Context extends SNMPContext
 {
     private String username;
 
@@ -31,9 +31,9 @@ public class SNMPV3Context extends SNMPContext
 
     private long lastEngineTimeUpdate = 0;
 
-    public SNMPV3Context(SNMPTransport transport, InetAddress agent, int port)
+    public SNMPV3Context(InetAddress agent, int port)
     {
-        super(SNMPVersion.V3, transport, agent, port);
+        super(SNMPVersion.V3, agent, port);
     }
 
     public AuthProvider getAuthProvider()
@@ -226,6 +226,6 @@ public class SNMPV3Context extends SNMPContext
         message.getScopedPdu().setContextEngineId(this.getEngineId());
         message.getScopedPdu().setPdu(pdu);
         //
-        this.transport.send(message, this, callback);
+        this.send(message, this, callback);
     }
 }

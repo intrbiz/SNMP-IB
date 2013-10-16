@@ -1,8 +1,13 @@
 package com.intrbiz.snmp.test;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
+import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.SNMPV3Context;
+import com.intrbiz.snmp.handler.ResponseHandler;
+import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v3.SNMPMessageV3;
 import com.intrbiz.snmp.security.SNMPAuthMode;
 import com.intrbiz.snmp.security.SNMPPrivMode;
@@ -30,7 +35,12 @@ public class V3MessageDecodeTests
     
     public static final SNMPV3Context createContext()
     {
-        SNMPV3Context ctx = new SNMPV3Context(null, null, 0);
+        SNMPV3Context ctx = new SNMPV3Context(null, 0) {
+            @Override
+            protected void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException
+            {
+            }
+        };
         ctx.setUser("admin", SNMPAuthMode.SHA1, SNMPPrivMode.AES128, "abcde12345");
         ctx.setEngineId("8000002B0016E0357E406877");
         return ctx;
@@ -38,7 +48,12 @@ public class V3MessageDecodeTests
     
     public static final SNMPV3Context createPlainContext()
     {
-        SNMPV3Context ctx = new SNMPV3Context(null, null, 0);
+        SNMPV3Context ctx = new SNMPV3Context(null, 0) {
+            @Override
+            protected void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException
+            {
+            }
+        };
         ctx.setUser("admin", SNMPAuthMode.NONE, SNMPPrivMode.NONE, "abcde12345");
         ctx.setEngineId("8000002B0016E0357E406877");
         return ctx;

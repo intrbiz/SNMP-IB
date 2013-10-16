@@ -9,13 +9,13 @@ import com.intrbiz.snmp.handler.TrapHandler;
 import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.model.v2.SNMPMessageV2;
 
-public class SNMPV2Context extends SNMPContext
+public abstract class SNMPV2Context extends SNMPContext
 {
     protected String community = "public";
 
-    public SNMPV2Context(SNMPTransport transport, InetAddress agent, int port)
+    public SNMPV2Context(InetAddress agent, int port)
     {
-        super(SNMPVersion.V2C, transport, agent, port);
+        super(SNMPVersion.V2C, agent, port);
     }
 
     @Override
@@ -73,6 +73,6 @@ public class SNMPV2Context extends SNMPContext
     {
         SNMPMessageV2 msg = new SNMPMessageV2(this.getVersion(), this.getCommunity(), pdu);
         // send the actual message
-        this.transport.send(msg, this, callback);
+        this.send(msg, this, callback);
     }
 }

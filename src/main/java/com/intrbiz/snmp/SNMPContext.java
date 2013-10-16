@@ -10,6 +10,7 @@ import com.intrbiz.snmp.handler.ReceiveHandler;
 import com.intrbiz.snmp.handler.ResponseHandler;
 import com.intrbiz.snmp.handler.TableHandler;
 import com.intrbiz.snmp.handler.TrapHandler;
+import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v2.GetBulkRequestPDU;
 import com.intrbiz.snmp.model.v2.GetNextRequestPDU;
 import com.intrbiz.snmp.model.v2.GetRequestPDU;
@@ -23,8 +24,6 @@ public abstract class SNMPContext
     protected final InetAddress agent;
 
     protected final int port;
-
-    protected final SNMPTransport transport;
 
     protected TrapHandler trapHandler;
 
@@ -48,11 +47,10 @@ public abstract class SNMPContext
 
     //
 
-    protected SNMPContext(SNMPVersion version, SNMPTransport transport, InetAddress agent, int port)
+    protected SNMPContext(SNMPVersion version, InetAddress agent, int port)
     {
         super();
         this.version = version;
-        this.transport = transport;
         this.agent = agent;
         this.port = port;
     }
@@ -189,15 +187,14 @@ public abstract class SNMPContext
         this.naughtyDevice = naughtyDevice;
     }
 
-    public SNMPTransport getTransport()
-    {
-        return this.transport;
-    }
-
     // Internal
 
     // Actions
+    
+    // send the message, implemented by the transport
+    protected abstract void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException;
 
+    // assemble the message
     public abstract void send(PDU pdu, ResponseHandler callback) throws IOException;
 
     // Get
