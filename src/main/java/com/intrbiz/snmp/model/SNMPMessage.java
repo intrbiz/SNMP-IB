@@ -8,6 +8,8 @@ import com.intrbiz.snmp.model.v2.PDU;
 
 public abstract class SNMPMessage extends SNMPTranscodable
 {
+    protected Object userContext;
+    
     protected SNMPMessage()
     {
         super();
@@ -23,4 +25,20 @@ public abstract class SNMPMessage extends SNMPTranscodable
     public abstract PDU getPdu();
     
     public abstract int getId();
+    
+    /**
+     * Get the user context which is related to this message
+     */
+    public Object getUserContext()
+    {
+        return this.userContext;
+    }
+    
+    /**
+     * Set the user context which is related to this message
+     */
+    public void setUserContext(Object userContext)
+    {
+        this.userContext = userContext;
+    }
 }
