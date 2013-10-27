@@ -9,7 +9,10 @@ import org.bouncycastle.asn1.DERInteger;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERTags;
 
-public class Counter64 implements DEREncodable
+/**
+ * A 64bit SNMP counter
+ */
+public class Counter64 implements DEREncodable, Counter
 {
     public static final int APPLICATION_TAG = 6;
 
@@ -34,6 +37,24 @@ public class Counter64 implements DEREncodable
     public void setValue(BigInteger value)
     {
         this.value = value;
+    }
+    
+    @Override
+    public long getUnsignedLongValue()
+    {
+        return this.value.longValue();
+    }
+
+    @Override
+    public long getLongValue()
+    {
+        return this.value.longValue() & 0x7FFFFFFFFFFFFFFFL;
+    }
+
+    @Override
+    public BigInteger getBigIntValue()
+    {
+        return this.value;
     }
 
     @Override

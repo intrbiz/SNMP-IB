@@ -1,6 +1,8 @@
 package com.intrbiz.snmp.model.asn1;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 
 import org.bouncycastle.asn1.DERApplicationSpecific;
 import org.bouncycastle.asn1.DEREncodable;
@@ -8,7 +10,10 @@ import org.bouncycastle.asn1.DERInteger;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERTags;
 
-public class Counter32 implements DEREncodable
+/**
+ * A 32bit SNMP counter
+ */
+public class Counter32 implements DEREncodable, Counter
 {
     public static final int APPLICATION_TAG = 1;
 
@@ -33,6 +38,26 @@ public class Counter32 implements DEREncodable
     public void setValue(long value)
     {
         this.value = value;
+    }
+
+    @Override
+    public long getUnsignedLongValue()
+    {
+        return this.value;
+    }
+
+    @Override
+    public long getLongValue()
+    {
+        return this.value & 0x7FFFFFFFFFFFFFFFL;
+    }
+
+    @Override
+    public BigInteger getBigIntValue()
+    {
+        byte[] b = new byte[8];
+        ByteBuffer.wrap(b).putLong(this.value);
+        return new BigInteger(b);
     }
 
     @Override
