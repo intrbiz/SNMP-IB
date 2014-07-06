@@ -131,6 +131,24 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
     }
     
     /**
+     * Is this context using strong authentication, IE: SHA1
+     */
+    @Override
+    public boolean isAuthenticated()
+    {
+        return this.getAuthProvider() != null && this.getAuthProvider().getAuthMode() != SNMPAuthMode.NONE && this.getAuthProvider().getAuthMode() != SNMPAuthMode.MD5;
+    }
+
+    /**
+     * Is this context using strong encryption, IE: AES
+     */
+    @Override
+    public boolean isEncrypted()
+    {
+        return this.getPrivacyProvider() != null && this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.NONE && this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.AES128;
+    }
+
+    /**
      * Put this context into discover mode
      */
     public SNMPV3Context setDiscover()

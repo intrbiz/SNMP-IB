@@ -193,6 +193,38 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     {
         this.naughtyDevice = naughtyDevice;
     }
+    
+    // Friendly properties
+    
+    /**
+     * Does this context have any level of authentication,
+     * Note: a context is only considered authenticated when 
+     * strong authentication is in use, MD5 is not considered 
+     * strong.
+     */
+    public boolean isAuthenticated()
+    {
+        return false;
+    }
+    
+    /**
+     * Does this context have any level of encryption,
+     * Note: a context is only considered encrypted when 
+     * strong encryption is in use, DES is not considered 
+     * strong.
+     */
+    public boolean isEncrypted()
+    {
+        return false;
+    }
+    
+    /**
+     * Is this context authenticated and encrypted
+     */
+    public boolean isSecure()
+    {
+        return this.isAuthenticated() && this.isEncrypted();
+    }
 
     // Internal
 

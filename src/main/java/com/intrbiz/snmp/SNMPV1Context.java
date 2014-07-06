@@ -28,6 +28,8 @@ public abstract class SNMPV1Context extends SNMPContext<SNMPV1Context>
         this.community = community;
         return this;
     }
+    
+    //
 
     @Override
     public void send(PDU pdu, ResponseHandler callback) throws IOException
