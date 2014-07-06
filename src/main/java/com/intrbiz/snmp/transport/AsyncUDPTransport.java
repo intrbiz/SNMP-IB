@@ -408,10 +408,14 @@ public final class AsyncUDPTransport extends SNMPTransport
     
     private void dispatchResponse(SNMPMessage msg, EnqueuedMessage responseTo, SocketAddress from)
     {
-        // authenticate the message
         try
         {
-            ((SNMPMessageV3) msg).authenticateMessage();
+            if (msg instanceof SNMPMessageV3)
+            {
+                // authenticate the message
+                ((SNMPMessageV3) msg).authenticateMessage();
+            }
+            // invoke the callback
             try
             {
                 if (responseTo.callback != null) responseTo.callback.handleResponse(msg, from, responseTo.message, responseTo.context);

@@ -15,7 +15,7 @@ public class SysInfoV2c
         SNMPTransport transport = SNMPTransport.open();
         
         // A context represents an Agent we are going to contact, or which is going to contact us
-        // SNMPV2Context lcAgent  = transport.openV2Context("127.0.0.1").setCommunity("public");
+        SNMPV2Context lcAgent  = transport.openV2Context("127.0.0.1").setCommunity("public");
         SNMPV2Context swAgent  = transport.openV2Context("172.30.12.1").setCommunity("public");
         // SNMPV2Context sw2Agent = transport.openV2Context("172.30.12.2").setCommunity("public");
         //
@@ -23,7 +23,7 @@ public class SysInfoV2c
         
         // Use the context to send messages
         // The callback will be executed when a response to a request is received
-        // lcAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        lcAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         swAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         // sw2Agent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         
