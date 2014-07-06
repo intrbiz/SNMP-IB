@@ -43,7 +43,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
 
     protected int decodeErrorCount = 0;
 
-    protected boolean naughtyDevice = true;
+    protected boolean naughtyDevice = false;
 
     //
 
