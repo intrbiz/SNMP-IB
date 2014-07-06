@@ -8,6 +8,7 @@ import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 
 import com.intrbiz.snmp.model.asn1.Counter32;
+import com.intrbiz.snmp.model.asn1.Counter64;
 import com.intrbiz.snmp.model.asn1.TimeTicks;
 import com.intrbiz.snmp.util.SNMPUtil;
 
@@ -117,6 +118,16 @@ public class VarBind
     public Counter32 getCounter32Value()
     {
         return (Counter32) this.objectValue;
+    }
+    
+    public boolean isCounter64Value()
+    {
+        return this.objectValue instanceof Counter64;
+    }
+    
+    public Counter64 getCounter64Value()
+    {
+        return (Counter64) this.objectValue;
     }
     
     //

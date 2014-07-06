@@ -41,6 +41,33 @@ public abstract class SNMPTransport implements Runnable
     // Context creation methods
     
     /**
+     * Create a context for a SNMP V1 device registered with this transport
+     */
+    public SNMPV2Context openV1Context(InetAddress agent, int port)
+    {
+       SNMPV2Context ctx = new SNMPV2Context(agent, port) {
+        @Override
+        protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
+        {
+            SNMPTransport.this.send(message, context, callback);
+        }
+       };
+       ctx.setFakeVersion1(true);
+       this.register(ctx);
+       return ctx;
+    }
+    
+    public SNMPV2Context openV1Context(InetAddress agent)
+    {
+        return this.openV1Context(agent, 161);
+    }
+    
+    public SNMPV2Context openV1Context(String agent) throws UnknownHostException
+    {
+        return this.openV1Context(InetAddress.getByName(agent));
+    }
+    
+    /**
      * Create a context for a SNMP V2 device registered with this transport
      */
     public SNMPV2Context openV2Context(InetAddress agent, int port)
