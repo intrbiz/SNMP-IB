@@ -3,7 +3,7 @@ package example;
 import org.apache.log4j.BasicConfigurator;
 
 import com.intrbiz.snmp.SNMPTransport;
-import com.intrbiz.snmp.SNMPV2Context;
+import com.intrbiz.snmp.SNMPV1Context;
 import com.intrbiz.snmp.handler.ResponseHandler;
 
 public class SysInfoV1
@@ -16,7 +16,7 @@ public class SysInfoV1
         
         // A context represents an Agent we are going to contact, or which is going to contact us
         // V2c is pretty much identical to V1, so we tell version 2 to pretend to be version 1
-        SNMPV2Context agent  = transport.openV2Context("172.30.13.20").setCommunity("public").setFakeVersion1(true);
+        SNMPV1Context agent  = transport.openV1Context("172.30.13.20").setCommunity("public");
         
         // Use the context to send messages
         // The callback will be executed when a response to a request is received
