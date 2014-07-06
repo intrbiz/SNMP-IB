@@ -7,5 +7,5 @@ import com.intrbiz.snmp.model.SNMPMessage;
 
 public interface TrapHandler
 {
-    void handleTrap(SNMPMessage message, SocketAddress from, SNMPContext context);
+    void handleTrap(SNMPMessage message, SocketAddress from, SNMPContext<?> context);
 }

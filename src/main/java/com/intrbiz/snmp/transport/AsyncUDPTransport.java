@@ -9,9 +9,11 @@ import java.nio.channels.ClosedSelectorException;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -19,6 +21,8 @@ import java.util.concurrent.ConcurrentMap;
 import org.apache.log4j.Logger;
 
 import com.intrbiz.snmp.SNMPContext;
+import com.intrbiz.snmp.SNMPContextId;
+import com.intrbiz.snmp.SNMPContextResolver;
 import com.intrbiz.snmp.SNMPTransport;
 import com.intrbiz.snmp.SNMPV3Context;
 import com.intrbiz.snmp.SNMPVersion;
@@ -42,7 +46,7 @@ import com.intrbiz.snmp.util.SNMPUtil;
 public final class AsyncUDPTransport extends SNMPTransport
 {
     private static final long BG_INTERVAL = 1000;
-    
+
     private Logger logger = Logger.getLogger(AsyncUDPTransport.class);
 
     private boolean closed = false;
@@ -53,9 +57,9 @@ public final class AsyncUDPTransport extends SNMPTransport
 
     private SelectionKey key;
 
-    private ConcurrentMap<SocketAddress, SNMPContext> contexts = new ConcurrentHashMap<SocketAddress, SNMPContext>();
+    private ConcurrentMap<SNMPContextId, SNMPContext<?>> contexts = new ConcurrentHashMap<SNMPContextId, SNMPContext<?>>();
 
-    private ConcurrentMap<SocketAddress, ConcurrentMap<Integer, EnqueuedMessage>> sentMessages = new ConcurrentHashMap<SocketAddress, ConcurrentMap<Integer, EnqueuedMessage>>();
+    private ConcurrentMap<Integer, EnqueuedMessage> sentMessages = new ConcurrentHashMap<Integer, EnqueuedMessage>();
 
     private Queue<EnqueuedMessage> sendQueue = new ConcurrentLinkedQueue<EnqueuedMessage>();
 
@@ -121,29 +125,14 @@ public final class AsyncUDPTransport extends SNMPTransport
         if ((System.currentTimeMillis() - this.lastBackgroundRun) >= BG_INTERVAL)
         {
             long now = System.currentTimeMillis();
-            for (ConcurrentMap<Integer, EnqueuedMessage> msgGrp : this.sentMessages.values())
+            Iterator<Entry<Integer, EnqueuedMessage>> msgs = this.sentMessages.entrySet().iterator();
+            while (msgs.hasNext())
             {
-                Iterator<Entry<Integer, EnqueuedMessage>> msgs = msgGrp.entrySet().iterator();
-                while (msgs.hasNext())
+                Entry<Integer, EnqueuedMessage> ent = msgs.next();
+                EnqueuedMessage msg = ent.getValue();
+                if ((now - msg.sentTime) > msg.context.getTimeOut())
                 {
-                    Entry<Integer, EnqueuedMessage> ent = msgs.next();
-                    EnqueuedMessage msg = ent.getValue();
-                    if ((now - msg.sentTime) > msg.context.getTimeOut())
-                    {
-                        if (msg.resendCount < msg.context.getResendCount())
-                        {
-                            // resend
-                            logger.debug("Resend");
-                            msg.resendCount++;
-                            this.enqueueMessage(msg);
-                        }
-                        else
-                        {
-                            // handle the timeout
-                            msg.callback.handleTimeout(msg.message, msg.target, msg.context);
-                        }
-                        msgs.remove();
-                    }
+                    resendMessage(msg);
                 }
             }
             this.lastBackgroundRun = System.currentTimeMillis();
@@ -161,12 +150,14 @@ public final class AsyncUDPTransport extends SNMPTransport
                 logger.debug("Clamping max-repetitions for a naughty device");
                 ((GetBulkRequestPDU) msg.message.getPdu()).setMaxRepetitions(10);
             }
+            //
+            logger.trace("Sending message: " + msg.message);
             byte[] encoded = msg.message.encodeToBytes(msg.context);
             logger.debug("Sending " + encoded.length + " bytes");
             this.channel.send(ByteBuffer.wrap(encoded), msg.target);
             // move to the sent pool
             msg.sentTime = System.currentTimeMillis();
-            this.putSentMessage(msg.target, msg.message.getId(), msg);
+            this.putSentMessage(msg.message.getId(), msg);
         }
         else
         {
@@ -180,68 +171,74 @@ public final class AsyncUDPTransport extends SNMPTransport
         SocketAddress from = this.channel.receive(buffer);
         buffer.flip();
         logger.debug("Got " + buffer.limit() + " bytes from " + from);
-        // lookup the context
-        SNMPContext context = this.getContext(from);
-        if (context != null)
+        try
         {
-            try
+            SNMPMessage msg = this.decodeMessage(buffer, from);
+            // in response to
+            EnqueuedMessage responseTo = this.getSentMessage(msg.getId());
+            if (responseTo != null)
             {
-                SNMPMessage msg = this.decodeMessage(buffer, context);
-                // in response to
-                EnqueuedMessage responseTo = this.getSentMessage(from, msg.getId());
-                if (responseTo != null)
+                logger.debug("Latency: " + (System.currentTimeMillis() - responseTo.sentTime));
+                //
+                if (msg instanceof SNMPMessageV3 && msg.getPdu() instanceof ReportPDU)
                 {
-                    logger.debug("Latency: " + (System.currentTimeMillis() - responseTo.sentTime));
-                    //
-                    if (msg instanceof SNMPMessageV3 && msg.getPdu() instanceof ReportPDU)
+                    SNMPMessageV3 msgv3 = (SNMPMessageV3) msg;
+                    USMSecurityParameters sp = (USMSecurityParameters) msgv3.getSecurityParameters();
+                    SNMPV3Context ctxv3 = (SNMPV3Context) msgv3.getSNMPContext();
+                    // update the context
+                    logger.debug("Updating EngineTime: " + sp.getAuthoritativeEngineBoots() + "::" + sp.getAuthoritativeEngineTime() + "::" + SNMPUtil.toHex(sp.getAuthoritativeEngineId()));
+                    ctxv3.setEngineBoots(sp.getAuthoritativeEngineBoots());
+                    ctxv3.setEngineTime(sp.getAuthoritativeEngineTime());
+                    ctxv3.setLastEngineTimeUpdate(System.currentTimeMillis());
+                    if (ctxv3.isDiscovering())
                     {
-                        SNMPMessageV3 msgv3 = (SNMPMessageV3) msg;
-                        USMSecurityParameters sp = (USMSecurityParameters) msgv3.getSecurityParameters();
-                        SNMPV3Context ctxv3 = (SNMPV3Context) context;
-                        // update the context
-                        logger.debug("Updating EngineTime: " + sp.getAuthoritativeEngineBoots() + "::" + sp.getAuthoritativeEngineTime());
-                        ctxv3.setEngineBoots(sp.getAuthoritativeEngineBoots());
-                        ctxv3.setEngineTime(sp.getAuthoritativeEngineTime());
-                        ctxv3.setLastEngineTimeUpdate(System.currentTimeMillis());
-                        // alter the request
-                        ((USMSecurityParameters) ((SNMPMessageV3) responseTo.message).getSecurityParameters()).setAuthoritativeEngineBoots(sp.getAuthoritativeEngineBoots());
-                        ((USMSecurityParameters) ((SNMPMessageV3) responseTo.message).getSecurityParameters()).setAuthoritativeEngineTime(sp.getAuthoritativeEngineTime());
-                        // resend the request
-                        responseTo.resendCount = 0;
-                        this.enqueueMessage(responseTo);
+                        ctxv3.setEngineId(sp.getAuthoritativeEngineId());
+                        ctxv3.setDiscovering(false);
+                        logger.debug("Set SNMP Context Engine ID to: " + ctxv3.getEngineIdAsString() + ", discovered: " + ctxv3.isDiscovering() + ", id: " + ctxv3.getContextId());
+                        // update the context id
+                        this.contexts.put(ctxv3.getContextId(), ctxv3);
+                        this.contexts.remove(new SNMPContextId(ctxv3.getAgentSocketAddress(), SNMPV3Context.LOCAL_ENGINE_ID));
                     }
-                    else if (msg.getPdu().getRequestId() == responseTo.message.getPdu().getRequestId() && responseTo.callback != null)
-                    {
-                        // exec the receive callback
-                        this.removeSentMessage(from, msg.getId());
-                        responseTo.callback.handleResponse(msg, from, responseTo.message, responseTo.context);
-                    }
-                    else
-                    {
-                        logger.warn("Unhandled response: " + msg);
-                    }
+                    // alter the request
+                    ((USMSecurityParameters) ((SNMPMessageV3) responseTo.message).getSecurityParameters()).setAuthoritativeEngineBoots(sp.getAuthoritativeEngineBoots());
+                    ((USMSecurityParameters) ((SNMPMessageV3) responseTo.message).getSecurityParameters()).setAuthoritativeEngineTime(sp.getAuthoritativeEngineTime());
+                    ((USMSecurityParameters) ((SNMPMessageV3) responseTo.message).getSecurityParameters()).setAuthoritativeEngineId(sp.getAuthoritativeEngineId());
+                    ((SNMPMessageV3) responseTo.message).getScopedPdu().setContextEngineId(sp.getAuthoritativeEngineId());
+                    // resend the request
+                    this.resendMessage(responseTo);
+                }
+                else if (msg.getId() == responseTo.message.getId())
+                {
+                    // exec the receive callback
+                    this.removeSentMessage(msg.getId());
+                    if (responseTo.callback != null) responseTo.callback.handleResponse(msg, from, responseTo.message, responseTo.context);
                 }
                 else
                 {
-                    // exec context level callback
-                    logger.warn("Unknown message received:\n" + msg);
+                    logger.warn("Unhandled response: " + msg);
                 }
             }
-            catch (IOException e)
+            else
+            {
+                // exec context level callback
+                logger.warn("Unknown message received:\n" + msg);
+            }
+        }
+        catch (IOException e)
+        {
+            logger.error("Got decode error", e);
+            logger.error("Got error from: " + from + " updating error state on the following contexts: ");
+            for (SNMPContext<?> context : this.getContextsByTransport(from))
             {
                 context.setErrorCount(context.getErrorCount() + 1);
                 context.setDecodeErrorCount(context.getDecodeErrorCount() + 1);
                 context.setNaughtyDevice(true);
-                logger.error("Device " + context.getAgent().getHostAddress() + " is naughty: " + context.getErrorCount() + " " + context.getDecodeErrorCount());
+                logger.error("\t+-> Device " + context.getAgent().getHostAddress() + " is naughty: " + context.getErrorCount() + " " + context.getDecodeErrorCount());
             }
-        }
-        else
-        {
-            logger.error("Could not find context for " + from);
         }
     }
 
-    private SNMPMessage decodeMessage(ByteBuffer buffer, SNMPContext ctx) throws IOException
+    private SNMPMessage decodeMessage(ByteBuffer buffer, SocketAddress from) throws IOException
     {
         // parse the payload
         byte[] data = new byte[buffer.limit()];
@@ -251,22 +248,25 @@ public final class AsyncUDPTransport extends SNMPTransport
         //
         if (SNMPVersion.V3 == version)
         {
-            SNMPMessageV3 msg = new SNMPMessageV3(data, ctx);
-            if (logger.isTraceEnabled()) logger.trace(msg.toString());
+            SNMPMessageV3 msg = new SNMPMessageV3(data, this.getContextResolver(from));
+            if (logger.isTraceEnabled()) logger.trace("Decoded message: " + msg.toString());
             return msg;
         }
         else
         {
-            SNMPMessageV2 msg = new SNMPMessageV2(data, ctx);
-            if (logger.isTraceEnabled()) logger.trace(msg.toString());
+            SNMPMessageV2 msg = new SNMPMessageV2(data, this.getContextResolver(from));
+            if (logger.isTraceEnabled()) logger.trace("Decoded message: " + msg.toString());
             return msg;
         }
     }
 
     @Override
-    protected void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException
+    protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
     {
-        if (this.closed) throw new IOException("Transport is closed, cannot send message");
+        if (this.closed)      throw new IOException("Transport is closed, cannot send message");
+        if (message == null)  throw new NullPointerException("Cannot sent a null message!");
+        if (callback == null) throw new IllegalArgumentException("Cannot send message without a callback being given!");
+        if (context == null)  throw new IllegalArgumentException("Cannot send message without a context!");
         // serialise
         EnqueuedMessage emsg = new EnqueuedMessage();
         emsg.context = context;
@@ -304,7 +304,7 @@ public final class AsyncUDPTransport extends SNMPTransport
     }
 
     @Override
-    protected void register(SNMPContext context)
+    protected void register(SNMPContext<?> context)
     {
         this.putContext(context);
     }
@@ -317,49 +317,99 @@ public final class AsyncUDPTransport extends SNMPTransport
         this.key.interestOps(SelectionKey.OP_READ | SelectionKey.OP_WRITE);
     }
 
-    private void putContext(SNMPContext context)
+    private void putContext(SNMPContext<?> context)
     {
-        SocketAddress target = context.getAgentSocketAddress();
-        if (!this.contexts.containsKey(target))
+        SNMPContext<?> existing = this.contexts.putIfAbsent(context.getContextId(), context);
+        if (existing != null) throw new IllegalArgumentException("The context " + context.getContextId() + " is already registered within this transport!");  
+    }
+    
+    private SNMPContextResolver getContextResolver(final SocketAddress address)
+    {
+        return new SNMPContextResolver()
         {
-            this.contexts.put(target, context);
-            this.sentMessages.put(target, new ConcurrentHashMap<Integer, EnqueuedMessage>());
+            @Override
+            public SNMPContext<?> lookupContext(int requestId, byte[] engineId)
+            {
+                return getContext(address, requestId, engineId);
+            }
+        };
+    }
+
+    private SNMPContext<?> getContext(SocketAddress target, int requestId, byte[] engineId)
+    {
+        /*
+         * We could lookup a context solely based upon the transport address with SNMP V3 contexts we should use the SNMP Engine ID also.
+         * 
+         * Solely using the SNMP Engine ID can lead to problems when SNMP Engine ID's are duplicated. However not looking up based on SNMP Engine ID breaks proxying.
+         * 
+         * Therefore, we lookup a context based upon the transport address and the SNMP Engine ID.
+         * 
+         * We can raise a warning in the event that duplicate SNMP Engine IDs are detected, especially with the same transport address.
+         */
+        
+        // ideally lookup by request id
+        logger.trace("Lookup message id :" + requestId + " in " + this.sentMessages);
+        EnqueuedMessage sent = this.getSentMessage(requestId);
+        if (sent != null)
+        {
+            // TODO: validate the context information
+            return sent.context;
         }
+        // fallback to search by context
+        SNMPContextId id = new SNMPContextId(target, engineId);
+        logger.trace("Lookup engine :" + id + " in " + this.contexts);
+        return this.contexts.get(id);
     }
-
-    private SNMPContext getContext(SocketAddress target)
+    
+    private Set<SNMPContext<?>> getContextsByTransport(SocketAddress address)
     {
-        return this.contexts.get(target);
-    }
-
-    private EnqueuedMessage getSentMessage(SocketAddress from, int requestId)
-    {
-        ConcurrentMap<Integer, EnqueuedMessage> msgs = this.sentMessages.get(from);
-        if (msgs != null) { return msgs.get(requestId); }
-        return null;
-    }
-
-    private void removeSentMessage(SocketAddress from, int requestId)
-    {
-        ConcurrentMap<Integer, EnqueuedMessage> msgs = this.sentMessages.get(from);
-        if (msgs != null)
+        Set<SNMPContext<?>> set = new HashSet<SNMPContext<?>>();
+        for (SNMPContext<?> context : this.contexts.values())
         {
-            msgs.remove(requestId);
+            if (address.equals(context.getAgentSocketAddress()))
+            {
+                set.add(context);
+            }
         }
+        return set;
     }
 
-    private void putSentMessage(SocketAddress from, int requestId, EnqueuedMessage msg)
+    private EnqueuedMessage getSentMessage(int requestId)
     {
-        ConcurrentMap<Integer, EnqueuedMessage> msgs = this.sentMessages.get(from);
-        if (msgs != null)
+        return this.sentMessages.get(requestId);
+    }
+
+    private void removeSentMessage(int requestId)
+    {
+        this.sentMessages.remove(requestId);
+        
+    }
+
+    private void putSentMessage(int requestId, EnqueuedMessage msg)
+    {
+        this.sentMessages.put(requestId, msg);
+    }
+    
+    private void resendMessage(EnqueuedMessage msg) throws IOException
+    {
+        if (msg.resendCount < msg.context.getResendCount())
         {
-            msgs.put(requestId, msg);
+            // resend
+            logger.debug("Resending " + msg.context.getContextId() + "::" + msg.message.getId());
+            msg.resendCount++;
+            this.enqueueMessage(msg);
+        }
+        else
+        {
+            // handle the timeout
+            msg.callback.handleTimeout(msg.message, msg.target, msg.context);
+            this.removeSentMessage(msg.message.getId());
         }
     }
 
     private class EnqueuedMessage
     {
-        public SNMPContext context;
+        public SNMPContext<?> context;
 
         public SNMPMessage message;
 

@@ -33,7 +33,7 @@ public class DESPrivacyProvider extends PrivacyProvider
     {
         USMSecurityParameters usmSP = (USMSecurityParameters) message.getSecurityParameters();
         byte[] localisedKey = this.getKeyProvider().computeLocalisedKey(usmSP.getAuthoritativeEngineId());
-        logger.debug("Localised key length: " + localisedKey);
+        logger.debug("Localised key length: " + localisedKey.length);
         byte[] key = new byte[8];
         System.arraycopy(localisedKey, 0, key, 0, 8);
         return key;

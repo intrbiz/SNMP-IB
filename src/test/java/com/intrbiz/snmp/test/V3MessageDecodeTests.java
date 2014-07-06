@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.intrbiz.snmp.SNMPContext;
+import com.intrbiz.snmp.SNMPContextResolver;
 import com.intrbiz.snmp.SNMPV3Context;
 import com.intrbiz.snmp.handler.ResponseHandler;
 import com.intrbiz.snmp.model.SNMPMessage;
@@ -33,11 +34,39 @@ public class V3MessageDecodeTests
     private static final SNMPV3Context CTX = createContext();
     private static final SNMPV3Context PLAIN_CTX = createPlainContext();
     
+    private static final SNMPContextResolver RES = createResolver();
+    
+    private static final SNMPContextResolver PLAIN_RES = createPlainResolver();
+    
+    public static final SNMPContextResolver createResolver()
+    {
+        return new SNMPContextResolver()
+        {
+            @Override
+            public SNMPContext<?> lookupContext(int requestId, byte[] engineId)
+            {
+                return CTX;
+            }            
+        };
+    }
+    
+    public static final SNMPContextResolver createPlainResolver()
+    {
+        return new SNMPContextResolver()
+        {
+            @Override
+            public SNMPContext<?> lookupContext(int requestId,  byte[] engineId)
+            {
+                return PLAIN_CTX;
+            }            
+        };
+    }
+    
     public static final SNMPV3Context createContext()
     {
         SNMPV3Context ctx = new SNMPV3Context(null, 0) {
             @Override
-            protected void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException
+            protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
             {
             }
         };
@@ -50,7 +79,7 @@ public class V3MessageDecodeTests
     {
         SNMPV3Context ctx = new SNMPV3Context(null, 0) {
             @Override
-            protected void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException
+            protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
             {
             }
         };
@@ -69,7 +98,7 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_0_3() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_0_3), CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_0_3), RES);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));   
     }
@@ -77,7 +106,7 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_1_0() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_0), CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_0), RES);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));   
     }
@@ -85,7 +114,7 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_1_1() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_1), CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_1), RES);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));   
     }
@@ -93,7 +122,7 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_1_2() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_2), CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_2), RES);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));   
     }
@@ -101,7 +130,7 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_1_3() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_3), CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_1_3), RES);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));   
     }
@@ -109,14 +138,14 @@ public class V3MessageDecodeTests
     @Test
     public void testMessage_2_0() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_2_0), PLAIN_CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_2_0), PLAIN_RES);
         System.out.println(msg);
     }
     
     @Test
     public void testMessage_2_1() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_2_1), PLAIN_CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_2_1), PLAIN_RES);
         System.out.println(msg);
     }
     
@@ -125,13 +154,13 @@ public class V3MessageDecodeTests
     @Test
     public void decodeEncodeDecodeTest_0_3() throws Exception
     {
-        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_0_3), CTX);
+        SNMPMessageV3 msg = new SNMPMessageV3(clone(MSG_0_3), RES);
         System.out.println(msg);
         System.out.println("Authentic: " + CTX.getAuthProvider().authenticateMessage(msg));
         //
         byte[] encoded = msg.encodeToBytes(CTX);
         //
-        SNMPMessageV3 msg2 = new SNMPMessageV3(encoded, CTX);
+        SNMPMessageV3 msg2 = new SNMPMessageV3(encoded, RES);
         System.out.println("Authentic(2): " + CTX.getAuthProvider().authenticateMessage(msg2));
     }
 }

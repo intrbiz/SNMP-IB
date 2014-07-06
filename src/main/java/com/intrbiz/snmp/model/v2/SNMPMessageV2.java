@@ -10,6 +10,7 @@ import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 
 import com.intrbiz.snmp.SNMPContext;
+import com.intrbiz.snmp.SNMPContextResolver;
 import com.intrbiz.snmp.SNMPVersion;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.util.SNMPUtil;
@@ -36,9 +37,9 @@ public class SNMPMessageV2 extends SNMPMessage
         this.pdu = pdu;
     }
 
-    public SNMPMessageV2(byte[] data, SNMPContext ctx) throws IOException
+    public SNMPMessageV2(byte[] data, SNMPContextResolver res) throws IOException
     {
-        super(data, ctx);
+        super(data, res);
     }
 
     @Override
@@ -80,25 +81,30 @@ public class SNMPMessageV2 extends SNMPMessage
     }
 
     @Override
-    public DEREncodable encode(SNMPContext ctx)
+    public DEREncodable encode(SNMPContext<?> ctx)
     {
+        this.context = ctx;
         ASN1EncodableVector vec = new ASN1EncodableVector();
         vec.add(new DERInteger(this.version.getTag()));
         vec.add(SNMPUtil.encodeString(this.community));
-        vec.add(this.pdu.encode(ctx));
+        vec.add(this.pdu.encode());
         return new DERSequence(vec);
     }
 
     @Override
-    public void decode(DERObject obj, SNMPContext ctx)
+    public void decode(DERObject obj, SNMPContextResolver res) throws IOException
     {
+        // decode
         DERSequence seq = (DERSequence) obj;
         this.version = SNMPVersion.fromTag(SNMPUtil.decodeInt(seq, 0));
         this.community = SNMPUtil.decodeString(seq, 1);
         // decode the PDU
         DERTaggedObject pduObj = SNMPUtil.getTaggedObject(seq, 2);
         this.pdu = PDU.newPdu(pduObj.getTagNo());
-        this.pdu.decode(pduObj, ctx);
+        this.pdu.decode(pduObj);
+        // load the context
+        this.context = res.lookupContext(this.getId(), null);
+        if (this.context == null) throw new IOException("Failed to resolve SNMP V2c context, cannot continue to decode the message");
     }
 
     public String toString()

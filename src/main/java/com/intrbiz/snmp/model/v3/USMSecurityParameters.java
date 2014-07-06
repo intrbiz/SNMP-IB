@@ -8,8 +8,6 @@ import org.bouncycastle.asn1.DERInteger;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERSequence;
 
-import com.intrbiz.snmp.SNMPContext;
-import com.intrbiz.snmp.SNMPV3Context;
 import com.intrbiz.snmp.util.SNMPUtil;
 
 public class USMSecurityParameters extends SecurityParameters
@@ -36,9 +34,9 @@ public class USMSecurityParameters extends SecurityParameters
         this.privacyParameters = new byte[0];
     }
 
-    public USMSecurityParameters(byte[] data, SNMPContext ctx) throws IOException
+    public USMSecurityParameters(byte[] data) throws IOException
     {
-        super(data, ctx);
+        super(data);
     }
 
     public byte[] getAuthoritativeEngineId()
@@ -102,15 +100,8 @@ public class USMSecurityParameters extends SecurityParameters
     }
 
     @Override
-    public DEREncodable encode(SNMPContext ctx) throws IOException
+    public DEREncodable encode() throws IOException
     {
-        if (ctx != null)
-        {
-            // update this model with engine boots, engine time
-            SNMPV3Context v3ctx = (SNMPV3Context) ctx;
-            this.authoritativeEngineBoots = v3ctx.getEngineBoots();
-            this.authoritativeEngineTime  = v3ctx.getEngineTime();
-        }
         // encode
         ASN1EncodableVector vec = new ASN1EncodableVector();
         vec.add(SNMPUtil.encodeByteString(this.authoritativeEngineId));
@@ -123,7 +114,7 @@ public class USMSecurityParameters extends SecurityParameters
     }
 
     @Override
-    public void decode(DERObject obj, SNMPContext ctx) throws IOException
+    public void decode(DERObject obj) throws IOException
     {
         DERSequence seq = (DERSequence) obj;
         this.authoritativeEngineId = SNMPUtil.decodeByteString(seq, 0);

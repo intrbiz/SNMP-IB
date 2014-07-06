@@ -17,7 +17,7 @@ import com.intrbiz.snmp.model.v2.GetRequestPDU;
 import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.table.SNMPWalker;
 
-public abstract class SNMPContext
+public abstract class SNMPContext<T extends SNMPContext<T>>
 {
     protected final SNMPVersion version;
 
@@ -43,7 +43,7 @@ public abstract class SNMPContext
 
     protected int decodeErrorCount = 0;
 
-    protected boolean naughtyDevice = false;
+    protected boolean naughtyDevice = true;
 
     //
 
@@ -55,134 +55,141 @@ public abstract class SNMPContext
         this.port = port;
     }
 
-    public SNMPVersion getVersion()
+    public final SNMPVersion getVersion()
     {
         return this.version;
     }
 
-    public boolean isVersion1()
+    public final boolean isVersion1()
     {
         return this.version == SNMPVersion.V1;
     }
 
-    public boolean isVersion2()
+    public final boolean isVersion2()
     {
         return this.version == SNMPVersion.V2C;
     }
 
-    public boolean isVersion3()
+    public final boolean isVersion3()
     {
         return this.version == SNMPVersion.V3;
     }
 
-    public InetAddress getAgent()
+    public final InetAddress getAgent()
     {
         return agent;
     }
 
-    public SocketAddress getAgentSocketAddress()
+    public final SocketAddress getAgentSocketAddress()
     {
         return new InetSocketAddress(this.agent, this.port);
     }
+    
+    public abstract SNMPContextId getContextId();
 
-    public int getPort()
+    public final int getPort()
     {
         return port;
     }
 
-    public long getTimeOut()
+    public final long getTimeOut()
     {
         return timeOut;
     }
 
-    public SNMPContext setTimeOut(long timeOut)
+    @SuppressWarnings("unchecked")
+    public final T setTimeOut(long timeOut)
     {
         this.timeOut = timeOut;
-        return this;
+        return (T) this;
     }
 
-    public int getResendCount()
+    public final int getResendCount()
     {
         return resendCount;
     }
 
-    public SNMPContext setResendCount(int resendCount)
+    @SuppressWarnings("unchecked")
+    public final T setResendCount(int resendCount)
     {
         this.resendCount = resendCount;
-        return this;
+        return (T) this;
     }
 
-    public TrapHandler getTrapHandler()
+    public final TrapHandler getTrapHandler()
     {
         return trapHandler;
     }
 
-    public SNMPContext setTrapHandler(TrapHandler trapHandler)
+    @SuppressWarnings("unchecked")
+    public final T setTrapHandler(TrapHandler trapHandler)
     {
         this.trapHandler = trapHandler;
-        return this;
+        return (T) this;
     }
 
-    public ReceiveHandler getReceiveHandler()
+    public final ReceiveHandler getReceiveHandler()
     {
         return receiveHandler;
     }
 
-    public SNMPContext setReceiveHandler(ReceiveHandler receiveHandler)
+    @SuppressWarnings("unchecked")
+    public final T setReceiveHandler(ReceiveHandler receiveHandler)
     {
         this.receiveHandler = receiveHandler;
-        return this;
+        return (T) this;
     }
 
-    public Object getUserContext()
+    public final Object getUserContext()
     {
         return userContext;
     }
 
-    public SNMPContext setUserContext(Object userContext)
+    @SuppressWarnings("unchecked")
+    public final T setUserContext(Object userContext)
     {
         this.userContext = userContext;
-        return this;
+        return (T) this;
     }
 
     //
 
-    public int getTimeoutCount()
+    public final int getTimeoutCount()
     {
         return timeoutCount;
     }
 
-    public void setTimeoutCount(int timeoutCount)
+    public final void setTimeoutCount(int timeoutCount)
     {
         this.timeoutCount = timeoutCount;
     }
 
-    public int getErrorCount()
+    public final int getErrorCount()
     {
         return errorCount;
     }
 
-    public void setErrorCount(int errorCount)
+    public final void setErrorCount(int errorCount)
     {
         this.errorCount = errorCount;
     }
 
-    public int getDecodeErrorCount()
+    public final int getDecodeErrorCount()
     {
         return decodeErrorCount;
     }
 
-    public void setDecodeErrorCount(int decodeErrorCount)
+    public final void setDecodeErrorCount(int decodeErrorCount)
     {
         this.decodeErrorCount = decodeErrorCount;
     }
 
-    public boolean isNaughtyDevice()
+    public final boolean isNaughtyDevice()
     {
         return naughtyDevice;
     }
 
-    public void setNaughtyDevice(boolean naughtyDevice)
+    public final void setNaughtyDevice(boolean naughtyDevice)
     {
         this.naughtyDevice = naughtyDevice;
     }
@@ -192,7 +199,7 @@ public abstract class SNMPContext
     // Actions
     
     // send the message, implemented by the transport
-    protected abstract void send(SNMPMessage message, SNMPContext context, ResponseHandler callback) throws IOException;
+    protected abstract void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException;
 
     // assemble the message
     public abstract void send(PDU pdu, ResponseHandler callback) throws IOException;

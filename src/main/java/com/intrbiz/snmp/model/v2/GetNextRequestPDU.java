@@ -2,8 +2,6 @@ package com.intrbiz.snmp.model.v2;
 
 import org.bouncycastle.asn1.DERTaggedObject;
 
-import com.intrbiz.snmp.SNMPContext;
-
 public class GetNextRequestPDU extends VarBindPDU
 {
     public static final int TAG = 1;
@@ -13,10 +11,10 @@ public class GetNextRequestPDU extends VarBindPDU
         super();
     }
 
-    public GetNextRequestPDU(DERTaggedObject val, SNMPContext ctx)
+    public GetNextRequestPDU(DERTaggedObject val)
     {
         this();
-        this.decode(val, ctx);
+        this.decode(val);
     }
     
     public GetNextRequestPDU(String... oids)

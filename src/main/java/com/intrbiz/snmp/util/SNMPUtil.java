@@ -226,6 +226,17 @@ public class SNMPUtil
         return b;
     }
     
+    public static String toHex(byte[] b)
+    {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < b.length; i++)
+        {
+            if ((b[i] & 0xF0) == 0) sb.append("0");
+            sb.append(Integer.toHexString(b[i] & 0xFF));
+        }
+        return sb.toString();
+    }
+    
     public static SNMPVersion peekVersion(byte[] message, int ofs, int lim)
     {
         ASNByteBuffer buffer = ASNByteBuffer.wrap(message, ofs, lim);

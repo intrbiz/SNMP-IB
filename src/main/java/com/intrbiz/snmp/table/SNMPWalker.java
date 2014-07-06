@@ -41,7 +41,7 @@ public class SNMPWalker implements ResponseHandler
     }
 
     @Override
-    public void handleResponse(SNMPMessage response, SocketAddress from, SNMPMessage request, SNMPContext context) throws IOException
+    public void handleResponse(SNMPMessage response, SocketAddress from, SNMPMessage request, SNMPContext<?> context) throws IOException
     {
         if (!this.complete)
         {
@@ -83,7 +83,7 @@ public class SNMPWalker implements ResponseHandler
     }
 
     @Override
-    public void handleTimeout(SNMPMessage request, SocketAddress target, SNMPContext context) throws IOException
+    public void handleTimeout(SNMPMessage request, SocketAddress target, SNMPContext<?> context) throws IOException
     {
         this.handler.handleTimeout(this.base, context);
     }

@@ -7,7 +7,6 @@ import org.bouncycastle.asn1.DERInteger;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 
-import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.model.asn1.Counter32;
 import com.intrbiz.snmp.model.asn1.TimeTicks;
 import com.intrbiz.snmp.util.SNMPUtil;
@@ -137,7 +136,7 @@ public class VarBind
     
     //
     
-    public DEREncodable encode(SNMPContext ctx)
+    public DEREncodable encode()
     {
         ASN1EncodableVector vec = new ASN1EncodableVector();
         vec.add(new ASN1ObjectIdentifier(this.objectName));
@@ -145,7 +144,7 @@ public class VarBind
         return new DERSequence(vec);
     }
 
-    public void decode(DERSequence seq, SNMPContext ctx)
+    public void decode(DERSequence seq)
     {
         this.objectName  = SNMPUtil.decodeOid(seq, 0).getId();
         this.objectValue = SNMPUtil.decodeApplicationSpecific(SNMPUtil.decodeValue(seq, 1));

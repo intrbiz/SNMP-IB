@@ -148,10 +148,23 @@ public class ASNTag
         return "unknown";
     }
     
+    public String getASNClass()
+    {
+        if (this.isUniversal())
+            return "universal";
+        else if (this.isApplication())
+            return "application";
+        else if (this.isContext())
+            return "context";
+        else if (this.isPrivate())
+            return "private";
+        return "unknown";
+    }
+    
     //
     
     public String toString()
     {
-        return "ASNTag(" + Integer.toHexString(this.tag) + ";c=" + this.isConstructed() + ";" + this.getType() + ")";
+        return "ASNTag(" + this.getASNClass() + "; tag=" + Integer.toHexString(this.tag) + ";c=" + this.isConstructed() + ";" + this.getType() + ")";
     }
 }

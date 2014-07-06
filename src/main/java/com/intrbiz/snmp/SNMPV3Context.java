@@ -3,9 +3,7 @@ package com.intrbiz.snmp;
 import java.io.IOException;
 import java.net.InetAddress;
 
-import com.intrbiz.snmp.handler.ReceiveHandler;
 import com.intrbiz.snmp.handler.ResponseHandler;
-import com.intrbiz.snmp.handler.TrapHandler;
 import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.model.v3.SNMPMessageV3;
 import com.intrbiz.snmp.model.v3.USMSecurityParameters;
@@ -15,8 +13,12 @@ import com.intrbiz.snmp.security.auth.AuthProvider;
 import com.intrbiz.snmp.security.priv.PrivacyProvider;
 import com.intrbiz.snmp.util.SNMPUtil;
 
-public abstract class SNMPV3Context extends SNMPContext
+public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
 {
+    public static final String LOCAL_ENGINE_ID_STRING = "";
+    
+    public static final byte[] LOCAL_ENGINE_ID = SNMPUtil.fromHex(LOCAL_ENGINE_ID_STRING);
+    
     private String username;
 
     private byte[] engineId;
@@ -30,6 +32,8 @@ public abstract class SNMPV3Context extends SNMPContext
     private int engineTime = 0;
 
     private long lastEngineTimeUpdate = 0;
+    
+    private boolean discovering = false;
 
     public SNMPV3Context(InetAddress agent, int port)
     {
@@ -55,45 +59,6 @@ public abstract class SNMPV3Context extends SNMPContext
     {
         return this.privacyProvider.getPrivMode() != SNMPPrivMode.NONE;
     }
-    
-    //
-
-    @Override
-    public SNMPV3Context setTimeOut(long timeOut)
-    {
-        super.setTimeOut(timeOut);
-        return this;
-    }
-
-    @Override
-    public SNMPV3Context setResendCount(int resendCount)
-    {
-        super.setResendCount(resendCount);
-        return this;
-    }
-
-    @Override
-    public SNMPV3Context setTrapHandler(TrapHandler trapHandler)
-    {
-        super.setTrapHandler(trapHandler);
-        return this;
-    }
-
-    @Override
-    public SNMPV3Context setReceiveHandler(ReceiveHandler receiveHandler)
-    {
-        super.setReceiveHandler(receiveHandler);
-        return this;
-    }
-
-    @Override
-    public SNMPV3Context setUserContext(Object userContext)
-    {
-        super.setUserContext(userContext);
-        return this;
-    }
-    
-    //
 
     public String getUsername()
     {
@@ -103,6 +68,11 @@ public abstract class SNMPV3Context extends SNMPContext
     public byte[] getEngineId()
     {
         return engineId;
+    }
+    
+    public String getEngineIdAsString()
+    {
+        return SNMPUtil.toHex(engineId);
     }
 
     public SNMPV3Context setEngineId(byte[] engineId)
@@ -148,8 +118,27 @@ public abstract class SNMPV3Context extends SNMPContext
         this.privacyProvider = PrivacyProvider.open(SNMPAuthMode.NONE, SNMPPrivMode.NONE, null);
         return this;
     }
+
+    public boolean isDiscovering()
+    {
+        return discovering;
+    }
+
+    public SNMPV3Context setDiscovering(boolean discovering)
+    {
+        this.discovering = discovering;
+        return this;
+    }
     
-    //
+    /**
+     * Put this context into discover mode
+     */
+    public SNMPV3Context setDiscover()
+    {
+        this.discovering = true;
+        this.engineId = LOCAL_ENGINE_ID;
+        return this;
+    }
 
     public int getEngineBoots()
     {
@@ -227,5 +216,11 @@ public abstract class SNMPV3Context extends SNMPContext
         message.getScopedPdu().setPdu(pdu);
         //
         this.send(message, this, callback);
+    }
+
+    @Override
+    public SNMPContextId getContextId()
+    {
+        return new SNMPContextId(this.getAgentSocketAddress(), this.getEngineId());
     }
 }

@@ -2,8 +2,6 @@ package com.intrbiz.snmp.model.v2;
 
 import org.bouncycastle.asn1.DERTaggedObject;
 
-import com.intrbiz.snmp.SNMPContext;
-
 public class GetBulkRequestPDU extends VarBindPDU
 {
     public static final int TAG = 5;
@@ -15,10 +13,10 @@ public class GetBulkRequestPDU extends VarBindPDU
         this.setMaxRepetitions(10);
     }
 
-    public GetBulkRequestPDU(DERTaggedObject val, SNMPContext ctx)
+    public GetBulkRequestPDU(DERTaggedObject val)
     {
         this();
-        this.decode(val, ctx);
+        this.decode(val);
     }
     
     public GetBulkRequestPDU(String... oids)

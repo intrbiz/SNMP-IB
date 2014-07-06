@@ -3,13 +3,11 @@ package com.intrbiz.snmp;
 import java.io.IOException;
 import java.net.InetAddress;
 
-import com.intrbiz.snmp.handler.ReceiveHandler;
 import com.intrbiz.snmp.handler.ResponseHandler;
-import com.intrbiz.snmp.handler.TrapHandler;
 import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.model.v2.SNMPMessageV2;
 
-public abstract class SNMPV2Context extends SNMPContext
+public abstract class SNMPV2Context extends SNMPContext<SNMPV2Context>
 {
     protected String community = "public";
 
@@ -17,43 +15,6 @@ public abstract class SNMPV2Context extends SNMPContext
     {
         super(SNMPVersion.V2C, agent, port);
     }
-
-    @Override
-    public SNMPV2Context setTimeOut(long timeOut)
-    {
-        super.setTimeOut(timeOut);
-        return this;
-    }
-
-    @Override
-    public SNMPV2Context setResendCount(int resendCount)
-    {
-        super.setResendCount(resendCount);
-        return this;
-    }
-
-    @Override
-    public SNMPV2Context setTrapHandler(TrapHandler trapHandler)
-    {
-        super.setTrapHandler(trapHandler);
-        return this;
-    }
-
-    @Override
-    public SNMPV2Context setReceiveHandler(ReceiveHandler receiveHandler)
-    {
-        super.setReceiveHandler(receiveHandler);
-        return this;
-    }
-
-    @Override
-    public SNMPV2Context setUserContext(Object userContext)
-    {
-        super.setUserContext(userContext);
-        return this;
-    }
-    
-    //
 
     public String getCommunity()
     {
@@ -74,5 +35,11 @@ public abstract class SNMPV2Context extends SNMPContext
         SNMPMessageV2 msg = new SNMPMessageV2(this.getVersion(), this.getCommunity(), pdu);
         // send the actual message
         this.send(msg, this, callback);
+    }
+    
+    @Override
+    public SNMPContextId getContextId()
+    {
+        return new SNMPContextId(this.getAgentSocketAddress());
     }
 }

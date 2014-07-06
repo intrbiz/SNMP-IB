@@ -8,7 +8,6 @@ import org.bouncycastle.asn1.DERInteger;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERSequence;
 
-import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.model.SNMPTranscodable;
 import com.intrbiz.snmp.util.SNMPRequestIDManager;
 import com.intrbiz.snmp.util.SNMPUtil;
@@ -38,15 +37,15 @@ public class HeaderData extends SNMPTranscodable
         this.securityModel = USMSecurityParameters.SECURITY_MODEL;
     }
 
-    public HeaderData(byte[] data, SNMPContext ctx) throws IOException
+    public HeaderData(byte[] data) throws IOException
     {
-        super(data, ctx);
+        super(data);
     }
 
-    public HeaderData(DERObject obj, SNMPContext ctx)
+    public HeaderData(DERObject obj)
     {
         super();
-        this.decode(obj, ctx);
+        this.decode(obj);
     }
 
     public int getId()
@@ -124,7 +123,7 @@ public class HeaderData extends SNMPTranscodable
         return this.securityModel == USMSecurityParameters.SECURITY_MODEL;
     }
 
-    public DEREncodable encode(SNMPContext ctx)
+    public DEREncodable encode()
     {
         ASN1EncodableVector vec = new ASN1EncodableVector();
         vec.add(new DERInteger(this.id));
@@ -134,7 +133,7 @@ public class HeaderData extends SNMPTranscodable
         return new DERSequence(vec);
     }
 
-    public void decode(DERObject obj, SNMPContext ctx)
+    public void decode(DERObject obj)
     {
         DERSequence seq = (DERSequence) obj;
         this.id = SNMPUtil.decodeInt(seq, 0);

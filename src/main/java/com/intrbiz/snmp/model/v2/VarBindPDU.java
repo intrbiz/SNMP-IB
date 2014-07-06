@@ -9,7 +9,6 @@ import org.bouncycastle.asn1.DEREncodable;
 import org.bouncycastle.asn1.DERNull;
 import org.bouncycastle.asn1.DERSequence;
 
-import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.util.SNMPUtil;
 
 public abstract class VarBindPDU extends PDU
@@ -67,25 +66,25 @@ public abstract class VarBindPDU extends PDU
     }
     
     @Override
-    protected void _encode(ASN1EncodableVector vec, SNMPContext ctx)
+    protected void _encode(ASN1EncodableVector vec)
     {
         ASN1EncodableVector vbvec = new ASN1EncodableVector();
         for (VarBind vb : this.varBinds)
         {
-            vbvec.add(vb.encode(ctx));
+            vbvec.add(vb.encode());
         }
         vec.add(new DERSequence(vbvec));
     }
 
     @Override
-    protected void _decode(DERSequence seq, SNMPContext ctx)
+    protected void _decode(DERSequence seq)
     {
         DERSequence binds = SNMPUtil.getSequence(seq, 3);
         Enumeration<?> objs = binds.getObjects();
         while (objs.hasMoreElements())
         {
             VarBind vb = new VarBind();
-            vb.decode((DERSequence) objs.nextElement(), ctx);
+            vb.decode((DERSequence) objs.nextElement());
             this.varBinds.add(vb);
         }
     }

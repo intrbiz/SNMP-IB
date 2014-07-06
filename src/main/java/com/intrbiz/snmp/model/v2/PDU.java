@@ -5,7 +5,6 @@ import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 
-import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.model.v3.ReportPDU;
 import com.intrbiz.snmp.util.SNMPRequestIDManager;
 import com.intrbiz.snmp.util.SNMPUtil;
@@ -53,43 +52,46 @@ public abstract class PDU
         this.errorIndex = errorIndex;
     }
 
-    public DERTaggedObject encode(SNMPContext ctx)
+    public DERTaggedObject encode()
     {
         ASN1EncodableVector vec = new ASN1EncodableVector();
         vec.add(new ASN1Integer(this.requestId));
         vec.add(new ASN1Integer(this.errorStatus));
         vec.add(new ASN1Integer(this.errorIndex));
-        this._encode(vec, ctx);
+        this._encode(vec);
         return new DERTaggedObject(false, this._tag(), new DERSequence(vec));
     }
     
     protected abstract int _tag();
     
-    protected void _encode(ASN1EncodableVector vec, SNMPContext ctx)
+    protected void _encode(ASN1EncodableVector vec)
     {
     }
 
-    public void decode(DERTaggedObject val, SNMPContext ctx)
+    public void decode(DERTaggedObject val)
     {
         DERSequence seq  = SNMPUtil.getSequence(val);
         this.requestId   = SNMPUtil.decodeInt(seq, 0);
         this.errorStatus = SNMPUtil.decodeInt(seq, 1);
         this.errorIndex  = SNMPUtil.decodeInt(seq, 2);
-        this._decode(seq, ctx);
+        this._decode(seq);
     }
     
-    protected void _decode(DERSequence seq, SNMPContext ctx)
+    protected void _decode(DERSequence seq)
     {
     }
     
     public static PDU newPdu(int tag)
     {
-        if (tag == GetRequestPDU.TAG)          return new GetRequestPDU();
-        else if (tag == GetNextRequestPDU.TAG) return new GetNextRequestPDU();
-        else if (tag == GetResponsePDU.TAG)    return new GetResponsePDU();
-        else if (tag == SetRequestPDU.TAG)     return new SetRequestPDU();
-        else if (tag == GetBulkRequestPDU.TAG) return new GetBulkRequestPDU();
-        else if (tag == ReportPDU.TAG)         return new ReportPDU();
-        return null;
+        switch (tag)
+        {
+            case GetRequestPDU.TAG:     return new GetRequestPDU();
+            case GetNextRequestPDU.TAG: return new GetNextRequestPDU();
+            case GetResponsePDU.TAG:    return new GetResponsePDU();
+            case SetRequestPDU.TAG:     return new SetRequestPDU();
+            case GetBulkRequestPDU.TAG: return new GetBulkRequestPDU();
+            case ReportPDU.TAG:         return new ReportPDU();
+            default:                    return null;
+        }
     }
 }

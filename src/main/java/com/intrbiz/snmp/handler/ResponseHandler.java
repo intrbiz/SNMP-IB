@@ -10,22 +10,22 @@ import com.intrbiz.snmp.model.SNMPMessage;
 
 public interface ResponseHandler
 {
-    void handleResponse(SNMPMessage response, SocketAddress from, SNMPMessage request, SNMPContext context) throws IOException;
+    void handleResponse(SNMPMessage response, SocketAddress from, SNMPMessage request, SNMPContext<?> context) throws IOException;
 
-    void handleTimeout(SNMPMessage request, SocketAddress target, SNMPContext context) throws IOException;
+    void handleTimeout(SNMPMessage request, SocketAddress target, SNMPContext<?> context) throws IOException;
 
     public static class LoggingHandler implements ResponseHandler
     {
         private Logger logger = Logger.getLogger(LoggingHandler.class);
         
         @Override
-        public void handleResponse(SNMPMessage response, SocketAddress from, SNMPMessage request, SNMPContext context)
+        public void handleResponse(SNMPMessage response, SocketAddress from, SNMPMessage request, SNMPContext<?> context)
         {
-            logger.info("Received from " + from + " message:\n" + response.toString());
+            logger.info("Received from " + context.getContextId() + " message:\n" + response.toString());
         }
 
         @Override
-        public void handleTimeout(SNMPMessage request, SocketAddress target, SNMPContext context)
+        public void handleTimeout(SNMPMessage request, SocketAddress target, SNMPContext<?> context)
         {
             logger.debug("Timeout while waiting for response");
         }
