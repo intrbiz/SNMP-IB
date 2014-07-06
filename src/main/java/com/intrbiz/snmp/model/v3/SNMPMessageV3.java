@@ -178,14 +178,14 @@ public class SNMPMessageV3 extends SNMPMessage
         {
             this.scopedPdu = new ScopedPDU((DERObject) SNMPUtil.decodeValue(seq, 3));
         }
+    }
+    
+    public void authenticateMessage() throws IOException
+    {
+        SNMPV3Context v3ctx = (SNMPV3Context) this.context;
         // check the validity of this message
         if (v3ctx.getAuthProvider().getAuthMode() != SNMPAuthMode.NONE)
         {
-            if (v3ctx.isDiscovering())
-            {
-                Logger.getLogger(SNMPMessageV3.class).debug("Not authenticating message as we are during host discovery.");
-                return;
-            }
             // check the message hash
             if (!this.header.isAuth()) throw new IOException("Got unauthenticated message but an authenticated message was expected.");
             boolean authentic = v3ctx.getAuthProvider().authenticateMessage(this);

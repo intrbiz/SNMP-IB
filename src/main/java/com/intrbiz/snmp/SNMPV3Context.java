@@ -15,7 +15,7 @@ import com.intrbiz.snmp.util.SNMPUtil;
 
 public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
 {
-    public static final String LOCAL_ENGINE_ID_STRING = "";
+    public static final String LOCAL_ENGINE_ID_STRING = "800000000600000000000000";
     
     public static final byte[] LOCAL_ENGINE_ID = SNMPUtil.fromHex(LOCAL_ENGINE_ID_STRING);
     
@@ -33,7 +33,7 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
 
     private long lastEngineTimeUpdate = 0;
     
-    private boolean discovering = false;
+    private volatile boolean discovering = false;
 
     public SNMPV3Context(InetAddress agent, int port)
     {

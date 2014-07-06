@@ -132,7 +132,7 @@ public final class AsyncUDPTransport extends SNMPTransport
                 EnqueuedMessage msg = ent.getValue();
                 if ((now - msg.sentTime) > msg.context.getTimeOut())
                 {
-                    resendMessage(msg);
+                    resendMessage(msg, true);
                 }
             }
             this.lastBackgroundRun = System.currentTimeMillis();
@@ -182,6 +182,7 @@ public final class AsyncUDPTransport extends SNMPTransport
                 //
                 if (msg instanceof SNMPMessageV3 && msg.getPdu() instanceof ReportPDU)
                 {
+                    // handle updating the V3 context upon an error and resending
                     SNMPMessageV3 msgv3 = (SNMPMessageV3) msg;
                     USMSecurityParameters sp = (USMSecurityParameters) msgv3.getSecurityParameters();
                     SNMPV3Context ctxv3 = (SNMPV3Context) msgv3.getSNMPContext();
@@ -205,13 +206,14 @@ public final class AsyncUDPTransport extends SNMPTransport
                     ((USMSecurityParameters) ((SNMPMessageV3) responseTo.message).getSecurityParameters()).setAuthoritativeEngineId(sp.getAuthoritativeEngineId());
                     ((SNMPMessageV3) responseTo.message).getScopedPdu().setContextEngineId(sp.getAuthoritativeEngineId());
                     // resend the request
-                    this.resendMessage(responseTo);
+                    this.resendMessage(responseTo, false);
                 }
                 else if (msg.getId() == responseTo.message.getId())
                 {
                     // exec the receive callback
                     this.removeSentMessage(msg.getId());
-                    if (responseTo.callback != null) responseTo.callback.handleResponse(msg, from, responseTo.message, responseTo.context);
+                    // dispatch the message
+                    this.dispatchResponse(msg, responseTo, from);
                 }
                 else
                 {
@@ -337,22 +339,11 @@ public final class AsyncUDPTransport extends SNMPTransport
 
     private SNMPContext<?> getContext(SocketAddress target, int requestId, byte[] engineId)
     {
-        /*
-         * We could lookup a context solely based upon the transport address with SNMP V3 contexts we should use the SNMP Engine ID also.
-         * 
-         * Solely using the SNMP Engine ID can lead to problems when SNMP Engine ID's are duplicated. However not looking up based on SNMP Engine ID breaks proxying.
-         * 
-         * Therefore, we lookup a context based upon the transport address and the SNMP Engine ID.
-         * 
-         * We can raise a warning in the event that duplicate SNMP Engine IDs are detected, especially with the same transport address.
-         */
-        
         // ideally lookup by request id
         logger.trace("Lookup message id :" + requestId + " in " + this.sentMessages);
         EnqueuedMessage sent = this.getSentMessage(requestId);
         if (sent != null)
         {
-            // TODO: validate the context information
             return sent.context;
         }
         // fallback to search by context
@@ -387,13 +378,21 @@ public final class AsyncUDPTransport extends SNMPTransport
 
     private void putSentMessage(int requestId, EnqueuedMessage msg)
     {
+        msg.requestId = requestId;
         this.sentMessages.put(requestId, msg);
     }
     
-    private void resendMessage(EnqueuedMessage msg) throws IOException
+    private void resendMessage(EnqueuedMessage msg, boolean timeoutCausedThis) throws IOException
     {
         if (msg.resendCount < msg.context.getResendCount())
         {
+            // if we get a resend on a GetBulkRequest then set naughty device
+            if (timeoutCausedThis && msg.message.getPdu() instanceof GetBulkRequestPDU)
+            {
+                logger.error("Got resend (due to timeout) for GetBulkRequest, device " + msg.context.getAgent().getHostAddress() + " is naughty: " + msg.context.getErrorCount() + " " + msg.context.getTimeoutCount());
+                msg.context.setErrorCount(msg.context.getErrorCount() + 1);
+                msg.context.setNaughtyDevice(true);
+            }
             // resend
             logger.debug("Resending " + msg.context.getContextId() + "::" + msg.message.getId());
             msg.resendCount++;
@@ -402,8 +401,46 @@ public final class AsyncUDPTransport extends SNMPTransport
         else
         {
             // handle the timeout
-            msg.callback.handleTimeout(msg.message, msg.target, msg.context);
-            this.removeSentMessage(msg.message.getId());
+            this.dispatchTimeout(msg);
+            this.removeSentMessage(msg.requestId);
+        }
+    }
+    
+    private void dispatchResponse(SNMPMessage msg, EnqueuedMessage responseTo, SocketAddress from)
+    {
+        // authenticate the message
+        try
+        {
+            ((SNMPMessageV3) msg).authenticateMessage();
+            try
+            {
+                if (responseTo.callback != null) responseTo.callback.handleResponse(msg, from, responseTo.message, responseTo.context);
+            }
+            catch (IOException e)
+            {
+                logger.warn("Error during response handler", e);
+            }
+        }
+        catch (IOException e)
+        {
+            logger.warn("Error authenticate message", e);
+            this.dispatchTimeout(responseTo);
+        }
+    }
+    
+    private void dispatchTimeout(EnqueuedMessage responseTo)
+    {
+        try
+        {
+            responseTo.context.setTimeoutCount(responseTo.context.getTimeoutCount() + 1);
+            responseTo.context.setErrorCount(responseTo.context.getErrorCount() + 1);
+            responseTo.context.setNaughtyDevice(true);
+            logger.error("Got timeout for device " + responseTo.context.getContextId() + " is naughty: " + responseTo.context.getErrorCount() + " " + responseTo.context.getTimeoutCount());
+            if (responseTo.callback != null) responseTo.callback.handleTimeout(responseTo.message, responseTo.target, responseTo.context);
+        }
+        catch (IOException ee)
+        {
+            logger.warn("Error during timeout handler", ee);
         }
     }
 
@@ -420,5 +457,7 @@ public final class AsyncUDPTransport extends SNMPTransport
         public long sentTime = -1;
 
         public int resendCount = 0;
+        
+        public int requestId;
     }
 }

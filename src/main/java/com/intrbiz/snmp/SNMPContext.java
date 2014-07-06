@@ -197,7 +197,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     // Internal
 
     // Actions
-    
+
     // send the message, implemented by the transport
     protected abstract void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException;
 
