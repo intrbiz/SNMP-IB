@@ -131,7 +131,7 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
     }
     
     /**
-     * Is this context using strong authentication, IE: SHA1
+     * Is this context using authentication, IE: SHA1, MD5
      */
     @Override
     public boolean isAuthenticated()
@@ -140,7 +140,7 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
     }
 
     /**
-     * Is this context using strong encryption, IE: AES
+     * Is this context using encryption, IE: AES, DES
      */
     @Override
     public boolean isEncrypted()
@@ -148,6 +148,9 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
         return this.getPrivacyProvider() != null && this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.NONE;
     }
     
+    /**
+     * Is this context using strong authentication and encryption, IE: SHA1 and AES
+     */
     public boolean isSecure()
     {
         return this.isAuthenticated() && this.isEncrypted() && this.getAuthProvider().getAuthMode() != SNMPAuthMode.MD5 && this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.DES;
