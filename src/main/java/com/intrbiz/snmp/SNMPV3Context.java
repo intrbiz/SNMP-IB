@@ -136,7 +136,7 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
     @Override
     public boolean isAuthenticated()
     {
-        return this.getAuthProvider() != null && this.getAuthProvider().getAuthMode() != SNMPAuthMode.NONE && this.getAuthProvider().getAuthMode() != SNMPAuthMode.MD5;
+        return this.getAuthProvider() != null && this.getAuthProvider().getAuthMode() != SNMPAuthMode.NONE;
     }
 
     /**
@@ -145,7 +145,12 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
     @Override
     public boolean isEncrypted()
     {
-        return this.getPrivacyProvider() != null && this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.NONE && this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.AES128;
+        return this.getPrivacyProvider() != null && this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.NONE;
+    }
+    
+    public boolean isSecure()
+    {
+        return this.isAuthenticated() && this.isEncrypted() && this.getAuthProvider().getAuthMode() != SNMPAuthMode.MD5 && this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.AES128;
     }
 
     /**
