@@ -150,7 +150,7 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
     
     public boolean isSecure()
     {
-        return this.isAuthenticated() && this.isEncrypted() && this.getAuthProvider().getAuthMode() != SNMPAuthMode.MD5 && this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.AES128;
+        return this.isAuthenticated() && this.isEncrypted() && this.getAuthProvider().getAuthMode() != SNMPAuthMode.MD5 && this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.DES;
     }
 
     /**
