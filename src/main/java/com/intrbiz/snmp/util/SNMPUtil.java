@@ -28,17 +28,19 @@ import com.intrbiz.snmp.model.asn1.TimeTicks;
 public class SNMPUtil
 {
     public static final Charset ASCII = Charset.forName("ASCII");
+    
+    public static final Charset UTF8 = Charset.forName("UTF-8");
 
     // string
 
     public static String decodeString(DEROctetString oct)
     {
-        return new String(oct.getOctets(), ASCII);
+        return new String(oct.getOctets(), UTF8);
     }
 
     public static DEROctetString encodeString(String str)
     {
-        byte[] octets = str.getBytes(ASCII);
+        byte[] octets = str.getBytes(UTF8);
         return new DEROctetString(octets);
     }
 
