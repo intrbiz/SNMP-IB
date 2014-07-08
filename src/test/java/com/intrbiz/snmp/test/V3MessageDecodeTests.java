@@ -7,7 +7,8 @@ import org.junit.Test;
 import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.SNMPContextResolver;
 import com.intrbiz.snmp.SNMPV3Context;
-import com.intrbiz.snmp.handler.ResponseHandler;
+import com.intrbiz.snmp.handler.OnError;
+import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v3.SNMPMessageV3;
 import com.intrbiz.snmp.security.SNMPAuthMode;
@@ -66,7 +67,7 @@ public class V3MessageDecodeTests
     {
         SNMPV3Context ctx = new SNMPV3Context(null, 0) {
             @Override
-            protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
+            protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage onMessage, OnError onError) throws IOException
             {
             }
         };
@@ -79,7 +80,7 @@ public class V3MessageDecodeTests
     {
         SNMPV3Context ctx = new SNMPV3Context(null, 0) {
             @Override
-            protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
+            protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage onMessage, OnError onError) throws IOException
             {
             }
         };

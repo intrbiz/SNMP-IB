@@ -6,8 +6,8 @@ import org.apache.log4j.Logger;
 
 import com.intrbiz.snmp.SNMPTransport;
 import com.intrbiz.snmp.SNMPV3Context;
-import com.intrbiz.snmp.handler.ResponseHandler;
-import com.intrbiz.snmp.handler.TableHandler;
+import com.intrbiz.snmp.handler.OnError;
+import com.intrbiz.snmp.handler.OnTable;
 import com.intrbiz.snmp.security.SNMPAuthMode;
 import com.intrbiz.snmp.security.SNMPPrivMode;
 
@@ -16,7 +16,7 @@ public class SysInfoV3
     public static void main(String[] args) throws Exception
     {
         BasicConfigurator.configure();
-        Logger.getRootLogger().setLevel(Level.INFO);
+        Logger.getRootLogger().setLevel(Level.TRACE);
         // Create the transport which will be used to send our SNMP messages
         SNMPTransport transport = SNMPTransport.open();
         
@@ -38,9 +38,11 @@ public class SysInfoV3
         
         // sw3Agent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         
-        apAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        // apAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         
-        apAgent.getTableBulk("1.3.6.1.2.1.2.2.1.2", 100, new TableHandler.LoggingHandler());
+        apAgent.getTableBulk("1.3.6.1.2.1.2.2.1.2", 100, new OnTable.LoggingAdapter(), new OnError.LoggingAdapter());
+        
+        // apAgent.getCollatedTableBulk(new String[] { "1.3.6.1.2.1.2.2.1.2", "1.3.6.1.2.1.2.2.1.10", "1.3.6.1.2.1.2.2.1.16" }, new OnCollatedTable.LoggingAdapter(), new OnError.LoggingAdapter());
         
         // Run our transport to send and receive messages
         transport.run();

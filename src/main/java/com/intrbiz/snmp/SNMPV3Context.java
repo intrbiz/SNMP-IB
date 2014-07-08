@@ -3,7 +3,8 @@ package com.intrbiz.snmp;
 import java.io.IOException;
 import java.net.InetAddress;
 
-import com.intrbiz.snmp.handler.ResponseHandler;
+import com.intrbiz.snmp.handler.OnError;
+import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.model.v3.SNMPMessageV3;
 import com.intrbiz.snmp.model.v3.USMSecurityParameters;
@@ -205,7 +206,7 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
     // actions
 
     @Override
-    public void send(PDU pdu, ResponseHandler callback) throws IOException
+    public void send(PDU pdu, OnMessage messageCallback, OnError errorCallback) throws IOException
     {
         // create the SNMPV3Message and send it
         SNMPMessageV3 message = new SNMPMessageV3();
@@ -241,7 +242,7 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
         message.getScopedPdu().setContextEngineId(this.getEngineId());
         message.getScopedPdu().setPdu(pdu);
         //
-        this.send(message, this, callback);
+        this.send(message, this, messageCallback, errorCallback);
     }
 
     @Override

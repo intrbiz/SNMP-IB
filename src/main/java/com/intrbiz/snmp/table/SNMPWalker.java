@@ -1,20 +1,20 @@
 package com.intrbiz.snmp.table;
 
 import java.io.IOException;
-import java.net.SocketAddress;
 
 import com.intrbiz.snmp.SNMPContext;
-import com.intrbiz.snmp.handler.ResponseHandler;
-import com.intrbiz.snmp.handler.TableHandler;
-import com.intrbiz.snmp.model.SNMPMessage;
+import com.intrbiz.snmp.handler.OnError;
+import com.intrbiz.snmp.handler.OnResponse;
+import com.intrbiz.snmp.handler.OnTable;
 import com.intrbiz.snmp.model.asn1.EndOfMIBView;
 import com.intrbiz.snmp.model.asn1.NoSuchInstance;
 import com.intrbiz.snmp.model.asn1.NoSuchObject;
 import com.intrbiz.snmp.model.table.SNMPTable;
 import com.intrbiz.snmp.model.v2.GetResponsePDU;
+import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.model.v2.VarBind;
 
-public class SNMPWalker implements ResponseHandler
+public class SNMPWalker implements OnResponse
 {
     private boolean bulk = true;
 
@@ -28,25 +28,31 @@ public class SNMPWalker implements ResponseHandler
 
     private final SNMPTable table;
 
-    private final TableHandler handler;
+    private final OnTable handler;
+    
+    private final SNMPContext<?> context;
+    
+    private final OnError error;
 
-    public SNMPWalker(boolean bulk, int max, String base, TableHandler handler)
+    public SNMPWalker(SNMPContext<?> context, boolean bulk, int max, String base, OnTable handler, OnError error)
     {
         super();
+        this.context = context;
         this.bulk = bulk;
         this.max = max;
         this.base = base;
         this.handler = handler;
+        this.error = error;
         this.table = new SNMPTable(this.base);
     }
 
     @Override
-    public void handleResponse(SNMPMessage response, SocketAddress from, SNMPMessage request, SNMPContext<?> context) throws IOException
+    public void apply(PDU pdu) throws IOException
     {
         if (!this.complete)
         {
             // add all varbinds to the table
-            for (VarBind bind : ((GetResponsePDU) response.getPdu()).getVarBinds())
+            for (VarBind bind : ((GetResponsePDU) pdu))
             {
                 // stop if we hit any error
                 if (bind.getObjectValue() instanceof EndOfMIBView || bind.getObjectValue() instanceof NoSuchObject || bind.getObjectValue() instanceof NoSuchInstance)
@@ -72,20 +78,13 @@ public class SNMPWalker implements ResponseHandler
             // get the next batch if needed
             if (this.complete)
             {
-                this.handler.handleTable(this.table, context);
+                this.handler.apply(this.table);
             }
             else
             {
-                if (this.bulk) context.getBulk(this.max, this.last, this);
-                else           context.getNext(this.last, this);
+                if (this.bulk) context.getBulk(this.max, this.last, this, this.error);
+                else           context.getNext(this.last, this, this.error);
             }
         }
     }
-
-    @Override
-    public void handleTimeout(SNMPMessage request, SocketAddress target, SNMPContext<?> context) throws IOException
-    {
-        this.handler.handleTimeout(this.base, context);
-    }
-
 }

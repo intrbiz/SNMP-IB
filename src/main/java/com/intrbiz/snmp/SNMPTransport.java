@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import com.intrbiz.snmp.handler.ResponseHandler;
+import com.intrbiz.snmp.handler.OnError;
+import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.transport.AsyncUDPTransport;
 
@@ -28,7 +29,7 @@ public abstract class SNMPTransport implements Runnable
     /**
      * Internal method, use SNMPContext.send()
      */
-    protected abstract void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException;
+    protected abstract void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException;
 
     /**
      * Create a default SNMPTransport implementation
@@ -47,9 +48,9 @@ public abstract class SNMPTransport implements Runnable
     {
        SNMPV1Context ctx = new SNMPV1Context(agent, port) {
         @Override
-        protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
+        protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException
         {
-            SNMPTransport.this.send(message, context, callback);
+            SNMPTransport.this.send(message, context, messageCallback, errorCallback);
         }
        };
        this.register(ctx);
@@ -73,9 +74,9 @@ public abstract class SNMPTransport implements Runnable
     {
        SNMPV2Context ctx = new SNMPV2Context(agent, port) {
         @Override
-        protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
+        protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException
         {
-            SNMPTransport.this.send(message, context, callback);
+            SNMPTransport.this.send(message, context, messageCallback, errorCallback);
         }
        };
        this.register(ctx);
@@ -92,6 +93,11 @@ public abstract class SNMPTransport implements Runnable
         return this.openV2Context(InetAddress.getByName(agent));
     }
     
+    public SNMPV2Context openV2Context(String agent, String community) throws UnknownHostException
+    {
+        return this.openV2Context(InetAddress.getByName(agent)).setCommunity(community);
+    }
+    
     /**
      * Create a context for a SNMP V3 device registered with this transport, which will discover the engine id
      */
@@ -99,9 +105,9 @@ public abstract class SNMPTransport implements Runnable
     {
         SNMPV3Context ctx = new SNMPV3Context(agent, port) {
             @Override
-            protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
+            protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException
             {
-                SNMPTransport.this.send(message, context, callback);
+                SNMPTransport.this.send(message, context, messageCallback, errorCallback);
             }
            };
         ctx.setDiscover();
@@ -116,9 +122,9 @@ public abstract class SNMPTransport implements Runnable
     {
         SNMPV3Context ctx = new SNMPV3Context(agent, port) {
             @Override
-            protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
+            protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException
             {
-                SNMPTransport.this.send(message, context, callback);
+                SNMPTransport.this.send(message, context, messageCallback, errorCallback);
             }
            };
         ctx.setEngineId(engineId);

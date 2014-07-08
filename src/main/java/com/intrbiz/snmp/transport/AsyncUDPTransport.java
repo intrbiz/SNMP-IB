@@ -26,7 +26,9 @@ import com.intrbiz.snmp.SNMPContextResolver;
 import com.intrbiz.snmp.SNMPTransport;
 import com.intrbiz.snmp.SNMPV3Context;
 import com.intrbiz.snmp.SNMPVersion;
-import com.intrbiz.snmp.handler.ResponseHandler;
+import com.intrbiz.snmp.error.SNMPTimeout;
+import com.intrbiz.snmp.handler.OnError;
+import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v2.GetBulkRequestPDU;
 import com.intrbiz.snmp.model.v2.SNMPMessageV2;
@@ -45,7 +47,7 @@ import com.intrbiz.snmp.util.SNMPUtil;
  */
 public final class AsyncUDPTransport extends SNMPTransport
 {
-    private static final long BG_INTERVAL = 1000;
+    private static final long BG_INTERVAL = 500;
 
     private Logger logger = Logger.getLogger(AsyncUDPTransport.class);
 
@@ -148,7 +150,7 @@ public final class AsyncUDPTransport extends SNMPTransport
             if (msg.message.getPdu() instanceof GetBulkRequestPDU && msg.context.isNaughtyDevice())
             {
                 logger.debug("Clamping max-repetitions for a naughty device");
-                ((GetBulkRequestPDU) msg.message.getPdu()).setMaxRepetitions(10);
+                ((GetBulkRequestPDU) msg.message.getPdu()).setMaxRepetitions(msg.resendCount > 2 ? 1 : 10);
             }
             //
             logger.trace("Sending message: " + msg.message);
@@ -263,18 +265,19 @@ public final class AsyncUDPTransport extends SNMPTransport
     }
 
     @Override
-    protected void send(SNMPMessage message, SNMPContext<?> context, ResponseHandler callback) throws IOException
+    protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException
     {
         if (this.closed)      throw new IOException("Transport is closed, cannot send message");
         if (message == null)  throw new NullPointerException("Cannot sent a null message!");
-        if (callback == null) throw new IllegalArgumentException("Cannot send message without a callback being given!");
+        if (messageCallback == null) throw new IllegalArgumentException("Cannot send message without a message callback being given!");
         if (context == null)  throw new IllegalArgumentException("Cannot send message without a context!");
         // serialise
         EnqueuedMessage emsg = new EnqueuedMessage();
         emsg.context = context;
         emsg.message = message;
         emsg.target = context.getAgentSocketAddress();
-        emsg.callback = callback;
+        emsg.messageCallback = messageCallback;
+        emsg.errorCallback = errorCallback == null ? new OnError.LoggingAdapter() : errorCallback;
         // enqueue
         this.enqueueMessage(emsg);
     }
@@ -418,7 +421,7 @@ public final class AsyncUDPTransport extends SNMPTransport
             // invoke the callback
             try
             {
-                if (responseTo.callback != null) responseTo.callback.handleResponse(msg, from, responseTo.message, responseTo.context);
+                if (responseTo.messageCallback != null) responseTo.messageCallback.apply(msg);
             }
             catch (IOException e)
             {
@@ -440,7 +443,7 @@ public final class AsyncUDPTransport extends SNMPTransport
             responseTo.context.setErrorCount(responseTo.context.getErrorCount() + 1);
             responseTo.context.setNaughtyDevice(true);
             logger.error("Got timeout for device " + responseTo.context.getContextId() + " is naughty: " + responseTo.context.getErrorCount() + " " + responseTo.context.getTimeoutCount());
-            if (responseTo.callback != null) responseTo.callback.handleTimeout(responseTo.message, responseTo.target, responseTo.context);
+            if (responseTo.errorCallback != null) responseTo.errorCallback.apply(new SNMPTimeout(responseTo.context, responseTo.message, "Got timeout for device " + responseTo.context.getContextId() + " is naughty: " + responseTo.context.getErrorCount() + " " + responseTo.context.getTimeoutCount()));
         }
         catch (IOException ee)
         {
@@ -456,7 +459,9 @@ public final class AsyncUDPTransport extends SNMPTransport
 
         public SocketAddress target;
 
-        public ResponseHandler callback;
+        public OnMessage messageCallback;
+        
+        public OnError errorCallback;
 
         public long sentTime = -1;
 

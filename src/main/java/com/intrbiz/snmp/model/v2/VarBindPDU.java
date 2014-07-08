@@ -1,6 +1,7 @@
 package com.intrbiz.snmp.model.v2;
 
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import org.bouncycastle.asn1.DERSequence;
 
 import com.intrbiz.snmp.util.SNMPUtil;
 
-public abstract class VarBindPDU extends PDU
+public abstract class VarBindPDU extends PDU implements Iterable<VarBind>
 {
     protected List<VarBind> varBinds = new LinkedList<VarBind>();
 
@@ -65,6 +66,33 @@ public abstract class VarBindPDU extends PDU
         return null;
     }
     
+    public VarBind get(String OID)
+    {
+        return this.getVarBind(OID);
+    }
+    
+    public VarBind get()
+    {
+        if (this.varBinds.size() > 0) return this.varBinds.get(0);
+        return null;
+    }
+    
+    public VarBind index(int index)
+    {
+        return this.varBinds.get(index);
+    }
+    
+    public int size()
+    {
+        return this.varBinds.size();
+    }
+    
+    @Override
+    public Iterator<VarBind> iterator()
+    {
+        return this.varBinds.iterator();
+    }
+
     @Override
     protected void _encode(ASN1EncodableVector vec)
     {

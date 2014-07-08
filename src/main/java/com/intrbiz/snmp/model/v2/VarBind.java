@@ -49,6 +49,46 @@ public class VarBind
         this.objectName = name;
         this.setIntValue(val);
     }
+    
+    public String getName()
+    {
+        return this.objectName;
+    }
+    
+    public String name()
+    {
+        return this.objectName;
+    }
+    
+    public Object getValue()
+    {
+        if (this.isStringValue())
+        {
+            return this.getStringValue();
+        }
+        else if (this.isIntValue())
+        {
+            return this.getIntValue();
+        }
+        else if (this.isTimeTicksValue())
+        {
+            return this.getTimeTicksValue();
+        }
+        else if (this.isCounter32Value())
+        {
+            return this.getCounter32Value();
+        }
+        else if (this.isCounter64Value())
+        {
+            return this.getCounter64Value();
+        }
+        return this.objectValue;
+    }
+    
+    public Object value()
+    {
+        return this.getValue();
+    }
 
     public String getObjectName()
     {
@@ -134,15 +174,7 @@ public class VarBind
 
     public String valueToString()
     {
-        if (this.isStringValue())
-        {
-            return this.getStringValue();
-        }
-        else if (this.isIntValue())
-        {
-            return String.valueOf(this.getIntValue());
-        }
-        return String.valueOf(this.objectValue);
+        return String.valueOf(this.getValue());
     }
     
     //

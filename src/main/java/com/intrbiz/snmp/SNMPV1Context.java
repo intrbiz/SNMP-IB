@@ -3,7 +3,8 @@ package com.intrbiz.snmp;
 import java.io.IOException;
 import java.net.InetAddress;
 
-import com.intrbiz.snmp.handler.ResponseHandler;
+import com.intrbiz.snmp.handler.OnError;
+import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.model.v2.SNMPMessageV2;
 import com.intrbiz.snmp.model.v2.VarBind;
@@ -32,7 +33,7 @@ public abstract class SNMPV1Context extends SNMPContext<SNMPV1Context>
     //
 
     @Override
-    public void send(PDU pdu, ResponseHandler callback) throws IOException
+    public void send(PDU pdu, OnMessage messageCallback, OnError errorCallback) throws IOException
     {
         SNMPMessageV2 msg = new SNMPMessageV2(this.getVersion(), this.getCommunity(), pdu);
         // check that 64bit counters are not being used in V1{
@@ -45,7 +46,7 @@ public abstract class SNMPV1Context extends SNMPContext<SNMPV1Context>
             }
         }
         // send the actual message
-        this.send(msg, this, callback);
+        this.send(msg, this, messageCallback, errorCallback);
     }
     
     @Override

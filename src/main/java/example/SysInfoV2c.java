@@ -4,7 +4,8 @@ import org.apache.log4j.BasicConfigurator;
 
 import com.intrbiz.snmp.SNMPTransport;
 import com.intrbiz.snmp.SNMPV2Context;
-import com.intrbiz.snmp.handler.ResponseHandler;
+import com.intrbiz.snmp.handler.OnError;
+import com.intrbiz.snmp.handler.OnResponse;
 
 public class SysInfoV2c
 {
@@ -23,8 +24,8 @@ public class SysInfoV2c
 
         // Use the context to send messages
         // The callback will be executed when a response to a request is received
-        lcAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
-        swAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        lcAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        swAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         // sw2Agent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
 
         // apAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");

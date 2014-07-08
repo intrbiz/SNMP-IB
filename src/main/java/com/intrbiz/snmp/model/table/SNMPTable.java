@@ -3,6 +3,7 @@ package com.intrbiz.snmp.model.table;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.intrbiz.snmp.model.v2.VarBind;
 
@@ -108,6 +109,22 @@ public class SNMPTable
     public String getBaseOid()
     {
         return baseOid;
+    }
+    
+    /**
+     * Get the table as a map by name
+     */
+    public Map<String, VarBind> byName()
+    {
+        return this.byName;
+    }
+    
+    /**
+     * Get the table as a map by index
+     */
+    public Map<String, VarBind> byIndex()
+    {
+        return this.byIndex;
     }
 
     public String toString()
