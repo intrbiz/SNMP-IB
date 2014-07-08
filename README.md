@@ -17,7 +17,7 @@ the network level and as such is non-blocking, callback based.  One instance
 (and thread) is capable of efficiently communicating with many devices.
 
 ### What does it support
-SNMP-IB currently offers: Get, GetNext, GetBulk and Set requests for both V2c 
+SNMP-IB currently offers: Get, GetNext, GetBulk and Set requests for both V1, V2c 
 and V3.  Only the user security model of V3 is supported.  With V3, MD5 and SHA1 
 are supported for authentication and DES (56bit) and AES (128bit) are supported 
 for privacy.
