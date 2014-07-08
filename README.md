@@ -2,7 +2,7 @@
 A minimalist non-blocking SNMP V2c and V3 protocol library
 
 ## About
-SNMP-IB is a minimalist non-blocking SNMP version 2c and 3 implementation.  It 
+SNMP-IB is a minimalist non-blocking SNMP version 1, 2c and 3 implementation.  It 
 currently only implements a small subset of SNMP, enough to be able to pull 
 information from things.
 
@@ -40,8 +40,8 @@ following will fetch the system description and uptime from two devices:
         
         // Use the context to send messages
         // The callback will be executed when a response to a request is received
-        lcAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
-        swAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        lcAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        swAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         
         // Run our transport to send and receive messages
         transport.run();
