@@ -11,6 +11,7 @@ import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.handler.OnResponse;
 import com.intrbiz.snmp.handler.OnTable;
+import com.intrbiz.snmp.handler.OnValue;
 import com.intrbiz.snmp.handler.ReceiveHandler;
 import com.intrbiz.snmp.handler.TrapHandler;
 import com.intrbiz.snmp.model.SNMPMessage;
@@ -241,6 +242,11 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     public void get(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
     {
         this.send(new GetRequestPDU(OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+    }
+    
+    public void getValue(String oid, OnValue valueCallback, OnError errorCallback) throws IOException
+    {
+        this.send(new GetRequestPDU(oid), new OnValue.MessageAdapter(valueCallback), errorCallback);
     }
 
     public void get(String oid, OnResponse pduCallback, OnError errorCallback) throws IOException
