@@ -1,6 +1,7 @@
 package com.intrbiz.snmp;
 
-import java.net.SocketAddress;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 
 import com.intrbiz.snmp.util.SNMPUtil;
@@ -11,22 +12,22 @@ import com.intrbiz.snmp.util.SNMPUtil;
  */
 public final class SNMPContextId
 {
-    private final SocketAddress address;
+    private final InetAddress address;
 
     private final byte[] engineId;
 
-    public SNMPContextId(SocketAddress address, byte[] engineId)
+    public SNMPContextId(InetAddress address, byte[] engineId)
     {
         this.address = address;
         this.engineId = engineId == null ? new byte[0] : engineId;
     }
     
-    public SNMPContextId(SocketAddress address)
+    public SNMPContextId(InetAddress address)
     {
         this(address, new byte[0]);
     }
 
-    public SocketAddress getAddress()
+    public InetAddress getAddress()
     {
         return address;
     }
@@ -65,5 +66,15 @@ public final class SNMPContextId
     public String toString()
     {
         return "SNMPContextId[" + this.address.toString() + ((this.engineId == null && this.engineId.length > 0) ? "" : "::" + SNMPUtil.toHex(this.engineId)) + "]";
+    }
+    
+    public static SNMPContextId byHost(String host) throws UnknownHostException
+    {
+        return new SNMPContextId(InetAddress.getByName(host));
+    }
+    
+    public static SNMPContextId byHost(String host, String engineId) throws UnknownHostException
+    {
+        return new SNMPContextId(InetAddress.getByName(host), SNMPUtil.fromHex(engineId));
     }
 }

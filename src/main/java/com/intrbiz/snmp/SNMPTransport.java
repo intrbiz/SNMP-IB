@@ -41,6 +41,12 @@ public abstract class SNMPTransport implements Runnable
 
     // Context creation methods
     
+    public abstract SNMPContext<?> getContext(SNMPContextId id);
+    
+    public abstract SNMPContext<?> getContext(String host);
+    
+    public abstract SNMPContext<?> getContext(String host, String engineId);
+    
     /**
      * Create a context for a SNMP V1 device registered with this transport
      */

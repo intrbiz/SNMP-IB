@@ -42,7 +42,7 @@ public abstract class SNMPV2Context extends SNMPContext<SNMPV2Context>
     @Override
     public SNMPContextId getContextId()
     {
-        return new SNMPContextId(this.getAgentSocketAddress());
+        return new SNMPContextId(this.getAgent());
     }
     
     @Override

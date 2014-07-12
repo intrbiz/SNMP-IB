@@ -249,7 +249,7 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
     @Override
     public SNMPContextId getContextId()
     {
-        return new SNMPContextId(this.getAgentSocketAddress(), this.getEngineId());
+        return new SNMPContextId(this.getAgent(), this.getEngineId());
     }
     
     @Override

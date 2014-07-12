@@ -53,7 +53,7 @@ public abstract class SNMPV1Context extends SNMPContext<SNMPV1Context>
     @Override
     public SNMPContextId getContextId()
     {
-        return new SNMPContextId(this.getAgentSocketAddress());
+        return new SNMPContextId(this.getAgent());
     }
     
     @Override
