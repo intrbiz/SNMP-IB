@@ -49,8 +49,10 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     protected int decodeErrorCount = 0;
 
     protected boolean naughtyDevice = false;
-
-    //
+    
+    // default error handler for this context
+    
+    protected OnError defaultErrorHandler = new OnError.LoggingAdapter();
 
     protected SNMPContext(SNMPVersion version, InetAddress agent, int port)
     {
@@ -199,6 +201,20 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
         this.naughtyDevice = naughtyDevice;
     }
     
+    // default error handler
+    
+    
+    public OnError getDefaultErrorHandler()
+    {
+        return defaultErrorHandler;
+    }
+
+    public void setDefaultErrorHandler(OnError defaultErrorHandler)
+    {
+        if (defaultErrorHandler == null) throw new IllegalArgumentException("The default error handler cannot be null!");
+        this.defaultErrorHandler = defaultErrorHandler;
+    }
+    
     // Friendly properties
     
     /**
@@ -208,7 +224,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     {
         return false;
     }
-    
+
     /**
      * Does this context have any level of encryption.
      */
@@ -239,123 +255,228 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
 
     // Get
 
+    public void get(OnResponse pduCallback, String... OIDs) throws IOException
+    {
+        this.get(pduCallback, this.defaultErrorHandler, OIDs);
+    }
+    
     public void get(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
+    {
+        this.get(OIDs, pduCallback, errorCallback);
+    }
+    
+    public void getValue(String oid, OnValue valueCallback) throws IOException
+    {
+        this.getValue(oid, valueCallback, this.defaultErrorHandler);
+    }
+    
+    public void getValue(String OIDs, OnValue valueCallback, OnError errorCallback) throws IOException
+    {
+        this.send(new GetRequestPDU(OIDs), new OnValue.MessageAdapter(valueCallback), errorCallback);
+    }
+
+    public void get(String OID, OnResponse pduCallback) throws IOException
+    {
+        this.get(OID, pduCallback, this.defaultErrorHandler);
+    }
+    
+    public void get(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
+    {
+        this.send(new GetRequestPDU(OID), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+    }
+    
+    public void get(String[] OIDs, OnResponse pduCallback) throws IOException
+    {
+        this.get(OIDs, pduCallback, this.defaultErrorHandler);
+    }
+
+    public void get(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetRequestPDU(OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
     }
-    
-    public void getValue(String oid, OnValue valueCallback, OnError errorCallback) throws IOException
-    {
-        this.send(new GetRequestPDU(oid), new OnValue.MessageAdapter(valueCallback), errorCallback);
-    }
-
-    public void get(String oid, OnResponse pduCallback, OnError errorCallback) throws IOException
-    {
-        this.send(new GetRequestPDU(oid), new OnResponse.MessageAdapter(pduCallback), errorCallback);
-    }
-
-    public void get(String[] oids, OnResponse pduCallback, OnError errorCallback) throws IOException
-    {
-        this.send(new GetRequestPDU(oids), new OnResponse.MessageAdapter(pduCallback), errorCallback);
-    }
 
     // Get Next
+    
+    public void getNext(OnResponse pduCallback, String... OIDs) throws IOException
+    {
+        this.getNext(pduCallback, this.defaultErrorHandler, OIDs);
+    }
 
     public void getNext(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
+    {
+        this.getNext(OIDs, pduCallback, errorCallback);
+    }
+    
+    public void getNext(String OID, OnResponse pduCallback) throws IOException
+    {
+        this.getNext(OID, pduCallback, this.defaultErrorHandler);
+    }
+
+    public void getNext(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
+    {
+        this.send(new GetNextRequestPDU(OID), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+    }
+    
+    public void getNext(String[] OIDs, OnResponse pduCallback) throws IOException
+    {
+        this.getNext(OIDs, pduCallback, this.defaultErrorHandler);
+    }
+
+    public void getNext(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetNextRequestPDU(OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
     }
 
-    public void getNext(String oid, OnResponse pduCallback, OnError errorCallback) throws IOException
-    {
-        this.send(new GetNextRequestPDU(oid), new OnResponse.MessageAdapter(pduCallback), errorCallback);
-    }
-
-    public void getNext(String[] oids, OnResponse pduCallback, OnError errorCallback) throws IOException
-    {
-        this.send(new GetNextRequestPDU(oids), new OnResponse.MessageAdapter(pduCallback), errorCallback);
-    }
-
     // Get Bulk
+    
+    public void getBulk(OnResponse pduCallback, String... OIDs) throws IOException
+    {
+        this.getBulk(pduCallback, this.defaultErrorHandler, OIDs);
+    }
 
     public void getBulk(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
     {
+        this.getBulk(OIDs, pduCallback, errorCallback);
+    }
+    
+    public void getBulk(String OID, OnResponse pduCallback) throws IOException
+    {
+        this.getBulk(OID, pduCallback, this.defaultErrorHandler);
+    }
+
+    public void getBulk(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
+    {
+        this.send(new GetBulkRequestPDU(OID), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+    }
+    
+    public void getBulk(String[] OIDs, OnResponse pduCallback) throws IOException
+    {
+        this.getBulk(OIDs, pduCallback, this.defaultErrorHandler);
+    }
+
+    public void getBulk(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
+    {
         this.send(new GetBulkRequestPDU(OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
     }
-
-    public void getBulk(String oid, OnResponse pduCallback, OnError errorCallback) throws IOException
+    
+    public void getBulk(OnResponse pduCallback, int maxRepetitions, String... OIDs) throws IOException
     {
-        this.send(new GetBulkRequestPDU(oid), new OnResponse.MessageAdapter(pduCallback), errorCallback);
-    }
-
-    public void getBulk(String[] oids, OnResponse pduCallback, OnError errorCallback) throws IOException
-    {
-        this.send(new GetBulkRequestPDU(oids), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        this.getBulk(pduCallback, this.defaultErrorHandler, maxRepetitions, OIDs);
     }
 
     public void getBulk(OnResponse pduCallback, OnError errorCallback, int maxRepetitions, String... OIDs) throws IOException
     {
+        this.getBulk(maxRepetitions, OIDs, pduCallback, errorCallback);
+    }
+    
+    public void getBulk(int maxRepetitions, String OID, OnResponse pduCallback) throws IOException
+    {
+        this.getBulk(maxRepetitions, OID, pduCallback, this.defaultErrorHandler);
+    }
+
+    public void getBulk(int maxRepetitions, String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
+    {
+        this.send(new GetBulkRequestPDU(maxRepetitions, OID), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+    }
+    
+    public void getBulk(int maxRepetitions, String[] OIDs, OnResponse pduCallback) throws IOException
+    {
+        this.getBulk(maxRepetitions, OIDs, pduCallback, this.defaultErrorHandler);
+    }
+
+    public void getBulk(int maxRepetitions, String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
+    {
         this.send(new GetBulkRequestPDU(maxRepetitions, OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
     }
-
-    public void getBulk(int maxRepetitions, String oid, OnResponse pduCallback, OnError errorCallback) throws IOException
+    
+    public void getBulk(OnResponse pduCallback, int nonRepeaters, int maxRepetitions, String... OIDs) throws IOException
     {
-        this.send(new GetBulkRequestPDU(maxRepetitions, oid), new OnResponse.MessageAdapter(pduCallback), errorCallback);
-    }
-
-    public void getBulk(int maxRepetitions, String[] oids, OnResponse pduCallback, OnError errorCallback) throws IOException
-    {
-        this.send(new GetBulkRequestPDU(maxRepetitions, oids), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        this.getBulk(pduCallback, this.defaultErrorHandler, nonRepeaters, maxRepetitions, OIDs);
     }
 
     public void getBulk(OnResponse pduCallback, OnError errorCallback, int nonRepeaters, int maxRepetitions, String... OIDs) throws IOException
     {
         this.send(new GetBulkRequestPDU(nonRepeaters, maxRepetitions, OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
     }
-
-    public void getBulk(int nonRepeaters, int maxRepetitions, String[] oids, OnResponse pduCallback, OnError errorCallback) throws IOException
+    
+    public void getBulk(int nonRepeaters, int maxRepetitions, String[] OIDs, OnResponse pduCallback) throws IOException
     {
-        this.send(new GetBulkRequestPDU(nonRepeaters, maxRepetitions, oids), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        this.getBulk(nonRepeaters, maxRepetitions, OIDs, pduCallback, this.defaultErrorHandler);
+    }
+
+    public void getBulk(int nonRepeaters, int maxRepetitions, String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
+    {
+        this.send(new GetBulkRequestPDU(nonRepeaters, maxRepetitions, OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
     }
 
     // walk
-
-    public void getTableBulk(String baseOid, int maxRepetitions, OnTable tableCallback, OnError errorCallback) throws IOException
+    
+    public void getTableBulk(String baseOID, int maxRepetitions, OnTable tableCallback) throws IOException
     {
-        this.getBulk(maxRepetitions, baseOid, new SNMPWalker(this, true, maxRepetitions, baseOid, tableCallback, errorCallback), errorCallback);
+        this.getTableBulk(baseOID, tableCallback, this.defaultErrorHandler);
     }
 
-    public void getTableBulk(String baseOid, OnTable tableCallback, OnError errorCallback) throws IOException
+    public void getTableBulk(String baseOID, int maxRepetitions, OnTable tableCallback, OnError errorCallback) throws IOException
     {
-        this.getBulk(10, baseOid, new SNMPWalker(this, true, this.isNaughtyDevice() ? 10 : 100, baseOid, tableCallback, errorCallback), errorCallback);
+        this.getBulk(maxRepetitions, baseOID, new SNMPWalker(this, true, maxRepetitions, baseOID, tableCallback, errorCallback), errorCallback);
+    }
+    
+    public void getTableBulk(String baseOID, OnTable tableCallback) throws IOException
+    {
+        this.getTableBulk(baseOID, tableCallback, this.defaultErrorHandler);
     }
 
-    public void getTable(String baseOid, OnTable tableCallback, OnError errorCallback) throws IOException
+    public void getTableBulk(String baseOID, OnTable tableCallback, OnError errorCallback) throws IOException
     {
-        this.getNext(baseOid, new SNMPWalker(this, false, 1, baseOid, tableCallback, errorCallback), errorCallback);
+        this.getBulk(10, baseOID, new SNMPWalker(this, true, this.isNaughtyDevice() ? 10 : 100, baseOID, tableCallback, errorCallback), errorCallback);
+    }
+    
+    public void getTable(String baseOID, OnTable tableCallback) throws IOException
+    {
+        this.getTable(baseOID, tableCallback, this.defaultErrorHandler);
+    }
+
+    public void getTable(String baseOID, OnTable tableCallback, OnError errorCallback) throws IOException
+    {
+        this.getNext(baseOID, new SNMPWalker(this, false, 1, baseOID, tableCallback, errorCallback), errorCallback);
     }
     
     //
     
-    public void getCollatedTableBulk(String[] baseOids, int maxRepetitions, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
+    public void getCollatedTableBulk(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback) throws IOException
     {
-        TableGrouper grouper = new TableGrouper(baseOids, tablesCallback);
-        for (String baseOid : baseOids)
+        this.getCollatedTable(baseOIDs, maxRepetitions, tablesCallback, this.defaultErrorHandler);
+    }
+    
+    public void getCollatedTableBulk(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
+    {
+        TableGrouper grouper = new TableGrouper(baseOIDs, tablesCallback);
+        for (String baseOid : baseOIDs)
         {
             this.getTableBulk(baseOid, maxRepetitions, grouper, errorCallback);
         }
     }
     
-    public void getCollatedTableBulk(String[] baseOids, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
+    public void getCollatedTableBulk(String[] baseOIDs, OnCollatedTable tablesCallback) throws IOException
     {
-        this.getCollatedTableBulk(baseOids, this.isNaughtyDevice() ? 10 : 100, tablesCallback, errorCallback);
+        this.getCollatedTableBulk(baseOIDs, tablesCallback, this.defaultErrorHandler);
     }
     
-    public void getCollatedTable(String[] baseOids, int maxRepetitions, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
+    public void getCollatedTableBulk(String[] baseOIDs, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
     {
-        TableGrouper grouper = new TableGrouper(baseOids, tablesCallback);
+        this.getCollatedTableBulk(baseOIDs, this.isNaughtyDevice() ? 10 : 100, tablesCallback, errorCallback);
+    }
+    
+    public void getCollatedTable(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback) throws IOException
+    {
+        this.getCollatedTable(baseOIDs, maxRepetitions, tablesCallback, this.defaultErrorHandler);
+    }
+    
+    public void getCollatedTable(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
+    {
+        TableGrouper grouper = new TableGrouper(baseOIDs, tablesCallback);
         // send the get table queries
-        for (String baseOid : baseOids)
+        for (String baseOid : baseOIDs)
         {
             this.getTable(baseOid, grouper, errorCallback);
         }
