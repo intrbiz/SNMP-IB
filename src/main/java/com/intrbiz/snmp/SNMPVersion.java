@@ -41,4 +41,16 @@ public enum SNMPVersion
         if (tag == V3.tag)  return V3;
         return null;        
     }
+    
+    public static SNMPVersion parse(String version)
+    {
+        switch (version)
+        {
+            case "1":  return V1;
+            case "2":  return V2C;
+            case "2c": return V2C;
+            case "3":  return V3;
+        }
+        return null;
+    }
 }
