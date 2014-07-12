@@ -48,9 +48,9 @@ public abstract class SNMPTransport implements Runnable
     {
        SNMPV1Context ctx = new SNMPV1Context(agent, port) {
         @Override
-        protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException
+        public void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException
         {
-            SNMPTransport.this.send(message, context, messageCallback, errorCallback);
+            SNMPTransport.this.send(message, this, messageCallback, errorCallback);
         }
        };
        this.register(ctx);
@@ -74,9 +74,9 @@ public abstract class SNMPTransport implements Runnable
     {
        SNMPV2Context ctx = new SNMPV2Context(agent, port) {
         @Override
-        protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException
+        public void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException
         {
-            SNMPTransport.this.send(message, context, messageCallback, errorCallback);
+            SNMPTransport.this.send(message, this, messageCallback, errorCallback);
         }
        };
        this.register(ctx);
@@ -105,9 +105,9 @@ public abstract class SNMPTransport implements Runnable
     {
         SNMPV3Context ctx = new SNMPV3Context(agent, port) {
             @Override
-            protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException
+            public void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException
             {
-                SNMPTransport.this.send(message, context, messageCallback, errorCallback);
+                SNMPTransport.this.send(message, this, messageCallback, errorCallback);
             }
            };
         ctx.setDiscover();
@@ -122,9 +122,9 @@ public abstract class SNMPTransport implements Runnable
     {
         SNMPV3Context ctx = new SNMPV3Context(agent, port) {
             @Override
-            protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException
+            public void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException
             {
-                SNMPTransport.this.send(message, context, messageCallback, errorCallback);
+                SNMPTransport.this.send(message, this, messageCallback, errorCallback);
             }
            };
         ctx.setEngineId(engineId);

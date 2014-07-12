@@ -6,6 +6,7 @@ import com.intrbiz.snmp.SNMPTransport;
 import com.intrbiz.snmp.SNMPV2Context;
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnResponse;
+import com.intrbiz.snmp.handler.OnValue;
 
 public class SysInfoV2c
 {
@@ -29,6 +30,8 @@ public class SysInfoV2c
         // sw2Agent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
 
         // apAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        
+        lcAgent.with(new OnError.LoggingAdapter()).getValue("1.3.6.1.2.1.1.1.0", new OnValue.LoggingAdapter());
 
         // Run our transport to send and receive messages
         transport.run();

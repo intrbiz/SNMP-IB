@@ -6,8 +6,7 @@ import org.apache.log4j.Logger;
 
 import com.intrbiz.snmp.SNMPTransport;
 import com.intrbiz.snmp.SNMPV3Context;
-import com.intrbiz.snmp.handler.OnError;
-import com.intrbiz.snmp.handler.OnTable;
+import com.intrbiz.snmp.handler.OnResponse;
 import com.intrbiz.snmp.security.SNMPAuthMode;
 import com.intrbiz.snmp.security.SNMPPrivMode;
 
@@ -26,21 +25,21 @@ public class SysInfoV3
         /*SNMPV3Context sw2Agent    = transport.openV3Context("172.30.12.3", "8000002B0016E0357E406877").setUser("test3des", SNMPAuthMode.SHA1, SNMPPrivMode.NONE, "abcde12345");*/
         
         // 8000002B0016E0357E406877
-        // SNMPV3Context sw3Agent    = transport.openV3Context("172.30.14.1").setUser("testdes", SNMPAuthMode.SHA1, SNMPPrivMode.DES, "abcde12345");
+        SNMPV3Context sw3Agent    = transport.openV3Context("172.30.14.1").setUser("testdes", SNMPAuthMode.SHA1, SNMPPrivMode.DES, "abcde12345");
         
         // 800069300308ea443ce700
-        SNMPV3Context apAgent    = transport.openV3Context("172.30.13.193").setUser("test", SNMPAuthMode.SHA1, SNMPPrivMode.AES128, "abcde12345");
+        // SNMPV3Context apAgent    = transport.openV3Context("172.30.13.193").setUser("test", SNMPAuthMode.SHA1, SNMPPrivMode.AES128, "abcde12345");
         
         // Use the context to send messages
         // The callback will be executed when a response to a request is received
         // swAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         /*sw2Agent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");*/
         
-        // sw3Agent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        sw3Agent.get(new OnResponse.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         
         // apAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
         
-        apAgent.getTableBulk("1.3.6.1.2.1.2.2.1.2", 100, new OnTable.LoggingAdapter(), new OnError.LoggingAdapter());
+        // apAgent.getTableBulk("1.3.6.1.2.1.2.2.1.2", 100, new OnTable.LoggingAdapter(), new OnError.LoggingAdapter());
         
         // apAgent.getCollatedTableBulk(new String[] { "1.3.6.1.2.1.2.2.1.2", "1.3.6.1.2.1.2.2.1.10", "1.3.6.1.2.1.2.2.1.16" }, new OnCollatedTable.LoggingAdapter(), new OnError.LoggingAdapter());
         

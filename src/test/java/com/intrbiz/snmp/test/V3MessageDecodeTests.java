@@ -67,7 +67,7 @@ public class V3MessageDecodeTests
     {
         SNMPV3Context ctx = new SNMPV3Context(null, 0) {
             @Override
-            protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage onMessage, OnError onError) throws IOException
+            public void send(SNMPMessage message, OnMessage onMessage, OnError onError) throws IOException
             {
             }
         };
@@ -80,7 +80,7 @@ public class V3MessageDecodeTests
     {
         SNMPV3Context ctx = new SNMPV3Context(null, 0) {
             @Override
-            protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage onMessage, OnError onError) throws IOException
+            public void send(SNMPMessage message, OnMessage onMessage, OnError onError) throws IOException
             {
             }
         };

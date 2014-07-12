@@ -62,98 +62,98 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
         this.port = port;
     }
 
-    public final SNMPVersion getVersion()
+    public SNMPVersion getVersion()
     {
         return this.version;
     }
 
-    public final boolean isVersion1()
+    public boolean isVersion1()
     {
         return this.version == SNMPVersion.V1;
     }
 
-    public final boolean isVersion2()
+    public boolean isVersion2()
     {
         return this.version == SNMPVersion.V2C;
     }
 
-    public final boolean isVersion3()
+    public boolean isVersion3()
     {
         return this.version == SNMPVersion.V3;
     }
 
-    public final InetAddress getAgent()
+    public InetAddress getAgent()
     {
         return agent;
     }
 
-    public final SocketAddress getAgentSocketAddress()
+    public SocketAddress getAgentSocketAddress()
     {
         return new InetSocketAddress(this.agent, this.port);
     }
     
     public abstract SNMPContextId getContextId();
 
-    public final int getPort()
+    public int getPort()
     {
         return port;
     }
 
-    public final long getTimeOut()
+    public long getTimeOut()
     {
         return timeOut;
     }
 
     @SuppressWarnings("unchecked")
-    public final T setTimeOut(long timeOut)
+    public T setTimeOut(long timeOut)
     {
         this.timeOut = timeOut;
         return (T) this;
     }
 
-    public final int getResendCount()
+    public int getResendCount()
     {
         return resendCount;
     }
 
     @SuppressWarnings("unchecked")
-    public final T setResendCount(int resendCount)
+    public T setResendCount(int resendCount)
     {
         this.resendCount = resendCount;
         return (T) this;
     }
 
-    public final TrapHandler getTrapHandler()
+    public TrapHandler getTrapHandler()
     {
         return trapHandler;
     }
 
     @SuppressWarnings("unchecked")
-    public final T setTrapHandler(TrapHandler trapHandler)
+    public T setTrapHandler(TrapHandler trapHandler)
     {
         this.trapHandler = trapHandler;
         return (T) this;
     }
 
-    public final ReceiveHandler getReceiveHandler()
+    public ReceiveHandler getReceiveHandler()
     {
         return receiveHandler;
     }
 
     @SuppressWarnings("unchecked")
-    public final T setReceiveHandler(ReceiveHandler receiveHandler)
+    public T setReceiveHandler(ReceiveHandler receiveHandler)
     {
         this.receiveHandler = receiveHandler;
         return (T) this;
     }
 
-    public final Object getUserContext()
+    public Object getUserContext()
     {
         return userContext;
     }
 
     @SuppressWarnings("unchecked")
-    public final T setUserContext(Object userContext)
+    public T setUserContext(Object userContext)
     {
         this.userContext = userContext;
         return (T) this;
@@ -161,42 +161,42 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
 
     //
 
-    public final int getTimeoutCount()
+    public int getTimeoutCount()
     {
         return timeoutCount;
     }
 
-    public final void setTimeoutCount(int timeoutCount)
+    public void setTimeoutCount(int timeoutCount)
     {
         this.timeoutCount = timeoutCount;
     }
 
-    public final int getErrorCount()
+    public int getErrorCount()
     {
         return errorCount;
     }
 
-    public final void setErrorCount(int errorCount)
+    public void setErrorCount(int errorCount)
     {
         this.errorCount = errorCount;
     }
 
-    public final int getDecodeErrorCount()
+    public int getDecodeErrorCount()
     {
         return decodeErrorCount;
     }
 
-    public final void setDecodeErrorCount(int decodeErrorCount)
+    public void setDecodeErrorCount(int decodeErrorCount)
     {
         this.decodeErrorCount = decodeErrorCount;
     }
 
-    public final boolean isNaughtyDevice()
+    public boolean isNaughtyDevice()
     {
         return naughtyDevice;
     }
 
-    public final void setNaughtyDevice(boolean naughtyDevice)
+    public void setNaughtyDevice(boolean naughtyDevice)
     {
         this.naughtyDevice = naughtyDevice;
     }
@@ -248,7 +248,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     // Actions
 
     // send the message, implemented by the transport
-    protected abstract void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException;
+    public abstract void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException;
 
     // assemble the message
     public abstract void send(PDU pdu, OnMessage messageCallback, OnError errorCallback) throws IOException;
@@ -257,7 +257,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
 
     public void get(OnResponse pduCallback, String... OIDs) throws IOException
     {
-        this.get(pduCallback, this.defaultErrorHandler, OIDs);
+        this.get(pduCallback, this.getDefaultErrorHandler(), OIDs);
     }
     
     public void get(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
@@ -267,7 +267,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getValue(String oid, OnValue valueCallback) throws IOException
     {
-        this.getValue(oid, valueCallback, this.defaultErrorHandler);
+        this.getValue(oid, valueCallback, this.getDefaultErrorHandler());
     }
     
     public void getValue(String OIDs, OnValue valueCallback, OnError errorCallback) throws IOException
@@ -277,7 +277,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
 
     public void get(String OID, OnResponse pduCallback) throws IOException
     {
-        this.get(OID, pduCallback, this.defaultErrorHandler);
+        this.get(OID, pduCallback, this.getDefaultErrorHandler());
     }
     
     public void get(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
@@ -287,7 +287,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void get(String[] OIDs, OnResponse pduCallback) throws IOException
     {
-        this.get(OIDs, pduCallback, this.defaultErrorHandler);
+        this.get(OIDs, pduCallback, this.getDefaultErrorHandler());
     }
 
     public void get(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
@@ -299,7 +299,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getNext(OnResponse pduCallback, String... OIDs) throws IOException
     {
-        this.getNext(pduCallback, this.defaultErrorHandler, OIDs);
+        this.getNext(pduCallback, this.getDefaultErrorHandler(), OIDs);
     }
 
     public void getNext(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
@@ -309,7 +309,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getNext(String OID, OnResponse pduCallback) throws IOException
     {
-        this.getNext(OID, pduCallback, this.defaultErrorHandler);
+        this.getNext(OID, pduCallback, this.getDefaultErrorHandler());
     }
 
     public void getNext(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
@@ -319,7 +319,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getNext(String[] OIDs, OnResponse pduCallback) throws IOException
     {
-        this.getNext(OIDs, pduCallback, this.defaultErrorHandler);
+        this.getNext(OIDs, pduCallback, this.getDefaultErrorHandler());
     }
 
     public void getNext(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
@@ -331,7 +331,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getBulk(OnResponse pduCallback, String... OIDs) throws IOException
     {
-        this.getBulk(pduCallback, this.defaultErrorHandler, OIDs);
+        this.getBulk(pduCallback, this.getDefaultErrorHandler(), OIDs);
     }
 
     public void getBulk(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
@@ -341,7 +341,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getBulk(String OID, OnResponse pduCallback) throws IOException
     {
-        this.getBulk(OID, pduCallback, this.defaultErrorHandler);
+        this.getBulk(OID, pduCallback, this.getDefaultErrorHandler());
     }
 
     public void getBulk(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
@@ -351,7 +351,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getBulk(String[] OIDs, OnResponse pduCallback) throws IOException
     {
-        this.getBulk(OIDs, pduCallback, this.defaultErrorHandler);
+        this.getBulk(OIDs, pduCallback, this.getDefaultErrorHandler());
     }
 
     public void getBulk(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
@@ -361,7 +361,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getBulk(OnResponse pduCallback, int maxRepetitions, String... OIDs) throws IOException
     {
-        this.getBulk(pduCallback, this.defaultErrorHandler, maxRepetitions, OIDs);
+        this.getBulk(pduCallback, this.getDefaultErrorHandler(), maxRepetitions, OIDs);
     }
 
     public void getBulk(OnResponse pduCallback, OnError errorCallback, int maxRepetitions, String... OIDs) throws IOException
@@ -371,7 +371,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getBulk(int maxRepetitions, String OID, OnResponse pduCallback) throws IOException
     {
-        this.getBulk(maxRepetitions, OID, pduCallback, this.defaultErrorHandler);
+        this.getBulk(maxRepetitions, OID, pduCallback, this.getDefaultErrorHandler());
     }
 
     public void getBulk(int maxRepetitions, String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
@@ -381,7 +381,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getBulk(int maxRepetitions, String[] OIDs, OnResponse pduCallback) throws IOException
     {
-        this.getBulk(maxRepetitions, OIDs, pduCallback, this.defaultErrorHandler);
+        this.getBulk(maxRepetitions, OIDs, pduCallback, this.getDefaultErrorHandler());
     }
 
     public void getBulk(int maxRepetitions, String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
@@ -391,7 +391,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getBulk(OnResponse pduCallback, int nonRepeaters, int maxRepetitions, String... OIDs) throws IOException
     {
-        this.getBulk(pduCallback, this.defaultErrorHandler, nonRepeaters, maxRepetitions, OIDs);
+        this.getBulk(pduCallback, this.getDefaultErrorHandler(), nonRepeaters, maxRepetitions, OIDs);
     }
 
     public void getBulk(OnResponse pduCallback, OnError errorCallback, int nonRepeaters, int maxRepetitions, String... OIDs) throws IOException
@@ -401,7 +401,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getBulk(int nonRepeaters, int maxRepetitions, String[] OIDs, OnResponse pduCallback) throws IOException
     {
-        this.getBulk(nonRepeaters, maxRepetitions, OIDs, pduCallback, this.defaultErrorHandler);
+        this.getBulk(nonRepeaters, maxRepetitions, OIDs, pduCallback, this.getDefaultErrorHandler());
     }
 
     public void getBulk(int nonRepeaters, int maxRepetitions, String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
@@ -413,7 +413,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getTableBulk(String baseOID, int maxRepetitions, OnTable tableCallback) throws IOException
     {
-        this.getTableBulk(baseOID, tableCallback, this.defaultErrorHandler);
+        this.getTableBulk(baseOID, tableCallback, this.getDefaultErrorHandler());
     }
 
     public void getTableBulk(String baseOID, int maxRepetitions, OnTable tableCallback, OnError errorCallback) throws IOException
@@ -423,7 +423,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getTableBulk(String baseOID, OnTable tableCallback) throws IOException
     {
-        this.getTableBulk(baseOID, tableCallback, this.defaultErrorHandler);
+        this.getTableBulk(baseOID, tableCallback, this.getDefaultErrorHandler());
     }
 
     public void getTableBulk(String baseOID, OnTable tableCallback, OnError errorCallback) throws IOException
@@ -433,7 +433,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getTable(String baseOID, OnTable tableCallback) throws IOException
     {
-        this.getTable(baseOID, tableCallback, this.defaultErrorHandler);
+        this.getTable(baseOID, tableCallback, this.getDefaultErrorHandler());
     }
 
     public void getTable(String baseOID, OnTable tableCallback, OnError errorCallback) throws IOException
@@ -445,7 +445,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getCollatedTableBulk(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback) throws IOException
     {
-        this.getCollatedTable(baseOIDs, maxRepetitions, tablesCallback, this.defaultErrorHandler);
+        this.getCollatedTable(baseOIDs, maxRepetitions, tablesCallback, this.getDefaultErrorHandler());
     }
     
     public void getCollatedTableBulk(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
@@ -459,7 +459,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getCollatedTableBulk(String[] baseOIDs, OnCollatedTable tablesCallback) throws IOException
     {
-        this.getCollatedTableBulk(baseOIDs, tablesCallback, this.defaultErrorHandler);
+        this.getCollatedTableBulk(baseOIDs, tablesCallback, this.getDefaultErrorHandler());
     }
     
     public void getCollatedTableBulk(String[] baseOIDs, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
@@ -469,7 +469,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
     
     public void getCollatedTable(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback) throws IOException
     {
-        this.getCollatedTable(baseOIDs, maxRepetitions, tablesCallback, this.defaultErrorHandler);
+        this.getCollatedTable(baseOIDs, maxRepetitions, tablesCallback, this.getDefaultErrorHandler());
     }
     
     public void getCollatedTable(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
@@ -481,4 +481,17 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
             this.getTable(baseOid, grouper, errorCallback);
         }
     }
+    
+    // wrapper
+    
+    /**
+     * Wrap this context, returning a context which is read only and has the given default error handler
+     */
+    public abstract T with(OnError defaultErrorHandler);
+    
+    /**
+     * Wrap this context, returning a read only context
+     * @return
+     */
+    public abstract T readOnly();
 }

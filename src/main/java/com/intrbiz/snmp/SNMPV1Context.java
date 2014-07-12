@@ -9,6 +9,7 @@ import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.model.v2.SNMPMessageV2;
 import com.intrbiz.snmp.model.v2.VarBind;
 import com.intrbiz.snmp.model.v2.VarBindPDU;
+import com.intrbiz.snmp.wrapper.SNMPV1ContextWrapper;
 
 public abstract class SNMPV1Context extends SNMPContext<SNMPV1Context>
 {
@@ -46,12 +47,24 @@ public abstract class SNMPV1Context extends SNMPContext<SNMPV1Context>
             }
         }
         // send the actual message
-        this.send(msg, this, messageCallback, errorCallback);
+        this.send(msg, messageCallback, errorCallback);
     }
     
     @Override
     public SNMPContextId getContextId()
     {
         return new SNMPContextId(this.getAgentSocketAddress());
+    }
+    
+    @Override
+    public SNMPV1Context with(OnError defaultErrorHandler)
+    {
+        return new SNMPV1ContextWrapper(this, defaultErrorHandler);
+    }
+    
+    @Override
+    public SNMPV1Context readOnly()
+    {
+        return new SNMPV1ContextWrapper(this);
     }
 }

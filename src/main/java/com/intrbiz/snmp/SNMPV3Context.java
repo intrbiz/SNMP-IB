@@ -13,6 +13,7 @@ import com.intrbiz.snmp.security.SNMPPrivMode;
 import com.intrbiz.snmp.security.auth.AuthProvider;
 import com.intrbiz.snmp.security.priv.PrivacyProvider;
 import com.intrbiz.snmp.util.SNMPUtil;
+import com.intrbiz.snmp.wrapper.SNMPV3ContextWrapper;
 
 public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
 {
@@ -199,8 +200,8 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
 
     public int computeCurrentEngineTime()
     {
-        if (this.lastEngineTimeUpdate == 0) return 0;
-        return ((int) ((System.currentTimeMillis() - this.lastEngineTimeUpdate) / 1000)) + this.engineTime;
+        if (this.getLastEngineTimeUpdate() == 0) return 0;
+        return ((int) ((System.currentTimeMillis() - this.getLastEngineTimeUpdate()) / 1000)) + this.getEngineTime();
     }
 
     // actions
@@ -219,7 +220,7 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
         spar.setAuthoritativeEngineTime(this.computeCurrentEngineTime());
         spar.setUserName(this.getUsername());
         // setup auth parameters
-        if (this.authProvider.getAuthMode() != SNMPAuthMode.NONE)
+        if (this.getAuthProvider().getAuthMode() != SNMPAuthMode.NONE)
         {
             message.getHeader().setAuth();
             spar.setAuthenticationParameters(new byte[0]);
@@ -229,7 +230,7 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
             spar.setAuthenticationParameters(new byte[12]);
         }
         // setup priv parameters
-        if (this.privacyProvider.getPrivMode() != SNMPPrivMode.NONE)
+        if (this.getPrivacyProvider().getPrivMode() != SNMPPrivMode.NONE)
         {
             message.getHeader().setPriv();
             spar.setPrivacyParameters(this.getPrivacyProvider().genSalt());
@@ -242,12 +243,24 @@ public abstract class SNMPV3Context extends SNMPContext<SNMPV3Context>
         message.getScopedPdu().setContextEngineId(this.getEngineId());
         message.getScopedPdu().setPdu(pdu);
         //
-        this.send(message, this, messageCallback, errorCallback);
+        this.send(message, messageCallback, errorCallback);
     }
 
     @Override
     public SNMPContextId getContextId()
     {
         return new SNMPContextId(this.getAgentSocketAddress(), this.getEngineId());
+    }
+    
+    @Override
+    public SNMPV3Context with(OnError defaultErrorHandler)
+    {
+        return new SNMPV3ContextWrapper(this, defaultErrorHandler);
+    }
+    
+    @Override
+    public SNMPV3Context readOnly()
+    {
+        return new SNMPV3ContextWrapper(this);
     }
 }
