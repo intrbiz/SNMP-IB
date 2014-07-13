@@ -24,7 +24,7 @@ public abstract class SNMPTransport implements Runnable
     /**
      * Internal method, use SNMPContext.register()
      */
-    protected abstract void register(SNMPContext<?> context);
+    protected abstract <T extends SNMPContext<T>> SNMPContext<T> register(SNMPContext<T> context);
 
     /**
      * Internal method, use SNMPContext.send()

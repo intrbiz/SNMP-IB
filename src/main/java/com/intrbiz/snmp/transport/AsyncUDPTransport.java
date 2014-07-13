@@ -309,10 +309,11 @@ public final class AsyncUDPTransport extends SNMPTransport
     }
 
     @Override
-    protected void register(SNMPContext<?> context)
+    @SuppressWarnings("unchecked")
+    protected <T extends SNMPContext<T>> SNMPContext<T> register(SNMPContext<T> context)
     {
         SNMPContext<?> existing = this.contexts.putIfAbsent(context.getContextId(), context);
-        if (existing != null) throw new IllegalArgumentException("The context " + context.getContextId() + " is already registered within this transport!");
+        return existing == null ? context : (SNMPContext<T>) existing;
     }
 
     @Override
