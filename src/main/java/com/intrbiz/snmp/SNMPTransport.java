@@ -73,6 +73,11 @@ public abstract class SNMPTransport implements Runnable
         return this.openV1Context(InetAddress.getByName(agent));
     }
     
+    public SNMPV1Context openV1Context(String agent, String community) throws UnknownHostException
+    {
+        return this.openV1Context(InetAddress.getByName(agent)).setCommunity(community);
+    }
+    
     /**
      * Create a context for a SNMP V2 device registered with this transport
      */
