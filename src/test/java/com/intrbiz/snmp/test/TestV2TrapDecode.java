@@ -74,8 +74,6 @@ public class TestV2TrapDecode
     public void testMessage1() throws Exception
     {
         SNMPMessageV2 msg = new SNMPMessageV2(clone(MSG_1), RES);
-        System.out.println("Message 1:");
-        System.out.println(msg);
         assertThat(msg.getVersion(), is(equalTo(SNMPVersion.V2C)));
         assertThat(msg.getPdu(), (Matcher) is(instanceOf(TrapPDU.class)));
         assertThat(msg.getCommunity(), is(equalTo("public")));
@@ -92,8 +90,6 @@ public class TestV2TrapDecode
     public void testMessage2() throws Exception
     {
         SNMPMessageV2 msg = new SNMPMessageV2(clone(MSG_2), RES);
-        System.out.println("Message 2:");
-        System.out.println(msg);
         assertThat(msg.getVersion(), is(equalTo(SNMPVersion.V2C)));
         assertThat(msg.getPdu(), (Matcher) is(instanceOf(TrapPDU.class)));
         assertThat(msg.getCommunity(), is(equalTo("public")));
@@ -110,8 +106,6 @@ public class TestV2TrapDecode
     public void testLinkDown() throws Exception
     {
         SNMPMessageV2 msg = new SNMPMessageV2(clone(LINK_DOWN), RES);
-        System.out.println("Link Down");
-        System.out.println(msg);
         assertThat(msg.getVersion(), is(equalTo(SNMPVersion.V2C)));
         assertThat(msg.getPdu(), (Matcher) is(instanceOf(TrapPDU.class)));
         assertThat(msg.getCommunity(), is(equalTo("public")));
@@ -129,8 +123,6 @@ public class TestV2TrapDecode
     public void testLinkUp() throws Exception
     {
         SNMPMessageV2 msg = new SNMPMessageV2(clone(LINK_UP), RES);
-        System.out.println("Link Up");
-        System.out.println(msg);
         assertThat(msg.getVersion(), is(equalTo(SNMPVersion.V2C)));
         assertThat(msg.getPdu(), (Matcher) is(instanceOf(TrapPDU.class)));
         assertThat(msg.getCommunity(), is(equalTo("public")));
