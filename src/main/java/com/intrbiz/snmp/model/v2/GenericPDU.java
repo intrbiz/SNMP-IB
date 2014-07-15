@@ -5,11 +5,14 @@ import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 
-import com.intrbiz.snmp.model.v3.ReportPDU;
+import com.intrbiz.snmp.model.PDU;
 import com.intrbiz.snmp.util.SNMPRequestIDManager;
 import com.intrbiz.snmp.util.SNMPUtil;
 
-public abstract class PDU
+/**
+ * A generic V1 and V2 PDU which is the basis for all V1 and V2 PDUs except for the V1 trap PDU
+ */
+public abstract class GenericPDU extends PDU
 {
     protected int requestId   = SNMPRequestIDManager.getInstance().nextId();
 
@@ -17,7 +20,7 @@ public abstract class PDU
 
     protected int errorIndex  = 0;
 
-    public PDU()
+    public GenericPDU()
     {
         super();
     }
@@ -32,14 +35,14 @@ public abstract class PDU
         this.requestId = requestId;
     }
 
-    public int getErrorStatus()
+    public ErrorStatus getErrorStatus()
     {
-        return errorStatus;
+        return ErrorStatus.valueOf(this.errorStatus);
     }
 
-    public void setErrorStatus(int errorStatus)
+    public void setErrorStatus(ErrorStatus errorStatus)
     {
-        this.errorStatus = errorStatus;
+        this.errorStatus = errorStatus.getCode();
     }
 
     public int getErrorIndex()
@@ -79,19 +82,5 @@ public abstract class PDU
     
     protected void _decode(DERSequence seq)
     {
-    }
-    
-    public static PDU newPdu(int tag)
-    {
-        switch (tag)
-        {
-            case GetRequestPDU.TAG:     return new GetRequestPDU();
-            case GetNextRequestPDU.TAG: return new GetNextRequestPDU();
-            case GetResponsePDU.TAG:    return new GetResponsePDU();
-            case SetRequestPDU.TAG:     return new SetRequestPDU();
-            case GetBulkRequestPDU.TAG: return new GetBulkRequestPDU();
-            case ReportPDU.TAG:         return new ReportPDU();
-            default:                    return null;
-        }
     }
 }

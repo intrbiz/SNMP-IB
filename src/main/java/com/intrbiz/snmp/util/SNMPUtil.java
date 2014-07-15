@@ -21,6 +21,7 @@ import com.intrbiz.snmp.model.asn1.Counter32;
 import com.intrbiz.snmp.model.asn1.Counter64;
 import com.intrbiz.snmp.model.asn1.EndOfMIBView;
 import com.intrbiz.snmp.model.asn1.Gauge32;
+import com.intrbiz.snmp.model.asn1.IPAddress;
 import com.intrbiz.snmp.model.asn1.NoSuchInstance;
 import com.intrbiz.snmp.model.asn1.NoSuchObject;
 import com.intrbiz.snmp.model.asn1.TimeTicks;
@@ -132,14 +133,15 @@ public class SNMPUtil
             DERApplicationSpecific app = (DERApplicationSpecific) enc;
             try
             {
-                     if (app.getApplicationTag() == TimeTicks.APPLICATION_TAG) return TimeTicks.fromApplicationSpecific(app);
+                     if (app.getApplicationTag() == IPAddress.APPLICATION_TAG) return IPAddress.fromApplicationSpecific(app);
+                else if (app.getApplicationTag() == TimeTicks.APPLICATION_TAG) return TimeTicks.fromApplicationSpecific(app);
                 else if (app.getApplicationTag() == Counter32.APPLICATION_TAG) return Counter32.fromApplicationSpecific(app);
                 else if (app.getApplicationTag() == Gauge32.APPLICATION_TAG)   return Gauge32.fromApplicationSpecific(app);
                 else if (app.getApplicationTag() == Counter64.APPLICATION_TAG) return Counter64.fromApplicationSpecific(app);
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                throw new RuntimeException("Failed to decode application specific entity", e);
             }
         }
         else if (enc instanceof DERTaggedObject)

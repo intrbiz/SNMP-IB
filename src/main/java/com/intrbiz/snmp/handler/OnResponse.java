@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import com.intrbiz.snmp.model.PDU;
 import com.intrbiz.snmp.model.SNMPMessage;
-import com.intrbiz.snmp.model.v2.PDU;
 
 public interface OnResponse
 {

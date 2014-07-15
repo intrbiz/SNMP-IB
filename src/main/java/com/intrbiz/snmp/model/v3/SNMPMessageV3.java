@@ -14,8 +14,8 @@ import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.SNMPContextResolver;
 import com.intrbiz.snmp.SNMPV3Context;
 import com.intrbiz.snmp.SNMPVersion;
+import com.intrbiz.snmp.model.PDU;
 import com.intrbiz.snmp.model.SNMPMessage;
-import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.security.SNMPAuthMode;
 import com.intrbiz.snmp.util.SNMPUtil;
 
@@ -85,9 +85,10 @@ public class SNMPMessageV3 extends SNMPMessage
     }
 
     @Override
-    public PDU getPdu()
+    @SuppressWarnings("unchecked")
+    public <T extends PDU> T getPdu()
     {
-        return this.getScopedPdu().getPdu();
+        return (T) this.getScopedPdu().getPdu();
     }
 
     @Override

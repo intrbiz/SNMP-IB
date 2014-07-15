@@ -12,6 +12,7 @@ import org.bouncycastle.asn1.DERTaggedObject;
 import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.SNMPContextResolver;
 import com.intrbiz.snmp.SNMPVersion;
+import com.intrbiz.snmp.model.PDU;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.util.SNMPUtil;
 
@@ -64,9 +65,10 @@ public class SNMPMessageV2 extends SNMPMessage
     }
 
     @Override
-    public PDU getPdu()
+    @SuppressWarnings("unchecked")
+    public <T extends PDU> T getPdu()
     {
-        return pdu;
+        return (T) pdu;
     }
 
     public void setPdu(PDU pdu)
@@ -100,7 +102,7 @@ public class SNMPMessageV2 extends SNMPMessage
         this.community = SNMPUtil.decodeString(seq, 1);
         // decode the PDU
         DERTaggedObject pduObj = SNMPUtil.getTaggedObject(seq, 2);
-        this.pdu = PDU.newPdu(pduObj.getTagNo());
+        this.pdu = PDU.newPdu(this.version, pduObj.getTagNo());
         this.pdu.decode(pduObj);
         // load the context
         this.context = res.lookupContext(this.getId(), null);

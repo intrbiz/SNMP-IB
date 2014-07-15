@@ -14,11 +14,11 @@ import com.intrbiz.snmp.handler.OnTable;
 import com.intrbiz.snmp.handler.OnValue;
 import com.intrbiz.snmp.handler.ReceiveHandler;
 import com.intrbiz.snmp.handler.TrapHandler;
+import com.intrbiz.snmp.model.PDU;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v2.GetBulkRequestPDU;
 import com.intrbiz.snmp.model.v2.GetNextRequestPDU;
 import com.intrbiz.snmp.model.v2.GetRequestPDU;
-import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.table.SNMPWalker;
 import com.intrbiz.snmp.table.TableGrouper;
 

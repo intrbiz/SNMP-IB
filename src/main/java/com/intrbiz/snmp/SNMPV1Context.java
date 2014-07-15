@@ -5,7 +5,8 @@ import java.net.InetAddress;
 
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
-import com.intrbiz.snmp.model.v2.PDU;
+import com.intrbiz.snmp.model.PDU;
+import com.intrbiz.snmp.model.v2.GetBulkRequestPDU;
 import com.intrbiz.snmp.model.v2.SNMPMessageV2;
 import com.intrbiz.snmp.model.v2.VarBind;
 import com.intrbiz.snmp.model.v2.VarBindPDU;
@@ -45,6 +46,11 @@ public abstract class SNMPV1Context extends SNMPContext<SNMPV1Context>
             {
                 if (vb.isCounter64Value()) throw new IllegalArgumentException("64bit counters are not permitted in SNMP V1");
             }
+        }
+        // assert that the message is not a GetBulkRequest
+        if (msg.getPdu() instanceof GetBulkRequestPDU)
+        {
+            throw new IllegalArgumentException("SNMPV1 does not support GetBulkRequests!");
         }
         // send the actual message
         this.send(msg, messageCallback, errorCallback);

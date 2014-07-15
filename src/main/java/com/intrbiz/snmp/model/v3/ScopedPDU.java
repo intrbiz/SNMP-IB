@@ -8,8 +8,9 @@ import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 
+import com.intrbiz.snmp.SNMPVersion;
+import com.intrbiz.snmp.model.PDU;
 import com.intrbiz.snmp.model.SNMPTranscodable;
-import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.util.SNMPUtil;
 
 public class ScopedPDU extends SNMPTranscodable
@@ -83,7 +84,7 @@ public class ScopedPDU extends SNMPTranscodable
         this.contextName = SNMPUtil.decodeString(seq, 1);
         // decode the PDU
         DERTaggedObject pduObj = SNMPUtil.getTaggedObject(seq, 2);
-        this.pdu = PDU.newPdu(pduObj.getTagNo());
+        this.pdu = PDU.newPdu(SNMPVersion.V3, pduObj.getTagNo());
         if (this.pdu != null) this.pdu.decode(pduObj);
     }
 

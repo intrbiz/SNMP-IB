@@ -10,7 +10,7 @@ import com.intrbiz.snmp.util.SNMPUtil;
 /**
  * Tests taken from the RFC
  */
-public class SHA1KeyTests
+public class TestSHA1Key
 {
     private static final String PASSWORD = "maplesyrup";
     

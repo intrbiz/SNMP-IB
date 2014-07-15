@@ -18,7 +18,7 @@ import com.intrbiz.snmp.util.SNMPUtil;
 /**
  * Some decoder tests with data captured from Wireshark
  */
-public class V3MessageDecodeTests
+public class TestV3MessageDecode
 {
     private static final byte[] MSG_0_3  = SNMPUtil.fromHex("308200c70201033010020471d0822f020205dc04010302010304373035040c8000002b0016e0357e4068770201190203136ce2040561646d696e040cb75f4fea5b0e6315606a66200408ec520000cd0000000477f292039037de1c9816d7d581f4ee51db8afe995bb4262d2be647b0a3793c735cd062280a5680c2e915d7faabf866aeefc8c2a46e9575f5bd1a0174da0b34644965c4bd5d4ca22c3b2ab30f3760cb562c71dee2780a6637c61150efa13f4542850f16bc89f18c0e3a5d538565aca4a28b43e33b915eac2b");
     

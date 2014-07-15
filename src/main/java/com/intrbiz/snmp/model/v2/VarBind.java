@@ -66,6 +66,10 @@ public class VarBind
         {
             return this.getStringValue();
         }
+        else if (this.isOIDValue())
+        {
+            return this.getOIDValue();
+        }
         else if (this.isIntValue())
         {
             return this.getIntValue();
@@ -168,6 +172,16 @@ public class VarBind
     public Counter64 getCounter64Value()
     {
         return (Counter64) this.objectValue;
+    }
+    
+    public String getOIDValue()
+    {
+        return ((ASN1ObjectIdentifier) this.objectValue).getId();
+    }
+    
+    public boolean isOIDValue()
+    {
+        return this.objectValue instanceof ASN1ObjectIdentifier;
     }
     
     //

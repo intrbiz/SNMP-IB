@@ -65,21 +65,21 @@ public class GetBulkRequestPDU extends VarBindPDU
     
     public int getNonRepeaters()
     {
-        return this.getErrorStatus();
+        return this.errorStatus;
     }
     
     public void setNonRepeaters(int nonRepeaters)
     {
-        this.setErrorStatus(nonRepeaters);
+        this.errorStatus = nonRepeaters;
     }
     
     public int getMaxRepetitions()
     {
-        return this.getErrorIndex();
+        return this.errorIndex;
     }
     
     public void setMaxRepetitions(int maxRepetitions)
     {
-        this.setErrorIndex(maxRepetitions);
+        this.errorIndex = maxRepetitions;
     }
 }

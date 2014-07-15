@@ -12,7 +12,7 @@ import org.bouncycastle.asn1.DERSequence;
 
 import com.intrbiz.snmp.util.SNMPUtil;
 
-public abstract class VarBindPDU extends PDU implements Iterable<VarBind>
+public abstract class VarBindPDU extends GenericPDU implements Iterable<VarBind>
 {
     protected List<VarBind> varBinds = new LinkedList<VarBind>();
 

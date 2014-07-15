@@ -6,12 +6,12 @@ import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnResponse;
 import com.intrbiz.snmp.handler.OnTable;
+import com.intrbiz.snmp.model.PDU;
 import com.intrbiz.snmp.model.asn1.EndOfMIBView;
 import com.intrbiz.snmp.model.asn1.NoSuchInstance;
 import com.intrbiz.snmp.model.asn1.NoSuchObject;
 import com.intrbiz.snmp.model.table.SNMPTable;
 import com.intrbiz.snmp.model.v2.GetResponsePDU;
-import com.intrbiz.snmp.model.v2.PDU;
 import com.intrbiz.snmp.model.v2.VarBind;
 
 public class SNMPWalker implements OnResponse

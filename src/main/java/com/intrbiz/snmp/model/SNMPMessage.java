@@ -14,7 +14,6 @@ import org.bouncycastle.asn1.DERObject;
 import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.SNMPContextResolver;
 import com.intrbiz.snmp.SNMPVersion;
-import com.intrbiz.snmp.model.v2.PDU;
 
 public abstract class SNMPMessage
 {
@@ -52,7 +51,7 @@ public abstract class SNMPMessage
 
     public abstract SNMPVersion getVersion();
     
-    public abstract PDU getPdu();
+    public abstract <T extends PDU> T getPdu();
     
     public abstract int getId();
     

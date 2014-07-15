@@ -10,7 +10,7 @@ import com.intrbiz.snmp.util.SNMPUtil;
 /**
  * Tests taken from the RFC
  */
-public class MD5KeyTests
+public class TestMD5Key
 {
     private static final String PASSWORD = "maplesyrup";
     

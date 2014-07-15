@@ -5,7 +5,7 @@ import java.net.InetAddress;
 
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
-import com.intrbiz.snmp.model.v2.PDU;
+import com.intrbiz.snmp.model.PDU;
 import com.intrbiz.snmp.model.v3.SNMPMessageV3;
 import com.intrbiz.snmp.model.v3.USMSecurityParameters;
 import com.intrbiz.snmp.security.SNMPAuthMode;
