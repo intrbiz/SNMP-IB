@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
+import com.intrbiz.snmp.handler.OnTrap;
+import com.intrbiz.snmp.handler.OnUnknown;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.transport.AsyncUDPTransport;
 
@@ -14,6 +16,10 @@ import com.intrbiz.snmp.transport.AsyncUDPTransport;
  */
 public abstract class SNMPTransport implements Runnable
 {
+    protected OnTrap globalTrapHandler;
+    
+    protected OnUnknown globalUnknownHandler;
+    
     public SNMPTransport() throws IOException
     {
         super();
@@ -37,6 +43,35 @@ public abstract class SNMPTransport implements Runnable
     public static final SNMPTransport open() throws IOException
     {
         return new AsyncUDPTransport();
+    }
+    
+    public static final SNMPTransport open(int port) throws IOException
+    {
+        return new AsyncUDPTransport(port);
+    }
+    
+    // handlers
+    
+    public OnTrap getGlobalTrapHandler()
+    {
+        return globalTrapHandler;
+    }
+
+    public SNMPTransport setGlobalTrapHandler(OnTrap globalTrapHandler)
+    {
+        this.globalTrapHandler = globalTrapHandler;
+        return this;
+    }
+
+    public OnUnknown getGlobalUnknownHandler()
+    {
+        return globalUnknownHandler;
+    }
+
+    public SNMPTransport setGlobalUnknownHandler(OnUnknown globalUnknownHandler)
+    {
+        this.globalUnknownHandler = globalUnknownHandler;
+        return this;
     }
 
     // Context creation methods

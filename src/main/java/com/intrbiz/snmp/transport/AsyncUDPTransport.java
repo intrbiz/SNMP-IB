@@ -30,8 +30,10 @@ import com.intrbiz.snmp.error.SNMPTimeout;
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.model.SNMPMessage;
+import com.intrbiz.snmp.model.v1.TrapPDUV1;
 import com.intrbiz.snmp.model.v2.GetBulkRequestPDU;
 import com.intrbiz.snmp.model.v2.SNMPMessageV2;
+import com.intrbiz.snmp.model.v2.TrapPDU;
 import com.intrbiz.snmp.model.v3.ReportPDU;
 import com.intrbiz.snmp.model.v3.SNMPMessageV3;
 import com.intrbiz.snmp.model.v3.USMSecurityParameters;
@@ -66,22 +68,35 @@ public final class AsyncUDPTransport extends SNMPTransport
     private Queue<EnqueuedMessage> sendQueue = new ConcurrentLinkedQueue<EnqueuedMessage>();
 
     private long lastBackgroundRun = 0;
+    
+    private int port;
 
-    public AsyncUDPTransport() throws IOException
+    public AsyncUDPTransport(int port) throws IOException
     {
         super();
+        this.port = port;
         this.init();
+    }
+    
+    public AsyncUDPTransport() throws IOException
+    {
+        this(8161);
     }
 
     private void init() throws IOException
     {
         // the channel to send and recv UDP packets on
         this.channel = DatagramChannel.open();
-        this.channel.bind(new InetSocketAddress(InetAddress.getByAddress(new byte[] { 0, 0, 0, 0 }), 8161));
+        this.channel.bind(new InetSocketAddress(InetAddress.getByAddress(new byte[] { 0, 0, 0, 0 }), this.port));
         this.channel.configureBlocking(false);
         // the selector to know when the channel can be used
         this.selector = Selector.open();
         this.key = this.channel.register(this.selector, SelectionKey.OP_READ);
+    }
+
+    public int getPort()
+    {
+        return this.port;
     }
 
     @Override
@@ -117,7 +132,7 @@ public final class AsyncUDPTransport extends SNMPTransport
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                logger.error("Error processing transport", e);
             }
         }
     }
@@ -219,13 +234,40 @@ public final class AsyncUDPTransport extends SNMPTransport
                 }
                 else
                 {
-                    logger.warn("Unhandled response: " + msg);
+                    logger.warn("Unhandled response:\n" + msg);
+                    if (msg.getSNMPContext() != null && msg.getSNMPContext().getUnknownHandler() != null)
+                    {
+                        msg.getSNMPContext().getUnknownHandler().apply(msg, from, msg.getSNMPContext());
+                    }
+                    else if (this.globalUnknownHandler != null)
+                    {
+                        this.globalUnknownHandler.apply(msg, from, msg.getSNMPContext());
+                    }
+                }
+            }
+            else if (msg.getPdu() instanceof TrapPDU || msg.getPdu() instanceof TrapPDUV1)
+            {
+                logger.debug("Got Trap:\n" + msg);
+                if (msg.getSNMPContext() != null && msg.getSNMPContext().getTrapHandler() != null)
+                {
+                    msg.getSNMPContext().getTrapHandler().apply(msg, from, msg.getSNMPContext());
+                }
+                else if (this.globalTrapHandler != null)
+                {
+                    this.globalTrapHandler.apply(msg, from, msg.getSNMPContext());
                 }
             }
             else
             {
-                // exec context level callback
                 logger.warn("Unknown message received:\n" + msg);
+                if (msg.getSNMPContext() != null && msg.getSNMPContext().getUnknownHandler() != null)
+                {
+                    msg.getSNMPContext().getUnknownHandler().apply(msg, from, msg.getSNMPContext());
+                }
+                else if (this.globalUnknownHandler != null)
+                {
+                    this.globalUnknownHandler.apply(msg, from, msg.getSNMPContext());
+                }
             }
         }
         catch (IOException e)
@@ -249,7 +291,6 @@ public final class AsyncUDPTransport extends SNMPTransport
         System.arraycopy(buffer.array(), buffer.arrayOffset(), data, 0, data.length);
         // peek at the payload to determine the message version
         SNMPVersion version = SNMPUtil.peekVersion(data, 0, data.length);
-        //
         if (SNMPVersion.V3 == version)
         {
             SNMPMessageV3 msg = new SNMPMessageV3(data, this.getContextResolver(from.getAddress()));

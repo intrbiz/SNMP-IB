@@ -9,8 +9,8 @@ import com.intrbiz.snmp.SNMPV2Context;
 import com.intrbiz.snmp.SNMPVersion;
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
-import com.intrbiz.snmp.handler.ReceiveHandler;
-import com.intrbiz.snmp.handler.TrapHandler;
+import com.intrbiz.snmp.handler.OnUnknown;
+import com.intrbiz.snmp.handler.OnTrap;
 import com.intrbiz.snmp.model.SNMPMessage;
 
 public class SNMPV2ContextWrapper extends SNMPV2Context
@@ -102,15 +102,15 @@ public class SNMPV2ContextWrapper extends SNMPV2Context
     }
 
     @Override
-    public TrapHandler getTrapHandler()
+    public OnTrap getTrapHandler()
     {
         return parent.getTrapHandler();
     }
 
     @Override
-    public ReceiveHandler getReceiveHandler()
+    public OnUnknown getUnknownHandler()
     {
-        return parent.getReceiveHandler();
+        return parent.getUnknownHandler();
     }
 
     @Override
@@ -174,13 +174,13 @@ public class SNMPV2ContextWrapper extends SNMPV2Context
     }
 
     @Override
-    public SNMPV2Context setTrapHandler(TrapHandler trapHandler)
+    public SNMPV2Context setTrapHandler(OnTrap onTrap)
     {
         return this;
     }
 
     @Override
-    public SNMPV2Context setReceiveHandler(ReceiveHandler receiveHandler)
+    public SNMPV2Context setUnknownHandler(OnUnknown onUnknown)
     {
         return this;
     }

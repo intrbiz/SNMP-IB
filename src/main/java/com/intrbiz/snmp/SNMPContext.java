@@ -12,8 +12,8 @@ import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.handler.OnResponse;
 import com.intrbiz.snmp.handler.OnTable;
 import com.intrbiz.snmp.handler.OnValue;
-import com.intrbiz.snmp.handler.ReceiveHandler;
-import com.intrbiz.snmp.handler.TrapHandler;
+import com.intrbiz.snmp.handler.OnUnknown;
+import com.intrbiz.snmp.handler.OnTrap;
 import com.intrbiz.snmp.model.PDU;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v2.GetBulkRequestPDU;
@@ -30,9 +30,9 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
 
     protected final int port;
 
-    protected TrapHandler trapHandler;
+    protected OnTrap onTrap;
 
-    protected ReceiveHandler receiveHandler;
+    protected OnUnknown onUnknown;
 
     protected long timeOut = TimeUnit.SECONDS.toMillis(5);
 
@@ -123,27 +123,27 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
         return (T) this;
     }
 
-    public TrapHandler getTrapHandler()
+    public OnTrap getTrapHandler()
     {
-        return trapHandler;
+        return onTrap;
     }
 
     @SuppressWarnings("unchecked")
-    public T setTrapHandler(TrapHandler trapHandler)
+    public T setTrapHandler(OnTrap onTrap)
     {
-        this.trapHandler = trapHandler;
+        this.onTrap = onTrap;
         return (T) this;
     }
 
-    public ReceiveHandler getReceiveHandler()
+    public OnUnknown getUnknownHandler()
     {
-        return receiveHandler;
+        return onUnknown;
     }
 
     @SuppressWarnings("unchecked")
-    public T setReceiveHandler(ReceiveHandler receiveHandler)
+    public T setUnknownHandler(OnUnknown onUnknown)
     {
-        this.receiveHandler = receiveHandler;
+        this.onUnknown = onUnknown;
         return (T) this;
     }
 
