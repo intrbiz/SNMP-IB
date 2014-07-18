@@ -6,12 +6,11 @@ import java.net.SocketAddress;
 import org.apache.log4j.Logger;
 
 import com.intrbiz.snmp.SNMPContext;
-import com.intrbiz.snmp.handler.OnResponse;
 import com.intrbiz.snmp.handler.OnTrap;
-import com.intrbiz.snmp.model.PDU;
+import com.intrbiz.snmp.handler.OnValue;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v2.TrapPDU;
-import com.intrbiz.snmp.model.v2.VarBindPDU;
+import com.intrbiz.snmp.model.v2.VarBind;
 
 public interface OnLinkChange
 {
@@ -55,10 +54,6 @@ public interface OnLinkChange
         
         private String description;
         
-        private String name;
-        
-        private String alias;
-        
         private LinkState adminState;
         
         private LinkState operationalState;
@@ -70,14 +65,12 @@ public interface OnLinkChange
             super();
         }
         
-        public LinkEvent(LinkEventType eventType, int index, String description, String name, String alias, LinkState adminState, LinkState operationalState, long timestamp)
+        public LinkEvent(LinkEventType eventType, int index, String description, LinkState adminState, LinkState operationalState, long timestamp)
         {
             super();
             this.eventType = eventType;
             this.index = index;
             this.description = description;
-            this.name = name;
-            this.alias = alias;
             this.adminState = adminState;
             this.operationalState = operationalState;
             this.timestamp = timestamp;
@@ -113,26 +106,6 @@ public interface OnLinkChange
         public void setDescription(String description)
         {
             this.description = description;
-        }
-
-        public String getName()
-        {
-            return name;
-        }
-
-        public void setName(String name)
-        {
-            this.name = name;
-        }
-
-        public String getAlias()
-        {
-            return alias;
-        }
-
-        public void setAlias(String alias)
-        {
-            this.alias = alias;
         }
 
         public LinkState getAdminState()
@@ -185,25 +158,39 @@ public interface OnLinkChange
                 if (trap.isLinkUpTrap() || trap.isLinkDownTrap())
                 {
                     final int index = trap.getTrapArgument(0).getIntValue();
-                    // query the device for useful interface information
-                    // TODO: should we be looking up name and alias
-                    context.get(new String[] {"1.3.6.1.2.1.2.2.1.2." + index, "1.3.6.1.2.1.31.1.1.1.1." + index, "1.3.6.1.2.1.31.1.1.1.18." + index}, new OnResponse()
+                    // have we got an extended trap (3com: snmp-agent trap ifmib link extended) 
+                    // which is helpful enough to give us the interface description
+                    VarBind ifDescr = trap.getPrefix("1.3.6.1.2.1.2.2.1.2");
+                    if (ifDescr != null && ifDescr.isStringValue() && ifDescr.getStringValue() != null && ifDescr.getStringValue().length() > 0)
                     {
-                        public void apply(PDU pdu) throws IOException
+                        handler.apply(new LinkEvent(
+                                trap.isLinkDownTrap() ? LinkEventType.DOWN : LinkEventType.UP,
+                                index,
+                                ifDescr.getStringValue(),
+                                LinkState.valueOf(trap.getTrapArgument(1).getIntValue()),
+                                LinkState.valueOf(trap.getTrapArgument(2).getIntValue()),
+                                trap.getAgentUptime().getTicksMillis()
+                        ));
+                    }
+                    else
+                    {
+                        // query the device for useful interface information
+                        // TODO: should we be looking up name and alias
+                        context.getValue("1.3.6.1.2.1.2.2.1.2." + index, new OnValue()
                         {
-                            VarBindPDU vbp = (VarBindPDU) pdu;
-                            handler.apply(new LinkEvent(
-                                    trap.isLinkDownTrap() ? LinkEventType.DOWN : LinkEventType.UP,
-                                    index,
-                                    vbp.index(0).getStringValue(),
-                                    vbp.index(1).getStringValue(),
-                                    vbp.index(2).getStringValue(),
-                                    LinkState.valueOf(trap.getTrapArgument(1).getIntValue()),
-                                    LinkState.valueOf(trap.getTrapArgument(2).getIntValue()),
-                                    trap.getAgentUptime().getTicksMillis()
-                            ));
-                        }
-                    });
+                            public void apply(VarBind value) throws IOException
+                            {
+                                handler.apply(new LinkEvent(
+                                        trap.isLinkDownTrap() ? LinkEventType.DOWN : LinkEventType.UP,
+                                        index,
+                                        value.getStringValue(),
+                                        LinkState.valueOf(trap.getTrapArgument(1).getIntValue()),
+                                        LinkState.valueOf(trap.getTrapArgument(2).getIntValue()),
+                                        trap.getAgentUptime().getTicksMillis()
+                                ));
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -227,7 +214,7 @@ public interface OnLinkChange
         
         public void apply(LinkEvent event) throws IOException
         {
-            this.logger.info("Got Link State Change: " + event.getEventType() + " " + event.getDescription() + " " + event.getName() + " " + event.getAlias() + " " + event.getOperationalState() + " at " + event.getTimestamp());
+            this.logger.info("Got Link State Change: " + event.getEventType() + " " + event.getDescription() + " " + event.getOperationalState() + " at " + event.getTimestamp());
             if (this.next != null) this.next.apply(event);
         }
     }

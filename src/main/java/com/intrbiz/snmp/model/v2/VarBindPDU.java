@@ -71,6 +71,26 @@ public abstract class VarBindPDU extends GenericPDU implements Iterable<VarBind>
         return this.getVarBind(OID);
     }
     
+    public VarBind getPrefix(String OIDPrefix)
+    {
+        for (VarBind vb : this.varBinds)
+        {
+            if (vb.getObjectName().startsWith(OIDPrefix))
+                return vb;
+        }
+        return null;
+    }
+    
+    public boolean containsPrefix(String OIDPrefix)
+    {
+        return this.getPrefix(OIDPrefix) != null;
+    }
+    
+    public boolean contains(String OID)
+    {
+        return this.get(OID) != null;
+    }
+    
     public VarBind get()
     {
         if (this.varBinds.size() > 0) return this.varBinds.get(0);
