@@ -35,6 +35,7 @@
     	<groupId>org.hamcrest</groupId>
     	<artifactId>hamcrest-all</artifactId>
     	<version>1.0</version>
+	<scope>test</scope>
     </dependency>
   </dependencies>
   
@@ -79,5 +80,32 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>snapshots</id>
+			<url>http://nexus.intrbiz.net/nexus/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>intrbiz</id>
+			<name>Intrbiz</name>
+			<url>http://nexus.intrbiz.net/nexus/content/repositories/releases</url>
+		</repository>
+	</repositories>
+	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>http://nexus.intrbiz.net/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>intrbiz</id>
+			<name>Intrbiz</name>
+			<url>http://nexus.intrbiz.net/nexus/content/repositories/releases</url>
+		</repository>
+	</distributionManagement>
 	
 </project>
