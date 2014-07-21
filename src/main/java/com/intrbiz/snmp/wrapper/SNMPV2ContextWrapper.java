@@ -3,14 +3,16 @@ package com.intrbiz.snmp.wrapper;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketAddress;
+import java.util.Collection;
+import java.util.Map;
 
 import com.intrbiz.snmp.SNMPContextId;
 import com.intrbiz.snmp.SNMPV2Context;
 import com.intrbiz.snmp.SNMPVersion;
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
-import com.intrbiz.snmp.handler.OnUnknown;
 import com.intrbiz.snmp.handler.OnTrap;
+import com.intrbiz.snmp.handler.OnUnknown;
 import com.intrbiz.snmp.model.SNMPMessage;
 
 public class SNMPV2ContextWrapper extends SNMPV2Context
@@ -102,12 +104,6 @@ public class SNMPV2ContextWrapper extends SNMPV2Context
     }
 
     @Override
-    public OnTrap getTrapHandler()
-    {
-        return parent.getTrapHandler();
-    }
-
-    @Override
     public OnUnknown getUnknownHandler()
     {
         return parent.getUnknownHandler();
@@ -160,6 +156,42 @@ public class SNMPV2ContextWrapper extends SNMPV2Context
     {
         return parent.isSecure();
     }
+    
+    @Override
+    public boolean isTrapHandlerRegistered(String name)
+    {
+        return this.parent.isTrapHandlerRegistered(name);
+    }
+    
+    @Override
+    public Collection<OnTrap> getTrapHandlers()
+    {
+        return parent.getTrapHandlers();
+    }
+
+    @Override
+    public Map<String, OnTrap> getRegisteredTrapHandlers()
+    {
+        return parent.getRegisteredTrapHandlers();
+    }
+
+    @Override
+    public SNMPV2Context registerTrapHandler(String name, OnTrap onTrap)
+    {
+        return this;
+    }
+
+    @Override
+    public SNMPV2Context reregisterTrapHandler(String name, OnTrap onTrap)
+    {
+        return this;
+    }
+
+    @Override
+    public SNMPV2Context unregisterTrapHandler(String name)
+    {
+        return this;
+    }
 
     @Override
     public SNMPV2Context setTimeOut(long timeOut)
@@ -169,12 +201,6 @@ public class SNMPV2ContextWrapper extends SNMPV2Context
 
     @Override
     public SNMPV2Context setResendCount(int resendCount)
-    {
-        return this;
-    }
-
-    @Override
-    public SNMPV2Context setTrapHandler(OnTrap onTrap)
     {
         return this;
     }

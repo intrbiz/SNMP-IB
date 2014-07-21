@@ -3,6 +3,8 @@ package com.intrbiz.snmp.wrapper;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketAddress;
+import java.util.Collection;
+import java.util.Map;
 
 import com.intrbiz.snmp.SNMPContextId;
 import com.intrbiz.snmp.SNMPV1Context;
@@ -102,12 +104,6 @@ public class SNMPV1ContextWrapper extends SNMPV1Context
     }
 
     @Override
-    public OnTrap getTrapHandler()
-    {
-        return parent.getTrapHandler();
-    }
-
-    @Override
     public OnUnknown getUnknownHandler()
     {
         return parent.getUnknownHandler();
@@ -162,6 +158,42 @@ public class SNMPV1ContextWrapper extends SNMPV1Context
     }
 
     @Override
+    public boolean isTrapHandlerRegistered(String name)
+    {
+        return this.parent.isTrapHandlerRegistered(name);
+    }
+    
+    @Override
+    public Collection<OnTrap> getTrapHandlers()
+    {
+        return parent.getTrapHandlers();
+    }
+
+    @Override
+    public Map<String, OnTrap> getRegisteredTrapHandlers()
+    {
+        return parent.getRegisteredTrapHandlers();
+    }
+
+    @Override
+    public SNMPV1Context registerTrapHandler(String name, OnTrap onTrap)
+    {
+        return this;
+    }
+
+    @Override
+    public SNMPV1Context reregisterTrapHandler(String name, OnTrap onTrap)
+    {
+        return this;
+    }
+
+    @Override
+    public SNMPV1Context unregisterTrapHandler(String name)
+    {
+        return this;
+    }
+
+    @Override
     public SNMPV1Context setTimeOut(long timeOut)
     {
         return this;
@@ -169,12 +201,6 @@ public class SNMPV1ContextWrapper extends SNMPV1Context
 
     @Override
     public SNMPV1Context setResendCount(int resendCount)
-    {
-        return this;
-    }
-
-    @Override
-    public SNMPV1Context setTrapHandler(OnTrap onTrap)
     {
         return this;
     }

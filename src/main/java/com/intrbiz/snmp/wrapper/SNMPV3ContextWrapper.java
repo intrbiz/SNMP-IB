@@ -3,14 +3,16 @@ package com.intrbiz.snmp.wrapper;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketAddress;
+import java.util.Collection;
+import java.util.Map;
 
 import com.intrbiz.snmp.SNMPContextId;
 import com.intrbiz.snmp.SNMPV3Context;
 import com.intrbiz.snmp.SNMPVersion;
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
-import com.intrbiz.snmp.handler.OnUnknown;
 import com.intrbiz.snmp.handler.OnTrap;
+import com.intrbiz.snmp.handler.OnUnknown;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.security.SNMPAuthMode;
 import com.intrbiz.snmp.security.SNMPPrivMode;
@@ -253,12 +255,6 @@ public class SNMPV3ContextWrapper extends SNMPV3Context
     }
 
     @Override
-    public OnTrap getTrapHandler()
-    {
-        return parent.getTrapHandler();
-    }
-
-    @Override
     public OnUnknown getUnknownHandler()
     {
         return parent.getUnknownHandler();
@@ -293,15 +289,45 @@ public class SNMPV3ContextWrapper extends SNMPV3Context
     {
         return parent.getDefaultErrorHandler();
     }
+    
+    @Override
+    public boolean isTrapHandlerRegistered(String name)
+    {
+        return this.parent.isTrapHandlerRegistered(name);
+    }
+    
+    @Override
+    public Collection<OnTrap> getTrapHandlers()
+    {
+        return parent.getTrapHandlers();
+    }
 
     @Override
-    public SNMPV3Context setResendCount(int resendCount)
+    public Map<String, OnTrap> getRegisteredTrapHandlers()
+    {
+        return parent.getRegisteredTrapHandlers();
+    }
+
+    @Override
+    public SNMPV3Context registerTrapHandler(String name, OnTrap onTrap)
     {
         return this;
     }
 
     @Override
-    public SNMPV3Context setTrapHandler(OnTrap onTrap)
+    public SNMPV3Context reregisterTrapHandler(String name, OnTrap onTrap)
+    {
+        return this;
+    }
+
+    @Override
+    public SNMPV3Context unregisterTrapHandler(String name)
+    {
+        return this;
+    }
+
+    @Override
+    public SNMPV3Context setResendCount(int resendCount)
     {
         return this;
     }

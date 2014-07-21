@@ -22,7 +22,7 @@ public class TrapDaemon
         // register the agents which will send us trapsO
         transport.openV3Context("172.30.14.1", "8000002B0016E0357E406877")
             .setUser("admin", SNMPAuthMode.SHA1, SNMPPrivMode.AES128, "abcde12345")
-            .setTrapHandler(new OnLinkChange.LinkTrapAdapter(new OnLinkChange.LoggingAdapter()));
+            .registerTrapHandler("link-state", new OnLinkChange.LinkTrapAdapter(new OnLinkChange.LoggingAdapter()));
         
         // Run our transport to send and receive messages
         transport.run();

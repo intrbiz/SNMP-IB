@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 import com.intrbiz.snmp.handler.OnCollatedTable;
@@ -11,9 +16,9 @@ import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.handler.OnResponse;
 import com.intrbiz.snmp.handler.OnTable;
-import com.intrbiz.snmp.handler.OnValue;
-import com.intrbiz.snmp.handler.OnUnknown;
 import com.intrbiz.snmp.handler.OnTrap;
+import com.intrbiz.snmp.handler.OnUnknown;
+import com.intrbiz.snmp.handler.OnValue;
 import com.intrbiz.snmp.model.PDU;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v2.GetBulkRequestPDU;
@@ -30,7 +35,7 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
 
     protected final int port;
 
-    protected OnTrap onTrap;
+    protected ConcurrentMap<String, OnTrap> onTraps = new ConcurrentHashMap<String, OnTrap>();
 
     protected OnUnknown onUnknown;
 
@@ -122,17 +127,41 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
         this.resendCount = resendCount;
         return (T) this;
     }
-
-    public OnTrap getTrapHandler()
+    
+    public Collection<OnTrap> getTrapHandlers()
     {
-        return onTrap;
+        return Collections.unmodifiableCollection(this.onTraps.values());
+    }
+    
+    public Map<String, OnTrap> getRegisteredTrapHandlers()
+    {
+        return Collections.unmodifiableMap(this.onTraps);
     }
 
     @SuppressWarnings("unchecked")
-    public T setTrapHandler(OnTrap onTrap)
+    public T registerTrapHandler(String name, OnTrap onTrap)
     {
-        this.onTrap = onTrap;
+        this.onTraps.putIfAbsent(name, onTrap);
         return (T) this;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public T reregisterTrapHandler(String name, OnTrap onTrap)
+    {
+        this.onTraps.putIfAbsent(name, onTrap);
+        return (T) this;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public T unregisterTrapHandler(String name)
+    {
+        this.onTraps.remove(name);
+        return (T) this;
+    }
+    
+    public boolean isTrapHandlerRegistered(String name)
+    {
+        return this.onTraps.containsKey(name);
     }
 
     public OnUnknown getUnknownHandler()

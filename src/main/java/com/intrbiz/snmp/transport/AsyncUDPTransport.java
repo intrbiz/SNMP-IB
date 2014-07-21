@@ -29,6 +29,7 @@ import com.intrbiz.snmp.SNMPVersion;
 import com.intrbiz.snmp.error.SNMPTimeout;
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
+import com.intrbiz.snmp.handler.OnTrap;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v1.TrapPDUV1;
 import com.intrbiz.snmp.model.v2.GetBulkRequestPDU;
@@ -248,9 +249,12 @@ public final class AsyncUDPTransport extends SNMPTransport
             else if (msg.getPdu() instanceof TrapPDU || msg.getPdu() instanceof TrapPDUV1)
             {
                 logger.debug("Got Trap:\n" + msg);
-                if (msg.getSNMPContext() != null && msg.getSNMPContext().getTrapHandler() != null)
+                if (msg.getSNMPContext() != null && (! msg.getSNMPContext().getTrapHandlers().isEmpty()))
                 {
-                    msg.getSNMPContext().getTrapHandler().apply(msg, from, msg.getSNMPContext());
+                    for (OnTrap handler : msg.getSNMPContext().getTrapHandlers())
+                    {
+                        handler.apply(msg, from, msg.getSNMPContext());
+                    }
                 }
                 else if (this.globalTrapHandler != null)
                 {
