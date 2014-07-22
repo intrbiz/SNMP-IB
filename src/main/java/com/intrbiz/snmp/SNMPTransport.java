@@ -9,6 +9,7 @@ import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.handler.OnTrap;
 import com.intrbiz.snmp.handler.OnUnknown;
 import com.intrbiz.snmp.model.SNMPMessage;
+import com.intrbiz.snmp.poller.SNMPJob;
 import com.intrbiz.snmp.transport.AsyncUDPTransport;
 
 /**
@@ -36,6 +37,11 @@ public abstract class SNMPTransport implements Runnable
      * Internal method, use SNMPContext.send()
      */
     protected abstract void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException;
+    
+    /**
+     * Schedule the given job
+     */
+    protected abstract SNMPJob schedule(SNMPJob job);
 
     /**
      * Create a default SNMPTransport implementation
@@ -88,11 +94,17 @@ public abstract class SNMPTransport implements Runnable
     public SNMPV1Context openV1Context(InetAddress agent, int port)
     {
        SNMPV1Context ctx = new SNMPV1Context(agent, port) {
-        @Override
-        public void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException
-        {
-            SNMPTransport.this.send(message, this, messageCallback, errorCallback);
-        }
+           @Override
+           public void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException
+           {
+               SNMPTransport.this.send(message, this, messageCallback, errorCallback);
+           }
+
+           @Override
+           public SNMPJob schedule(SNMPJob job)
+           {
+               return SNMPTransport.this.schedule(job);
+           }
        };
        this.register(ctx);
        return ctx;
@@ -118,12 +130,19 @@ public abstract class SNMPTransport implements Runnable
      */
     public SNMPV2Context openV2Context(InetAddress agent, int port)
     {
-       SNMPV2Context ctx = new SNMPV2Context(agent, port) {
-        @Override
-        public void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException
-        {
-            SNMPTransport.this.send(message, this, messageCallback, errorCallback);
-        }
+       SNMPV2Context ctx = new SNMPV2Context(agent, port)
+       {
+            @Override
+            public void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException
+            {
+                SNMPTransport.this.send(message, this, messageCallback, errorCallback);
+            }
+            
+            @Override
+            public SNMPJob schedule(SNMPJob job)
+            {
+                return SNMPTransport.this.schedule(job);
+            }
        };
        this.register(ctx);
        return ctx;
@@ -149,13 +168,20 @@ public abstract class SNMPTransport implements Runnable
      */
     public SNMPV3Context openV3Context(InetAddress agent, int port)
     {
-        SNMPV3Context ctx = new SNMPV3Context(agent, port) {
+        SNMPV3Context ctx = new SNMPV3Context(agent, port)
+        {
             @Override
             public void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException
             {
                 SNMPTransport.this.send(message, this, messageCallback, errorCallback);
             }
-           };
+            
+            @Override
+            public SNMPJob schedule(SNMPJob job)
+            {
+                return SNMPTransport.this.schedule(job);
+            }
+        };
         ctx.setDiscover();
         this.register(ctx);
         return ctx;
@@ -166,13 +192,20 @@ public abstract class SNMPTransport implements Runnable
      */
     public SNMPV3Context openV3Context(InetAddress agent, int port, String engineId)
     {
-        SNMPV3Context ctx = new SNMPV3Context(agent, port) {
+        SNMPV3Context ctx = new SNMPV3Context(agent, port)
+        {
             @Override
             public void send(SNMPMessage message, OnMessage messageCallback, OnError errorCallback) throws IOException
             {
                 SNMPTransport.this.send(message, this, messageCallback, errorCallback);
             }
-           };
+            
+            @Override
+            public SNMPJob schedule(SNMPJob job)
+            {
+                return SNMPTransport.this.schedule(job);
+            }
+        };
         ctx.setEngineId(engineId);
         this.register(ctx);
         return ctx;

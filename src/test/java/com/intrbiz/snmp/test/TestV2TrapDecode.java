@@ -18,6 +18,7 @@ import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v2.ErrorStatus;
 import com.intrbiz.snmp.model.v2.SNMPMessageV2;
 import com.intrbiz.snmp.model.v2.TrapPDU;
+import com.intrbiz.snmp.poller.SNMPJob;
 import com.intrbiz.snmp.util.SNMPUtil;
 
 /**
@@ -58,6 +59,12 @@ public class TestV2TrapDecode
             @Override
             public void send(SNMPMessage message, OnMessage onMessage, OnError onError) throws IOException
             {
+            }
+            
+            @Override
+            public SNMPJob schedule(SNMPJob job)
+            {
+                return null;
             }
         };
         return ctx;

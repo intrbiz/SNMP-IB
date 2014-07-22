@@ -11,6 +11,7 @@ import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v3.SNMPMessageV3;
+import com.intrbiz.snmp.poller.SNMPJob;
 import com.intrbiz.snmp.security.SNMPAuthMode;
 import com.intrbiz.snmp.security.SNMPPrivMode;
 import com.intrbiz.snmp.util.SNMPUtil;
@@ -47,7 +48,7 @@ public class TestV3MessageDecode
             public SNMPContext<?> lookupContext(int requestId, byte[] engineId)
             {
                 return CTX;
-            }            
+            }
         };
     }
     
@@ -59,7 +60,7 @@ public class TestV3MessageDecode
             public SNMPContext<?> lookupContext(int requestId,  byte[] engineId)
             {
                 return PLAIN_CTX;
-            }            
+            }
         };
     }
     
@@ -69,6 +70,12 @@ public class TestV3MessageDecode
             @Override
             public void send(SNMPMessage message, OnMessage onMessage, OnError onError) throws IOException
             {
+            }
+            
+            @Override
+            public SNMPJob schedule(SNMPJob job)
+            {
+                return null;
             }
         };
         ctx.setUser("admin", SNMPAuthMode.SHA1, SNMPPrivMode.AES128, "abcde12345");
@@ -82,6 +89,12 @@ public class TestV3MessageDecode
             @Override
             public void send(SNMPMessage message, OnMessage onMessage, OnError onError) throws IOException
             {
+            }
+            
+            @Override
+            public SNMPJob schedule(SNMPJob job)
+            {
+                return null;
             }
         };
         ctx.setUser("admin", SNMPAuthMode.NONE, SNMPPrivMode.NONE, "abcde12345");

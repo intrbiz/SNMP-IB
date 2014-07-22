@@ -19,6 +19,7 @@ import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v1.GenericTrap;
 import com.intrbiz.snmp.model.v1.TrapPDUV1;
 import com.intrbiz.snmp.model.v2.SNMPMessageV2;
+import com.intrbiz.snmp.poller.SNMPJob;
 import com.intrbiz.snmp.util.SNMPUtil;
 
 /**
@@ -51,6 +52,12 @@ public class TestV1TrapDecode
             @Override
             public void send(SNMPMessage message, OnMessage onMessage, OnError onError) throws IOException
             {
+            }
+
+            @Override
+            public SNMPJob schedule(SNMPJob job)
+            {
+                return null;
             }
         };
         return ctx;

@@ -24,11 +24,13 @@ import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.model.v2.GetBulkRequestPDU;
 import com.intrbiz.snmp.model.v2.GetNextRequestPDU;
 import com.intrbiz.snmp.model.v2.GetRequestPDU;
+import com.intrbiz.snmp.poller.SNMPJob;
+import com.intrbiz.snmp.poller.SNMPJobBuilder;
 import com.intrbiz.snmp.table.SNMPWalker;
 import com.intrbiz.snmp.table.TableGrouper;
 
-public abstract class SNMPContext<T extends SNMPContext<T>>
-{
+public abstract class SNMPContext<T extends SNMPContext<T>> implements SNMPActionable<T>
+{   
     protected final SNMPVersion version;
 
     protected final InetAddress agent;
@@ -281,227 +283,357 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
 
     // assemble the message
     public abstract void send(PDU pdu, OnMessage messageCallback, OnError errorCallback) throws IOException;
+    
+    // low level job scheduling
+    
+    public abstract SNMPJob schedule(SNMPJob job);
 
     // Get
 
-    public void get(OnResponse pduCallback, String... OIDs) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T get(OnResponse pduCallback, String... OIDs) throws IOException
     {
         this.get(pduCallback, this.getDefaultErrorHandler(), OIDs);
+        return (T) this;
     }
     
-    public void get(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T get(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
     {
         this.get(OIDs, pduCallback, errorCallback);
+        return (T) this;
     }
     
-    public void getValue(String oid, OnValue valueCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getValue(String oid, OnValue valueCallback) throws IOException
     {
         this.getValue(oid, valueCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
     
-    public void getValue(String OIDs, OnValue valueCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getValue(String OIDs, OnValue valueCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetRequestPDU(OIDs), new OnValue.MessageAdapter(valueCallback), errorCallback);
+        return (T) this;
     }
 
-    public void get(String OID, OnResponse pduCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T get(String OID, OnResponse pduCallback) throws IOException
     {
         this.get(OID, pduCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
     
-    public void get(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T get(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetRequestPDU(OID), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        return (T) this;
     }
     
-    public void get(String[] OIDs, OnResponse pduCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T get(String[] OIDs, OnResponse pduCallback) throws IOException
     {
         this.get(OIDs, pduCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void get(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T get(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetRequestPDU(OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        return (T) this;
     }
 
     // Get Next
     
-    public void getNext(OnResponse pduCallback, String... OIDs) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getNext(OnResponse pduCallback, String... OIDs) throws IOException
     {
         this.getNext(pduCallback, this.getDefaultErrorHandler(), OIDs);
+        return (T) this;
     }
 
-    public void getNext(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getNext(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
     {
         this.getNext(OIDs, pduCallback, errorCallback);
+        return (T) this;
     }
     
-    public void getNext(String OID, OnResponse pduCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getNext(String OID, OnResponse pduCallback) throws IOException
     {
         this.getNext(OID, pduCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void getNext(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getNext(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetNextRequestPDU(OID), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        return (T) this;
     }
     
-    public void getNext(String[] OIDs, OnResponse pduCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getNext(String[] OIDs, OnResponse pduCallback) throws IOException
     {
         this.getNext(OIDs, pduCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void getNext(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getNext(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetNextRequestPDU(OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        return (T) this;
     }
 
     // Get Bulk
     
-    public void getBulk(OnResponse pduCallback, String... OIDs) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(OnResponse pduCallback, String... OIDs) throws IOException
     {
         this.getBulk(pduCallback, this.getDefaultErrorHandler(), OIDs);
+        return (T) this;
     }
 
-    public void getBulk(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(OnResponse pduCallback, OnError errorCallback, String... OIDs) throws IOException
     {
         this.getBulk(OIDs, pduCallback, errorCallback);
+        return (T) this;
     }
     
-    public void getBulk(String OID, OnResponse pduCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(String OID, OnResponse pduCallback) throws IOException
     {
         this.getBulk(OID, pduCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void getBulk(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetBulkRequestPDU(OID), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        return (T) this;
     }
     
-    public void getBulk(String[] OIDs, OnResponse pduCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(String[] OIDs, OnResponse pduCallback) throws IOException
     {
         this.getBulk(OIDs, pduCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void getBulk(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetBulkRequestPDU(OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        return (T) this;
     }
     
-    public void getBulk(OnResponse pduCallback, int maxRepetitions, String... OIDs) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(OnResponse pduCallback, int maxRepetitions, String... OIDs) throws IOException
     {
         this.getBulk(pduCallback, this.getDefaultErrorHandler(), maxRepetitions, OIDs);
+        return (T) this;
     }
 
-    public void getBulk(OnResponse pduCallback, OnError errorCallback, int maxRepetitions, String... OIDs) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(OnResponse pduCallback, OnError errorCallback, int maxRepetitions, String... OIDs) throws IOException
     {
         this.getBulk(maxRepetitions, OIDs, pduCallback, errorCallback);
+        return (T) this;
     }
     
-    public void getBulk(int maxRepetitions, String OID, OnResponse pduCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(int maxRepetitions, String OID, OnResponse pduCallback) throws IOException
     {
         this.getBulk(maxRepetitions, OID, pduCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void getBulk(int maxRepetitions, String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(int maxRepetitions, String OID, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetBulkRequestPDU(maxRepetitions, OID), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        return (T) this;
     }
     
-    public void getBulk(int maxRepetitions, String[] OIDs, OnResponse pduCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(int maxRepetitions, String[] OIDs, OnResponse pduCallback) throws IOException
     {
         this.getBulk(maxRepetitions, OIDs, pduCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void getBulk(int maxRepetitions, String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(int maxRepetitions, String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetBulkRequestPDU(maxRepetitions, OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        return (T) this;
     }
     
-    public void getBulk(OnResponse pduCallback, int nonRepeaters, int maxRepetitions, String... OIDs) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(OnResponse pduCallback, int nonRepeaters, int maxRepetitions, String... OIDs) throws IOException
     {
         this.getBulk(pduCallback, this.getDefaultErrorHandler(), nonRepeaters, maxRepetitions, OIDs);
+        return (T) this;
     }
 
-    public void getBulk(OnResponse pduCallback, OnError errorCallback, int nonRepeaters, int maxRepetitions, String... OIDs) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(OnResponse pduCallback, OnError errorCallback, int nonRepeaters, int maxRepetitions, String... OIDs) throws IOException
     {
         this.send(new GetBulkRequestPDU(nonRepeaters, maxRepetitions, OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        return (T) this;
     }
     
-    public void getBulk(int nonRepeaters, int maxRepetitions, String[] OIDs, OnResponse pduCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(int nonRepeaters, int maxRepetitions, String[] OIDs, OnResponse pduCallback) throws IOException
     {
         this.getBulk(nonRepeaters, maxRepetitions, OIDs, pduCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void getBulk(int nonRepeaters, int maxRepetitions, String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getBulk(int nonRepeaters, int maxRepetitions, String[] OIDs, OnResponse pduCallback, OnError errorCallback) throws IOException
     {
         this.send(new GetBulkRequestPDU(nonRepeaters, maxRepetitions, OIDs), new OnResponse.MessageAdapter(pduCallback), errorCallback);
+        return (T) this;
     }
 
     // walk
     
-    public void getTableBulk(String baseOID, int maxRepetitions, OnTable tableCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getTableBulk(String baseOID, int maxRepetitions, OnTable tableCallback) throws IOException
     {
         this.getTableBulk(baseOID, tableCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void getTableBulk(String baseOID, int maxRepetitions, OnTable tableCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getTableBulk(String baseOID, int maxRepetitions, OnTable tableCallback, OnError errorCallback) throws IOException
     {
         this.getBulk(maxRepetitions, baseOID, new SNMPWalker(this, true, maxRepetitions, baseOID, tableCallback, errorCallback), errorCallback);
+        return (T) this;
     }
     
-    public void getTableBulk(String baseOID, OnTable tableCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getTableBulk(String baseOID, OnTable tableCallback) throws IOException
     {
         this.getTableBulk(baseOID, tableCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void getTableBulk(String baseOID, OnTable tableCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getTableBulk(String baseOID, OnTable tableCallback, OnError errorCallback) throws IOException
     {
         this.getBulk(10, baseOID, new SNMPWalker(this, true, this.isNaughtyDevice() ? 10 : 100, baseOID, tableCallback, errorCallback), errorCallback);
+        return (T) this;
     }
     
-    public void getTable(String baseOID, OnTable tableCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getTable(String baseOID, OnTable tableCallback) throws IOException
     {
         this.getTable(baseOID, tableCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
 
-    public void getTable(String baseOID, OnTable tableCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getTable(String baseOID, OnTable tableCallback, OnError errorCallback) throws IOException
     {
         this.getNext(baseOID, new SNMPWalker(this, false, 1, baseOID, tableCallback, errorCallback), errorCallback);
+        return (T) this;
     }
     
     //
     
-    public void getCollatedTableBulk(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getCollatedTableBulk(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback) throws IOException
     {
         this.getCollatedTable(baseOIDs, maxRepetitions, tablesCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
     
-    public void getCollatedTableBulk(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getCollatedTableBulk(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
     {
         TableGrouper grouper = new TableGrouper(baseOIDs, tablesCallback);
         for (String baseOid : baseOIDs)
         {
             this.getTableBulk(baseOid, maxRepetitions, grouper, errorCallback);
         }
+        return (T) this;
     }
     
-    public void getCollatedTableBulk(String[] baseOIDs, OnCollatedTable tablesCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getCollatedTableBulk(String[] baseOIDs, OnCollatedTable tablesCallback) throws IOException
     {
         this.getCollatedTableBulk(baseOIDs, tablesCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
     
-    public void getCollatedTableBulk(String[] baseOIDs, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getCollatedTableBulk(String[] baseOIDs, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
     {
         this.getCollatedTableBulk(baseOIDs, this.isNaughtyDevice() ? 10 : 100, tablesCallback, errorCallback);
+        return (T) this;
     }
     
-    public void getCollatedTable(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback) throws IOException
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getCollatedTable(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback) throws IOException
     {
         this.getCollatedTable(baseOIDs, maxRepetitions, tablesCallback, this.getDefaultErrorHandler());
+        return (T) this;
     }
     
-    public void getCollatedTable(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public T getCollatedTable(String[] baseOIDs, int maxRepetitions, OnCollatedTable tablesCallback, OnError errorCallback) throws IOException
     {
         TableGrouper grouper = new TableGrouper(baseOIDs, tablesCallback);
         // send the get table queries
@@ -509,6 +641,30 @@ public abstract class SNMPContext<T extends SNMPContext<T>>
         {
             this.getTable(baseOid, grouper, errorCallback);
         }
+        return (T) this;
+    }
+    
+    // polling
+    
+    /**
+     * Poll the SNMP agent 
+     */
+    public SNMPJobBuilder poll()
+    {
+        return new SNMPJobBuilder()
+        {
+            @Override
+            protected SNMPJob submitJob(SNMPJob job)
+            {
+                return SNMPContext.this.schedule(job);
+            }
+
+            @Override
+            protected SNMPContext<?> context()
+            {
+                return SNMPContext.this;
+            }
+        };
     }
     
     // wrapper

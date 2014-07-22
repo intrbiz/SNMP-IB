@@ -14,6 +14,7 @@ import com.intrbiz.snmp.handler.OnMessage;
 import com.intrbiz.snmp.handler.OnTrap;
 import com.intrbiz.snmp.handler.OnUnknown;
 import com.intrbiz.snmp.model.SNMPMessage;
+import com.intrbiz.snmp.poller.SNMPJob;
 
 public class SNMPV2ContextWrapper extends SNMPV2Context
 {
@@ -236,5 +237,12 @@ public class SNMPV2ContextWrapper extends SNMPV2Context
     {
         // pass the message down to the real context to be sent
         this.parent.send(message, messageCallback, errorCallback);
+    }
+    
+    @Override
+    public SNMPJob schedule(SNMPJob job)
+    {
+        // pass the job down to the real context to be scheduled
+        return parent.schedule(job);
     }
 }

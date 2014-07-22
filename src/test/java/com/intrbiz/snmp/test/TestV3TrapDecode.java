@@ -19,6 +19,7 @@ import com.intrbiz.snmp.model.v2.ErrorStatus;
 import com.intrbiz.snmp.model.v2.TrapPDU;
 import com.intrbiz.snmp.model.v3.SNMPMessageV3;
 import com.intrbiz.snmp.model.v3.USMSecurityParameters;
+import com.intrbiz.snmp.poller.SNMPJob;
 import com.intrbiz.snmp.security.SNMPAuthMode;
 import com.intrbiz.snmp.security.SNMPPrivMode;
 import com.intrbiz.snmp.util.SNMPUtil;
@@ -61,6 +62,12 @@ public class TestV3TrapDecode
             @Override
             public void send(SNMPMessage message, OnMessage onMessage, OnError onError) throws IOException
             {
+            }
+            
+            @Override
+            public SNMPJob schedule(SNMPJob job)
+            {
+                return null;
             }
         };
         ctx.setUser("admin", SNMPAuthMode.SHA1, SNMPPrivMode.AES128, "abcde12345");

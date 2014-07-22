@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Timer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -38,6 +39,7 @@ import com.intrbiz.snmp.model.v2.TrapPDU;
 import com.intrbiz.snmp.model.v3.ReportPDU;
 import com.intrbiz.snmp.model.v3.SNMPMessageV3;
 import com.intrbiz.snmp.model.v3.USMSecurityParameters;
+import com.intrbiz.snmp.poller.SNMPJob;
 import com.intrbiz.snmp.util.SNMPUtil;
 
 /**
@@ -71,6 +73,8 @@ public final class AsyncUDPTransport extends SNMPTransport
     private long lastBackgroundRun = 0;
     
     private int port;
+    
+    private Timer poller = new Timer();
 
     public AsyncUDPTransport(int port) throws IOException
     {
@@ -312,7 +316,7 @@ public final class AsyncUDPTransport extends SNMPTransport
     @Override
     protected void send(SNMPMessage message, SNMPContext<?> context, OnMessage messageCallback, OnError errorCallback) throws IOException
     {
-        if (this.closed)      throw new IOException("Transport is closed, cannot send message");
+        if (this.closed)      throw new IllegalStateException("Transport is closed, cannot send message");
         if (message == null)  throw new NullPointerException("Cannot sent a null message!");
         if (messageCallback == null) throw new IllegalArgumentException("Cannot send message without a message callback being given!");
         if (context == null)  throw new IllegalArgumentException("Cannot send message without a context!");
@@ -325,6 +329,14 @@ public final class AsyncUDPTransport extends SNMPTransport
         emsg.errorCallback = errorCallback == null ? new OnError.LoggingAdapter() : errorCallback;
         // enqueue
         this.enqueueMessage(emsg);
+    }
+
+    @Override
+    protected SNMPJob schedule(SNMPJob job)
+    {
+        if (this.closed) throw new IllegalStateException("Transport is closed, cannot schedule message");
+        this.poller.schedule(job, job.getInitial(), job.getInterval());
+        return job;
     }
 
     @Override
