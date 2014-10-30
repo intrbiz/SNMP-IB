@@ -58,7 +58,17 @@ public abstract class SNMPJobBuilder implements SNMPActionable<SNMPJob>
         return this.unit(TimeUnit.SECONDS);
     }
     
+    public SNMPJobBuilder second()
+    {
+        return this.unit(TimeUnit.SECONDS);
+    }
+    
     public SNMPJobBuilder minutes()
+    {
+        return this.unit(TimeUnit.MINUTES);
+    }
+    
+    public SNMPJobBuilder minute()
     {
         return this.unit(TimeUnit.MINUTES);
     }
@@ -68,7 +78,17 @@ public abstract class SNMPJobBuilder implements SNMPActionable<SNMPJob>
         return this.unit(TimeUnit.HOURS);
     }
     
+    public SNMPJobBuilder hour()
+    {
+        return this.unit(TimeUnit.HOURS);
+    }
+    
     public SNMPJobBuilder days()
+    {
+        return this.unit(TimeUnit.DAYS);
+    }
+    
+    public SNMPJobBuilder day()
     {
         return this.unit(TimeUnit.DAYS);
     }
