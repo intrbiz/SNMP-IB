@@ -1,5 +1,7 @@
 package example;
 
+import static com.intrbiz.snmp.mib.defs.IETF.*;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -32,12 +34,12 @@ public class SysInfoV3
         
         // Use the context to send messages
         // The callback will be executed when a response to a request is received
-        // swAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
-        /*sw2Agent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");*/
+        // swAgent.get(new ResponseHandler.LoggingHandler(), SNMPv2MIB.system.sysDescr.oid, SNMPv2MIB.system.sysUpTime.oid);
+        /*sw2Agent.get(new ResponseHandler.LoggingHandler(), SNMPv2MIB.system.sysDescr.oid, SNMPv2MIB.system.sysUpTime.oid);*/
         
-        sw3Agent.get(new OnResponse.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        sw3Agent.get(new OnResponse.LoggingAdapter(), SNMPv2MIB.system.sysDescr.oid, SNMPv2MIB.system.sysUpTime.oid);
         
-        // apAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        // apAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), SNMPv2MIB.system.sysDescr.oid, SNMPv2MIB.system.sysUpTime.oid);
         
         // apAgent.getTableBulk("1.3.6.1.2.1.2.2.1.2", 100, new OnTable.LoggingAdapter(), new OnError.LoggingAdapter());
         

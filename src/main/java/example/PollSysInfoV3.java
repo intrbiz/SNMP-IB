@@ -1,5 +1,7 @@
 package example;
 
+import static com.intrbiz.snmp.mib.defs.IETF.*;
+
 import java.io.IOException;
 
 import org.apache.log4j.BasicConfigurator;
@@ -32,15 +34,15 @@ public class PollSysInfoV3
            @Override
            public void run(SNMPJob job, SNMPContext<?> context) throws IOException
            {
-               context.get(new OnResponse.LoggingAdapter(), "1.3.6.1.2.1.1.5.0");
+               context.get(new OnResponse.LoggingAdapter(), SNMPv2MIB.system.sysName.oid);
            }
         });
         
         // poll the agent every minute after an initial delay of 30 seconds
-        sw3Agent.poll().after(30).every(60).seconds().get(new OnResponse.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.6.0");
+        sw3Agent.poll().after(30).every(60).seconds().get(new OnResponse.LoggingAdapter(), SNMPv2MIB.system.sysDescr.oid, SNMPv2MIB.system.sysLocation.oid);
         
         // poll the agent every 2 minutes after an initial delay of 15 seconds
-        sw3Agent.poll().after(15).every(120).seconds().get(new String[] { "1.3.6.1.2.1.1.4.0", "1.3.6.1.2.1.1.5.0" }, new OnResponse.LoggingAdapter());
+        sw3Agent.poll().after(15).every(120).seconds().get(new String[] { SNMPv2MIB.system.sysContact.oid, SNMPv2MIB.system.sysName.oid }, new OnResponse.LoggingAdapter());
         
         // Run our transport to send and receive messages
         transport.run();
