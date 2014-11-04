@@ -7,6 +7,8 @@ import com.intrbiz.snmp.SNMPV2Context;
 import com.intrbiz.snmp.handler.OnCollatedTable;
 import com.intrbiz.snmp.handler.OnError;
 
+import static com.intrbiz.snmp.mib.defs.IETF.IFMIB;
+
 public class IFDescrV2c
 {
     public static void main(String[] args) throws Exception
@@ -33,7 +35,7 @@ public class IFDescrV2c
         // sw3Agent.getTableBulk("1.3.6.1.2.1.2.2.1.2", 100, new OnTable.LoggingAdapter(), new OnError.LoggingAdapter());
         // sw3Agent.getTableBulk("1.3.6.1.2.1.2.2.1.10", 100, new OnTable.LoggingAdapter(), new OnError.LoggingAdapter());
         
-        sw3Agent.getCollatedTableBulk(new String[] { "1.3.6.1.2.1.2.2.1.2", "1.3.6.1.2.1.2.2.1.10", "1.3.6.1.2.1.2.2.1.16" }, new OnCollatedTable.LoggingAdapter(), new OnError.LoggingAdapter());
+        sw3Agent.getCollatedTableBulk(new String[] { IFMIB.interfaces.ifTable.ifEntry.ifDescr.oid, IFMIB.interfaces.ifTable.ifEntry.ifInOctets.oid, IFMIB.interfaces.ifTable.ifEntry.ifOutOctets.oid }, new OnCollatedTable.LoggingAdapter(), new OnError.LoggingAdapter());
         
         // swAgent.getTableBulk("1.3.6.1.2.1.2.2", 100, new TableHandler.LoggingHandler());
         

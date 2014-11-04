@@ -1,5 +1,7 @@
 package example;
 
+import static com.intrbiz.snmp.mib.defs.IETF.*;
+
 import org.apache.log4j.BasicConfigurator;
 
 import com.intrbiz.snmp.SNMPTransport;
@@ -21,7 +23,7 @@ public class SysInfoV1
         
         // Use the context to send messages
         // The callback will be executed when a response to a request is received
-        agent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        agent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), SNMPv2MIB.system.sysDescr.oid, SNMPv2MIB.system.sysUpTime.oid);
         
         // Run our transport to send and receive messages
         transport.run();        

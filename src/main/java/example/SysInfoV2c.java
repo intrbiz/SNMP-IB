@@ -8,6 +8,8 @@ import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnResponse;
 import com.intrbiz.snmp.handler.OnValue;
 
+import static com.intrbiz.snmp.mib.defs.IETF.SNMPv2MIB;;
+
 public class SysInfoV2c
 {
     public static void main(String[] args) throws Exception
@@ -25,13 +27,13 @@ public class SysInfoV2c
 
         // Use the context to send messages
         // The callback will be executed when a response to a request is received
-        lcAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
-        swAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
-        // sw2Agent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        lcAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), SNMPv2MIB.system.sysDescr.oid, SNMPv2MIB.system.sysUpTime.oid);
+        swAgent.get(new OnResponse.LoggingAdapter(), new OnError.LoggingAdapter(), SNMPv2MIB.system.sysDescr.oid, SNMPv2MIB.system.sysUpTime.oid);
+        // sw2Agent.get(new ResponseHandler.LoggingHandler(), SNMPv2MIB.system.sysDescr.oid, SNMPv2MIB.system.sysUpTime.oid);
 
-        // apAgent.get(new ResponseHandler.LoggingHandler(), "1.3.6.1.2.1.1.1.0", "1.3.6.1.2.1.1.3.0");
+        // apAgent.get(new ResponseHandler.LoggingHandler(), SNMPv2MIB.system.sysDescr.oid, SNMPv2MIB.system.sysUpTime.oid");
         
-        lcAgent.with(new OnError.LoggingAdapter()).getValue("1.3.6.1.2.1.1.1.0", new OnValue.LoggingAdapter());
+        lcAgent.with(new OnError.LoggingAdapter()).getValue(SNMPv2MIB.system.sysDescr.oid, new OnValue.LoggingAdapter());
 
         // Run our transport to send and receive messages
         transport.run();
