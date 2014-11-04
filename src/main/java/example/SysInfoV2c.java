@@ -8,7 +8,7 @@ import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnResponse;
 import com.intrbiz.snmp.handler.OnValue;
 
-import static com.intrbiz.snmp.mib.defs.IETF.SNMPv2MIB;;
+import static com.intrbiz.snmp.mib.defs.ietf.SNMPv2MIBDef.SNMPv2MIB;
 
 public class SysInfoV2c
 {
