@@ -1,6 +1,6 @@
 package example;
 
-import static com.intrbiz.snmp.mib.defs.IETF.*;
+import static com.intrbiz.snmp.mib.defs.ietf.SNMPv2MIBDef.SNMPv2MIB;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;

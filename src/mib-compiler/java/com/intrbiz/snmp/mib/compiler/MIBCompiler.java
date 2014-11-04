@@ -39,26 +39,26 @@ public class MIBCompiler
     
     private static void compilePackage(File dir, MibLoader loader, String pack) throws Exception
     {
-        try (FileWriter idx = new FileWriter(new File(new File("./src/main/java/com/intrbiz/snmp/mib/defs"), pack.toUpperCase() + ".java")))
+        /*try (FileWriter idx = new FileWriter(new File(new File("./src/main/java/com/intrbiz/snmp/mib/defs"), pack.toUpperCase() + ".java")))
         {
             idx.write("package com.intrbiz.snmp.mib.defs;\n");
             idx.write("\n");
             idx.write("import com.intrbiz.snmp.mib.defs." + pack + ".*;\n");
             idx.write("\n");
-            idx.write("/** All common " + pack + " MIBs, to be used as static imports */");
+            idx.write("/** All common " + pack + " MIBs, to be used as static imports /");
             idx.write("public final class " + pack.toUpperCase() + "\n");
-            idx.write("{\n");
+            idx.write("{\n");*/
             // compile and index MIBs
             for (File aMib : dir.listFiles())
             {
                 System.out.println("Compiling: " + aMib.getAbsolutePath());    
                 Mib mib = loader.load(aMib);
-                compileMIB(mib, pack, idx);
+                compileMIB(mib, pack, null /*idx*/);
             }
             //
-            idx.write("}\n");
+            /*idx.write("}\n");
             idx.flush();
-        }
+        }*/
     }
     
     private static void compileMIB(Mib mib, String subPackage, FileWriter idx) throws IOException
@@ -82,8 +82,9 @@ public class MIBCompiler
             Enumeration<MibNode> children;
             boolean ns;
             // index
+            /*
             idx.write("    public static final " + ucfirst(cleanName(node.getName())) + "Def " + cleanName(node.getName()) + " = " + ucfirst(cleanName(node.getName())) + "Def." + cleanName(node.getName()) + ";\n");
-            idx.write("\n");
+            idx.write("\n");*/
             /*idx.write("    public static final " + ucfirst(cleanName(node.getName())) + "Def " + cleanName(node.getName()) + "() { return " + ucfirst(cleanName(node.getName())) + "Def." + cleanName(node.getName()) + "; }\n");
             idx.write("\n");*/
             //

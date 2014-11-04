@@ -7,7 +7,7 @@ import com.intrbiz.snmp.SNMPV2Context;
 import com.intrbiz.snmp.handler.OnCollatedTable;
 import com.intrbiz.snmp.handler.OnError;
 
-import static com.intrbiz.snmp.mib.defs.IETF.IFMIB;
+import static com.intrbiz.snmp.mib.defs.ietf.IFMIBDef.IFMIB;
 
 public class IFDescrV2c
 {
