@@ -3,6 +3,7 @@ package com.intrbiz.snmp;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutorService;
 
 import com.intrbiz.snmp.handler.OnError;
 import com.intrbiz.snmp.handler.OnMessage;
@@ -11,6 +12,7 @@ import com.intrbiz.snmp.handler.OnUnknown;
 import com.intrbiz.snmp.model.SNMPMessage;
 import com.intrbiz.snmp.poller.SNMPJob;
 import com.intrbiz.snmp.transport.AsyncUDPTransport;
+import com.intrbiz.snmp.transport.DispatchingAsyncUDPTransport;
 
 /**
  * A transport sends and received SNMPMessages
@@ -44,16 +46,61 @@ public abstract class SNMPTransport implements Runnable
     protected abstract SNMPJob schedule(SNMPJob job);
 
     /**
-     * Create a default SNMPTransport implementation
+     * Create a default SNMPTransport implementation using the 
+     * default client UDP port
      */
     public static final SNMPTransport open() throws IOException
     {
         return new AsyncUDPTransport();
     }
     
+    /**
+     * Create a default SNMPTransport implementation using the 
+     * given client UDP port
+     */
     public static final SNMPTransport open(int port) throws IOException
     {
         return new AsyncUDPTransport(port);
+    }
+    
+    /**
+     * Create a default SNMPTransport implementation using the 
+     * default client UDP port and which executes callbacks in a 
+     * thread pool
+     */
+    public static final SNMPTransport openThreaded() throws IOException
+    {
+        return new DispatchingAsyncUDPTransport();
+    }
+    
+    /**
+     * Create a default SNMPTransport implementation using the 
+     * given client UDP port and which executes callbacks in a 
+     * thread pool
+     */
+    public static final SNMPTransport openThreaded(int port) throws IOException
+    {
+        return new DispatchingAsyncUDPTransport(port);
+    }
+    
+    /**
+     * Create a default SNMPTransport implementation using the 
+     * default client UDP port and which executes callbacks in the 
+     * given thread pool
+     */
+    public static final SNMPTransport openThreaded(ExecutorService executor) throws IOException
+    {
+        return new DispatchingAsyncUDPTransport(executor);
+    }
+    
+    /**
+     * Create a default SNMPTransport implementation using the 
+     * given client UDP port and which executes callbacks in the 
+     * given thread pool
+     */
+    public static final SNMPTransport openThreaded(int port, ExecutorService executor) throws IOException
+    {
+        return new DispatchingAsyncUDPTransport(port, executor);
     }
     
     // handlers

@@ -50,7 +50,7 @@ import com.intrbiz.snmp.util.SNMPUtil;
  * As such a large number of SNMP Agents should be pollable with minimal resource utilisation.
  * 
  */
-public final class AsyncUDPTransport extends SNMPTransport
+public class AsyncUDPTransport extends SNMPTransport
 {
     private static final long BG_INTERVAL = 500;
 
@@ -504,14 +504,8 @@ public final class AsyncUDPTransport extends SNMPTransport
                 ((SNMPMessageV3) msg).authenticateMessage();
             }
             // invoke the callback
-            try
-            {
-                if (responseTo.messageCallback != null) responseTo.messageCallback.apply(msg);
-            }
-            catch (IOException e)
-            {
-                logger.warn("Error during response handler", e);
-            }
+            this.invokeResponseCallback(responseTo.messageCallback, msg);
+            
         }
         catch (IOException e)
         {
@@ -520,19 +514,45 @@ public final class AsyncUDPTransport extends SNMPTransport
         }
     }
     
-    private void dispatchTimeout(EnqueuedMessage responseTo)
+    /**
+     * Actually execute the response callback, by default this is executed 
+     * in the IO thead, however a subclass may use a thread pool
+     */
+    protected void invokeResponseCallback(final OnMessage callback, final SNMPMessage response)
     {
         try
         {
-            responseTo.context.setTimeoutCount(responseTo.context.getTimeoutCount() + 1);
-            responseTo.context.setErrorCount(responseTo.context.getErrorCount() + 1);
-            responseTo.context.setNaughtyDevice(true);
-            logger.error("Got timeout for device " + responseTo.context.getContextId() + " is naughty: " + responseTo.context.getErrorCount() + " " + responseTo.context.getTimeoutCount());
-            if (responseTo.errorCallback != null) responseTo.errorCallback.apply(new SNMPTimeout(responseTo.context, responseTo.message, "Got timeout for device " + responseTo.context.getContextId() + " is naughty: " + responseTo.context.getErrorCount() + " " + responseTo.context.getTimeoutCount()));
+            if (callback != null)  callback.apply(response);
         }
-        catch (IOException ee)
+        catch (Exception e)
         {
-            logger.warn("Error during timeout handler", ee);
+            logger.warn("Error during response handler", e);
+        }
+    }
+    
+    private void dispatchTimeout(EnqueuedMessage responseTo)
+    {
+        responseTo.context.setTimeoutCount(responseTo.context.getTimeoutCount() + 1);
+        responseTo.context.setErrorCount(responseTo.context.getErrorCount() + 1);
+        responseTo.context.setNaughtyDevice(true);
+        logger.error("Got timeout for device " + responseTo.context.getContextId() + " is naughty: " + responseTo.context.getErrorCount() + " " + responseTo.context.getTimeoutCount());
+        // invoke the callback
+        this.invokeTimeoutCallback(responseTo.errorCallback, new SNMPTimeout(responseTo.context, responseTo.message, "Got timeout for device " + responseTo.context.getContextId() + " is naughty: " + responseTo.context.getErrorCount() + " " + responseTo.context.getTimeoutCount()));
+    }
+    
+    /**
+     * Actually invoke a timeout callback, by default this happens in the IO thread 
+     * however a subclass may use a thread pool or similar
+     */
+    protected void invokeTimeoutCallback(final OnError callback, final Throwable error)
+    {
+        try
+        {
+            if (callback != null)  callback.apply(error);
+        }
+        catch (Exception ee)
+        {
+            logger.warn("Error executing timeout handler", ee);
         }
     }
 

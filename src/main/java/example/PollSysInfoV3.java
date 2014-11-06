@@ -24,7 +24,7 @@ public class PollSysInfoV3
         BasicConfigurator.configure();
         Logger.getRootLogger().setLevel(Level.INFO);
         // Create the transport which will be used to send our SNMP messages
-        SNMPTransport transport = SNMPTransport.open();
+        SNMPTransport transport = SNMPTransport.openThreaded();
         
         // A context represents an Agent we are going to contact, or which is going to contact us
         SNMPV3Context sw3Agent    = transport.openV3Context("172.30.14.1", "8000002B0016E0357E406877").setUser("admin", SNMPAuthMode.SHA1, SNMPPrivMode.AES128, "abcde12345");
