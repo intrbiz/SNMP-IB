@@ -4,7 +4,7 @@
 
   <groupId>com.intrbiz.snmp-ib</groupId>
   <artifactId>snmp-ib</artifactId>
-  <version>1.0.0-rc-3</version>
+  <version>1.0.0-rc-4</version>
   <packaging>jar</packaging>
 
   <name>snmp-ib</name>
