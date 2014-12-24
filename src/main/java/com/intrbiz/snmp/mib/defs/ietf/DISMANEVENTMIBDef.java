@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DISMANEVENTMIBDef extends MIB
 {
     public static final DISMANEVENTMIBDef DISMANEVENTMIB = new DISMANEVENTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DISMANEVENTMIBDef.DISMANEVENTMIB); }
 
     /** 16 October 2000*/
     public final DismanEventMIBEnt dismanEventMIB;

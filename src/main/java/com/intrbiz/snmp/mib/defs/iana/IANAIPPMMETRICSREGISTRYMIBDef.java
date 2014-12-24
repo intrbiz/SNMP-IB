@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IANAIPPMMETRICSREGISTRYMIBDef extends MIB
 {
     public static final IANAIPPMMETRICSREGISTRYMIBDef IANAIPPMMETRICSREGISTRYMIB = new IANAIPPMMETRICSREGISTRYMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANAIPPMMETRICSREGISTRYMIBDef.IANAIPPMMETRICSREGISTRYMIB); }
 
     /** December 04, 2006*/
     public final IanaIppmMetricsRegistryEnt ianaIppmMetricsRegistry;

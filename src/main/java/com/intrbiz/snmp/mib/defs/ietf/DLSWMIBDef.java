@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DLSWMIBDef extends MIB
 {
     public static final DLSWMIBDef DLSWMIB = new DLSWMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DLSWMIBDef.DLSWMIB); }
 
     public final DlswEnt dlsw;
 

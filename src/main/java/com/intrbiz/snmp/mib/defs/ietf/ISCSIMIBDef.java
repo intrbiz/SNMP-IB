@@ -1,15 +1,12 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 3411
 RFC 4001*/
 public final class ISCSIMIBDef extends MIB
 {
     public static final ISCSIMIBDef ISCSIMIB = new ISCSIMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ISCSIMIBDef.ISCSIMIB); }
 
     /** May 22, 2006*/
     public final IscsiMibModuleEnt iscsiMibModule;

@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**from [RFC2578]
 from [RFC2579]
@@ -10,8 +9,6 @@ from [RFC2863]*/
 public final class DOT3OAMMIBDef extends MIB
 {
     public static final DOT3OAMMIBDef DOT3OAMMIB = new DOT3OAMMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DOT3OAMMIBDef.DOT3OAMMIB); }
 
     /** from [RFC2580]
 

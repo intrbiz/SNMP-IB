@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IPMROUTESTDMIBDef extends MIB
 {
     public static final IPMROUTESTDMIBDef IPMROUTESTDMIB = new IPMROUTESTDMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IPMROUTESTDMIBDef.IPMROUTESTDMIB); }
 
     /** September 22, 2000*/
     public final IpMRouteStdMIBEnt ipMRouteStdMIB;

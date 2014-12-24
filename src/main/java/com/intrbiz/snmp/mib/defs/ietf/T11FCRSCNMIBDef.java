@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**The Fibre Channel RSCN MIB
 
@@ -17,8 +16,6 @@ monitoring of RSCN usage.
 public final class T11FCRSCNMIBDef extends MIB
 {
     public static final T11FCRSCNMIBDef T11FCRSCNMIB = new T11FCRSCNMIBDef();
-
-    static { MIBs.getInstance().registerMIB(T11FCRSCNMIBDef.T11FCRSCNMIB); }
 
     /** [RFC4439]*/
     public final T11FcRscnMIBEnt t11FcRscnMIB;

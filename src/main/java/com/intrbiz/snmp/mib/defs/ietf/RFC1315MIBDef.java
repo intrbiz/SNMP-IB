@@ -1,15 +1,12 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**FIX: added additional import (Counter)
 FIX:                FROM RFC-1155*/
 public final class RFC1315MIBDef extends MIB
 {
     public static final RFC1315MIBDef RFC1315MIB = new RFC1315MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1315MIBDef.RFC1315MIB); }
 
     /** Frame Relay DTE MIB
 

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SNMPUSERBASEDSMMIBDef extends MIB
 {
     public static final SNMPUSERBASEDSMMIBDef SNMPUSERBASEDSMMIB = new SNMPUSERBASEDSMMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SNMPUSERBASEDSMMIBDef.SNMPUSERBASEDSMMIB); }
 
     /** 16 Oct 2002, midnight*/
     public final SnmpUsmMIBEnt snmpUsmMIB;

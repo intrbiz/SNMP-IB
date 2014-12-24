@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class MALLOCMIBDef extends MIB
 {
     public static final MALLOCMIBDef MALLOCMIB = new MALLOCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(MALLOCMIBDef.MALLOCMIB); }
 
     /** June 9, 2003*/
     public final MallocMIBEnt mallocMIB;

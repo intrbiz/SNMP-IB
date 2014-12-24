@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RTPMIBDef extends MIB
 {
     public static final RTPMIBDef RTPMIB = new RTPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(RTPMIBDef.RTPMIB); }
 
     /** 2 October 2000*/
     public final RtpMIBEnt rtpMIB;

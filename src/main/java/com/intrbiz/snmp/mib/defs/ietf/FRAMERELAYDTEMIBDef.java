@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class FRAMERELAYDTEMIBDef extends MIB
 {
     public static final FRAMERELAYDTEMIBDef FRAMERELAYDTEMIB = new FRAMERELAYDTEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(FRAMERELAYDTEMIBDef.FRAMERELAYDTEMIB); }
 
     /** Frame Relay DTE MIB
 

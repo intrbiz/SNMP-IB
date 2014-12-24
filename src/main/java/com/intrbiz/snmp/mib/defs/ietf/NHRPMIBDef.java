@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class NHRPMIBDef extends MIB
 {
     public static final NHRPMIBDef NHRPMIB = new NHRPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(NHRPMIBDef.NHRPMIB); }
 
     /** August 26, 1999*/
     public final NhrpMIBEnt nhrpMIB;

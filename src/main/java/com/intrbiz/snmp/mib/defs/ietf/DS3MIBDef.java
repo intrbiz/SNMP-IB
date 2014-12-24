@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2579]
@@ -10,8 +9,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class DS3MIBDef extends MIB
 {
     public static final DS3MIBDef DS3MIB = new DS3MIBDef();
-
-    static { MIBs.getInstance().registerMIB(DS3MIBDef.DS3MIB); }
 
     /** [RFC3593]
 

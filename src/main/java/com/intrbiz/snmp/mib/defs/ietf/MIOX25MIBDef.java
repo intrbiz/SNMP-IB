@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**###########################################################*/
 public final class MIOX25MIBDef extends MIB
 {
     public static final MIOX25MIBDef MIOX25MIB = new MIOX25MIBDef();
-
-    static { MIBs.getInstance().registerMIB(MIOX25MIBDef.MIOX25MIB); }
 
     /** IP over X.25 MIB*/
     public final MioxEnt miox;

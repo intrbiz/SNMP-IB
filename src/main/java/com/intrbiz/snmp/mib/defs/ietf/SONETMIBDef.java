@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SONETMIBDef extends MIB
 {
     public static final SONETMIBDef SONETMIB = new SONETMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SONETMIBDef.SONETMIB); }
 
     /** This is the MIB module for the SONET/SDH Interface objects.*/
     public final SonetMIBEnt sonetMIB;

@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**{atmMIB 3} has been used by [19].*/
 public final class ATMMIBDef extends MIB
 {
     public static final ATMMIBDef ATMMIB = new ATMMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ATMMIBDef.ATMMIB); }
 
     public final AtmMIBEnt atmMIB;
 

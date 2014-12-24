@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**--
 --
@@ -22,8 +21,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class RDBMSMIBDef extends MIB
 {
     public static final RDBMSMIBDef RDBMSMIB = new RDBMSMIBDef();
-
-    static { MIBs.getInstance().registerMIB(RDBMSMIBDef.RDBMSMIB); }
 
     public final RdbmsMIBEnt rdbmsMIB;
 

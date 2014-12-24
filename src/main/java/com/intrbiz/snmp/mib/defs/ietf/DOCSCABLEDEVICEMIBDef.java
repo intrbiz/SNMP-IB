@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 2578
 RFC 2579
@@ -13,8 +12,6 @@ RFC 4502*/
 public final class DOCSCABLEDEVICEMIBDef extends MIB
 {
     public static final DOCSCABLEDEVICEMIBDef DOCSCABLEDEVICEMIB = new DOCSCABLEDEVICEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DOCSCABLEDEVICEMIBDef.DOCSCABLEDEVICEMIB); }
 
     /** RFC 3289
 

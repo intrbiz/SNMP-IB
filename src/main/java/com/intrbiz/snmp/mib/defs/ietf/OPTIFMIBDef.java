@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class OPTIFMIBDef extends MIB
 {
     public static final OPTIFMIBDef OPTIFMIB = new OPTIFMIBDef();
-
-    static { MIBs.getInstance().registerMIB(OPTIFMIBDef.OPTIFMIB); }
 
     /** This is the MIB module for the OTN Interface objects.*/
     public final OptIfMibModuleEnt optIfMibModule;

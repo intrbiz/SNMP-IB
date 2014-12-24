@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SNMPCOMMUNITYMIBDef extends MIB
 {
     public static final SNMPCOMMUNITYMIBDef SNMPCOMMUNITYMIB = new SNMPCOMMUNITYMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SNMPCOMMUNITYMIBDef.SNMPCOMMUNITYMIB); }
 
     /** 6 Mar 2000, midnight*/
     public final SnmpCommunityMIBEnt snmpCommunityMIB;

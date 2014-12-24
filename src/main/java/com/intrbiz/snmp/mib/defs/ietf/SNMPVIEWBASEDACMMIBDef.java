@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SNMPVIEWBASEDACMMIBDef extends MIB
 {
     public static final SNMPVIEWBASEDACMMIBDef SNMPVIEWBASEDACMMIB = new SNMPVIEWBASEDACMMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SNMPVIEWBASEDACMMIBDef.SNMPVIEWBASEDACMMIB); }
 
     /** 16 Oct 2002, midnight*/
     public final SnmpVacmMIBEnt snmpVacmMIB;

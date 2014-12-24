@@ -1,15 +1,12 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2580]*/
 public final class ROHCUNCOMPRESSEDMIBDef extends MIB
 {
     public static final ROHCUNCOMPRESSEDMIBDef ROHCUNCOMPRESSEDMIB = new ROHCUNCOMPRESSEDMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ROHCUNCOMPRESSEDMIBDef.ROHCUNCOMPRESSEDMIB); }
 
     /** June 3, 2004*/
     public final RohcUncmprMIBEnt rohcUncmprMIB;

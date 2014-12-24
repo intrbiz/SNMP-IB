@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class POLICYBASEDMANAGEMENTMIBDef extends MIB
 {
     public static final POLICYBASEDMANAGEMENTMIBDef POLICYBASEDMANAGEMENTMIB = new POLICYBASEDMANAGEMENTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(POLICYBASEDMANAGEMENTMIBDef.POLICYBASEDMANAGEMENTMIB); }
 
     /** Policy-Based Management MIB
 

@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**the Fibre Channel Fabric Address Manager MIB
 
@@ -17,8 +16,6 @@ addresses within a domain.
 public final class T11FCFABRICADDRMGRMIBDef extends MIB
 {
     public static final T11FCFABRICADDRMGRMIBDef T11FCFABRICADDRMGRMIB = new T11FCFABRICADDRMGRMIBDef();
-
-    static { MIBs.getInstance().registerMIB(T11FCFABRICADDRMGRMIBDef.T11FCFABRICADDRMGRMIB); }
 
     public final T11FcFabricAddrMgrMIBEnt t11FcFabricAddrMgrMIB;
 

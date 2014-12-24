@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RIPv2MIBDef extends MIB
 {
     public static final RIPv2MIBDef RIPv2MIB = new RIPv2MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RIPv2MIBDef.RIPv2MIB); }
 
     /** This MIB module uses the extended OBJECT-TYPE macro asdefined in [9].
 

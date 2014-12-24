@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class INTERFACETOPNMIBDef extends MIB
 {
     public static final INTERFACETOPNMIBDef INTERFACETOPNMIB = new INTERFACETOPNMIBDef();
-
-    static { MIBs.getInstance().registerMIB(INTERFACETOPNMIBDef.INTERFACETOPNMIB); }
 
     public final InterfaceTopNMIBEnt interfaceTopNMIB;
 

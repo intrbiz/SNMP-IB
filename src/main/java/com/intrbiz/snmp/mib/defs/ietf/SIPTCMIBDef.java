@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 2578*/
 public final class SIPTCMIBDef extends MIB
 {
     public static final SIPTCMIBDef SIPTCMIB = new SIPTCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SIPTCMIBDef.SIPTCMIB); }
 
     /** RFC 2579*/
     public final SipTCEnt sipTC;

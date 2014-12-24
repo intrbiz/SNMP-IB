@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC2578
 RFC2579
@@ -9,8 +8,6 @@ RFC2580*/
 public final class SLAPMMIBDef extends MIB
 {
     public static final SLAPMMIBDef SLAPMMIB = new SLAPMMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SLAPMMIBDef.SLAPMMIB); }
 
     /** RFC2571
 

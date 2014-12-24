@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class TOKENRINGMIBDef extends MIB
 {
     public static final TOKENRINGMIBDef TOKENRINGMIB = new TOKENRINGMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TOKENRINGMIBDef.TOKENRINGMIB); }
 
     public final Dot5Ent dot5;
 

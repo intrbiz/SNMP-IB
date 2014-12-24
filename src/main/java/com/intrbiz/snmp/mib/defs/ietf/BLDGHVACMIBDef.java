@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class BLDGHVACMIBDef extends MIB
 {
     public static final BLDGHVACMIBDef BLDGHVACMIB = new BLDGHVACMIBDef();
-
-    static { MIBs.getInstance().registerMIB(BLDGHVACMIBDef.BLDGHVACMIB); }
 
     public final BldgHVACMIBEnt bldgHVACMIB;
 

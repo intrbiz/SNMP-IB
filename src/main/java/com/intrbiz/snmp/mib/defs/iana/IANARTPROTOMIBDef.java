@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IANARTPROTOMIBDef extends MIB
 {
     public static final IANARTPROTOMIBDef IANARTPROTOMIB = new IANARTPROTOMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANARTPROTOMIBDef.IANARTPROTOMIB); }
 
     /** September 26, 2000*/
     public final IanaRtProtoMIBEnt ianaRtProtoMIB;

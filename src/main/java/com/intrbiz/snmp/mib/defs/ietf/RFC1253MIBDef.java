@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RFC1253MIBDef extends MIB
 {
     public static final RFC1253MIBDef RFC1253MIB = new RFC1253MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1253MIBDef.RFC1253MIB); }
 
     /** November 10, 2006 00:00:00 EST*/
     public final OspfEnt ospf;

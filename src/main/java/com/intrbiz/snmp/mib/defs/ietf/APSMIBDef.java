@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class APSMIBDef extends MIB
 {
     public static final APSMIBDef APSMIB = new APSMIBDef();
-
-    static { MIBs.getInstance().registerMIB(APSMIBDef.APSMIB); }
 
     /** February 28, 2003*/
     public final ApsMIBEnt apsMIB;

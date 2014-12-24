@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class TEMIBDef extends MIB
 {
     public static final TEMIBDef TEMIB = new TEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TEMIBDef.TEMIB); }
 
     /** 01 January 2005*/
     public final TeMIBEnt teMIB;

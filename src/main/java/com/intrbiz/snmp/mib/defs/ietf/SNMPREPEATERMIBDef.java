@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SNMPREPEATERMIBDef extends MIB
 {
     public static final SNMPREPEATERMIBDef SNMPREPEATERMIB = new SNMPREPEATERMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SNMPREPEATERMIBDef.SNMPREPEATERMIB); }
 
     public final SnmpDot3RptrMgtEnt snmpDot3RptrMgt;
 

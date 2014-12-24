@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class ETHERWISDef extends MIB
 {
     public static final ETHERWISDef ETHERWIS = new ETHERWISDef();
-
-    static { MIBs.getInstance().registerMIB(ETHERWISDef.ETHERWIS); }
 
     /** September 19, 2003*/
     public final EtherWisMIBEnt etherWisMIB;

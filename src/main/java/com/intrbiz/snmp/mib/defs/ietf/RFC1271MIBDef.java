@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**FIX: added additional import (TimeTicks)*/
 public final class RFC1271MIBDef extends MIB
 {
     public static final RFC1271MIBDef RFC1271MIB = new RFC1271MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1271MIBDef.RFC1271MIB); }
 
     public final RmonEnt rmon;
 

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SNASDLCMIBDef extends MIB
 {
     public static final SNASDLCMIBDef SNASDLCMIB = new SNASDLCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SNASDLCMIBDef.SNASDLCMIB); }
 
     public final SnaDLCEnt snaDLC;
 

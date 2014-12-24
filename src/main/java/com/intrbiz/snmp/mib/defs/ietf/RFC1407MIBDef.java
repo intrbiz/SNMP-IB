@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RFC1407MIBDef extends MIB
 {
     public static final RFC1407MIBDef RFC1407MIB = new RFC1407MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1407MIBDef.RFC1407MIB); }
 
     /** [RFC3593]
 

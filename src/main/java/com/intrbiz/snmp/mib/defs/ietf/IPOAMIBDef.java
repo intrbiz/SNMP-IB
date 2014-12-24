@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**The following textual conventions are defined locally within
 this MIB module.  They have been prefixed with 'Ipoa' to
@@ -13,8 +12,6 @@ FROM ATM-TC-MIB*/
 public final class IPOAMIBDef extends MIB
 {
     public static final IPOAMIBDef IPOAMIB = new IPOAMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IPOAMIBDef.IPOAMIB); }
 
     /** February 9, 1998*/
     public final IpoaMIBEnt ipoaMIB;

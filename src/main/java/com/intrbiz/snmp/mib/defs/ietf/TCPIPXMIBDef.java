@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class TCPIPXMIBDef extends MIB
 {
     public static final TCPIPXMIBDef TCPIPXMIB = new TCPIPXMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TCPIPXMIBDef.TCPIPXMIB); }
 
     /** TCP/IPX MIB object idenfifiers*/
     public final NovellEnt novell;

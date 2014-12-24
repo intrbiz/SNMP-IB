@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2579]
@@ -10,8 +9,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class VDSLLINEEXTSCMMIBDef extends MIB
 {
     public static final VDSLLINEEXTSCMMIBDef VDSLLINEEXTSCMMIB = new VDSLLINEEXTSCMMIBDef();
-
-    static { MIBs.getInstance().registerMIB(VDSLLINEEXTSCMMIBDef.VDSLLINEEXTSCMMIB); }
 
     /** [RFC3728]
 

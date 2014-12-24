@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 2578*/
 public final class IANAGMPLSTCMIBDef extends MIB
 {
     public static final IANAGMPLSTCMIBDef IANAGMPLSTCMIB = new IANAGMPLSTCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANAGMPLSTCMIBDef.IANAGMPLSTCMIB); }
 
     /** RFC 2579
 

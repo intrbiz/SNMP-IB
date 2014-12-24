@@ -1,15 +1,12 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC3705]
 [This document]*/
 public final class ADSL2LINEMIBDef extends MIB
 {
     public static final ADSL2LINEMIBDef ADSL2LINEMIB = new ADSL2LINEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ADSL2LINEMIBDef.ADSL2LINEMIB); }
 
     /** October 4th, 2006*/
     public final Adsl2MIBEnt adsl2MIB;

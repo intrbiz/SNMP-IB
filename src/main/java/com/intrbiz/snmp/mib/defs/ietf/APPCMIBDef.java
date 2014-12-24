@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**end of conformance statement*/
 public final class APPCMIBDef extends MIB
 {
     public static final APPCMIBDef APPCMIB = new APPCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(APPCMIBDef.APPCMIB); }
 
     public final AppcMIBEnt appcMIB;
 

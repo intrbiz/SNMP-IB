@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class INTEGRATEDSERVICESMIBDef extends MIB
 {
     public static final INTEGRATEDSERVICESMIBDef INTEGRATEDSERVICESMIB = new INTEGRATEDSERVICESMIBDef();
-
-    static { MIBs.getInstance().registerMIB(INTEGRATEDSERVICESMIBDef.INTEGRATEDSERVICESMIB); }
 
     /** This MIB module uses the extended OBJECT-TYPE macro asdefined in [9].
 

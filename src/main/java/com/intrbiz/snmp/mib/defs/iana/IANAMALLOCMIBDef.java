@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IANAMALLOCMIBDef extends MIB
 {
     public static final IANAMALLOCMIBDef IANAMALLOCMIB = new IANAMALLOCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANAMALLOCMIBDef.IANAMALLOCMIB); }
 
     /** January 27, 2003*/
     public final IanaMallocMIBEnt ianaMallocMIB;

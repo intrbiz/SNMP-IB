@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class HDSL2SHDSLLINEMIBDef extends MIB
 {
     public static final HDSL2SHDSLLINEMIBDef HDSL2SHDSLLINEMIB = new HDSL2SHDSLLINEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(HDSL2SHDSLLINEMIBDef.HDSL2SHDSLLINEMIB); }
 
     /** December 7, 2005*/
     public final Hdsl2ShdslMIBEnt hdsl2ShdslMIB;

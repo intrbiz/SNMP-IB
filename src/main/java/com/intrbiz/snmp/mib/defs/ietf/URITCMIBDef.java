@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]*/
 public final class URITCMIBDef extends MIB
 {
     public static final URITCMIBDef URITCMIB = new URITCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(URITCMIBDef.URITCMIB); }
 
     /** [RFC2579]
 

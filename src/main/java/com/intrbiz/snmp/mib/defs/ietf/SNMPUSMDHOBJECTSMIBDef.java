@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**OBJECT-IDENTITY,*/
 public final class SNMPUSMDHOBJECTSMIBDef extends MIB
 {
     public static final SNMPUSMDHOBJECTSMIBDef SNMPUSMDHOBJECTSMIB = new SNMPUSMDHOBJECTSMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SNMPUSMDHOBJECTSMIBDef.SNMPUSMDHOBJECTSMIB); }
 
     /** 6 March 2000, Midnight*/
     public final SnmpUsmDHObjectsMIBEnt snmpUsmDHObjectsMIB;

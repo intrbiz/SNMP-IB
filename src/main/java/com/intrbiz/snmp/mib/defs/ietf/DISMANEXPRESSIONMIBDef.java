@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DISMANEXPRESSIONMIBDef extends MIB
 {
     public static final DISMANEXPRESSIONMIBDef DISMANEXPRESSIONMIB = new DISMANEXPRESSIONMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DISMANEXPRESSIONMIBDef.DISMANEXPRESSIONMIB); }
 
     /** 16 October 2000*/
     public final DismanExpressionMIBEnt dismanExpressionMIB;

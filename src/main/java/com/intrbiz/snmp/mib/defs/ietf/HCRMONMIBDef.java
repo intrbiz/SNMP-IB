@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class HCRMONMIBDef extends MIB
 {
     public static final HCRMONMIBDef HCRMONMIB = new HCRMONMIBDef();
-
-    static { MIBs.getInstance().registerMIB(HCRMONMIBDef.HCRMONMIB); }
 
     /** Remote Network Monitoring MIB
 

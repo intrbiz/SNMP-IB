@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**EVERYTHING*/
 public final class RFC1065SMIDef extends MIB
 {
     public static final RFC1065SMIDef RFC1065SMI = new RFC1065SMIDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1065SMIDef.RFC1065SMI); }
 
     /** the path to the root*/
     public final OrgEnt org;

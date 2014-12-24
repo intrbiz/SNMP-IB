@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DIRECTORYSERVERMIBDef extends MIB
 {
     public static final DIRECTORYSERVERMIBDef DIRECTORYSERVERMIB = new DIRECTORYSERVERMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DIRECTORYSERVERMIBDef.DIRECTORYSERVERMIB); }
 
     public final DsMIBEnt dsMIB;
 

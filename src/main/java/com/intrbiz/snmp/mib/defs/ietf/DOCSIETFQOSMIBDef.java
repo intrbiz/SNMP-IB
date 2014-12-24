@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DOCSIETFQOSMIBDef extends MIB
 {
     public static final DOCSIETFQOSMIBDef DOCSIETFQOSMIB = new DOCSIETFQOSMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DOCSIETFQOSMIBDef.DOCSIETFQOSMIB); }
 
     /** January 23, 2006*/
     public final DocsIetfQosMIBEnt docsIetfQosMIB;

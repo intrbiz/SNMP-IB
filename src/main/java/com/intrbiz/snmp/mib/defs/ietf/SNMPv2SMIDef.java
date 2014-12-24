@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SNMPv2SMIDef extends MIB
 {
     public static final SNMPv2SMIDef SNMPv2SMI = new SNMPv2SMIDef();
-
-    static { MIBs.getInstance().registerMIB(SNMPv2SMIDef.SNMPv2SMI); }
 
     /** the path to the root*/
     public final OrgEnt org;

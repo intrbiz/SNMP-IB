@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IPV6FLOWLABELMIBDef extends MIB
 {
     public static final IPV6FLOWLABELMIBDef IPV6FLOWLABELMIB = new IPV6FLOWLABELMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IPV6FLOWLABELMIBDef.IPV6FLOWLABELMIB); }
 
     /** 28 August 2003*/
     public final Ipv6FlowLabelMIBEnt ipv6FlowLabelMIB;

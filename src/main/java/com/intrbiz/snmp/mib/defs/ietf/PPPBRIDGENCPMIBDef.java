@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class PPPBRIDGENCPMIBDef extends MIB
 {
     public static final PPPBRIDGENCPMIBDef PPPBRIDGENCPMIB = new PPPBRIDGENCPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(PPPBRIDGENCPMIBDef.PPPBRIDGENCPMIB); }
 
     public final PppBridgeEnt pppBridge;
 

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class AGENTXMIBDef extends MIB
 {
     public static final AGENTXMIBDef AGENTXMIB = new AGENTXMIBDef();
-
-    static { MIBs.getInstance().registerMIB(AGENTXMIBDef.AGENTXMIB); }
 
     /** Midnight 10 January 2000*/
     public final AgentxMIBEnt agentxMIB;

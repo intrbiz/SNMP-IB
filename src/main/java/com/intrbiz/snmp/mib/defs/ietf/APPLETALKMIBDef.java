@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class APPLETALKMIBDef extends MIB
 {
     public static final APPLETALKMIBDef APPLETALKMIB = new APPLETALKMIBDef();
-
-    static { MIBs.getInstance().registerMIB(APPLETALKMIBDef.APPLETALKMIB); }
 
     /** This MIB module uses the extended OBJECT-TYPE macro asdefined in RFC-1212.
 The following reference is used in this MIB:[Inside AppleTalk]This refers to Gursharan S. Sidhu, Richard F. Andrews, andAlan B. Oppenheimer, Inside AppleTalk, Second Edition,Addison Wesley, (1990).

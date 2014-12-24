@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SIPMIBDef extends MIB
 {
     public static final SIPMIBDef SIPMIB = new SIPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SIPMIBDef.SIPMIB); }
 
     /** This is the MIB module for the SMDS Interface objects.*/
     public final SipMIBEnt sipMIB;

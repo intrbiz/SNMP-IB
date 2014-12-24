@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DOCSBPIMIBDef extends MIB
 {
     public static final DOCSBPIMIBDef DOCSBPIMIB = new DOCSBPIMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DOCSBPIMIBDef.DOCSBPIMIB); }
 
     public final DocsBpiMIBEnt docsBpiMIB;
 

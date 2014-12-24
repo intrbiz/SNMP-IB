@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]*/
 public final class SNMPUSMAESMIBDef extends MIB
 {
     public static final SNMPUSMAESMIBDef SNMPUSMAESMIB = new SNMPUSMAESMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SNMPUSMAESMIBDef.SNMPUSMAESMIB); }
 
     /** [RFC3411]*/
     public final SnmpUsmAesMIBEnt snmpUsmAesMIB;

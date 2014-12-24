@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 2578
 RFC 2580
@@ -10,8 +9,6 @@ RFC 4546*/
 public final class DOCSIETFCABLEDEVICENOTIFICATIONMIBDef extends MIB
 {
     public static final DOCSIETFCABLEDEVICENOTIFICATIONMIBDef DOCSIETFCABLEDEVICENOTIFICATIONMIB = new DOCSIETFCABLEDEVICENOTIFICATIONMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DOCSIETFCABLEDEVICENOTIFICATIONMIBDef.DOCSIETFCABLEDEVICENOTIFICATIONMIB); }
 
     /** RFC 2863
 

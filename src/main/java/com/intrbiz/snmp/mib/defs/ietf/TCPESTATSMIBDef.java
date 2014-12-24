@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2580]
@@ -11,8 +10,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class TCPESTATSMIBDef extends MIB
 {
     public static final TCPESTATSMIBDef TCPESTATSMIB = new TCPESTATSMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TCPESTATSMIBDef.TCPESTATSMIB); }
 
     /** [RFC4022]
 

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class WWWMIBDef extends MIB
 {
     public static final WWWMIBDef WWWMIB = new WWWMIBDef();
-
-    static { MIBs.getInstance().registerMIB(WWWMIBDef.WWWMIB); }
 
     public final WwwMIBEnt wwwMIB;
 

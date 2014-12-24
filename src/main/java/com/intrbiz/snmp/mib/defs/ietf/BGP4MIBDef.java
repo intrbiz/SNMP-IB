@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class BGP4MIBDef extends MIB
 {
     public static final BGP4MIBDef BGP4MIB = new BGP4MIBDef();
-
-    static { MIBs.getInstance().registerMIB(BGP4MIBDef.BGP4MIB); }
 
     public final BgpEnt bgp;
 

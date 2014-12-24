@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SYSAPPLMIBDef extends MIB
 {
     public static final SYSAPPLMIBDef SYSAPPLMIB = new SYSAPPLMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SYSAPPLMIBDef.SYSAPPLMIB); }
 
     /** System Application MIB*/
     public final SysApplMIBEnt sysApplMIB;

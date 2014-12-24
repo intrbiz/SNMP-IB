@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class ETHERCHIPSETMIBDef extends MIB
 {
     public static final ETHERCHIPSETMIBDef ETHERCHIPSETMIB = new ETHERCHIPSETMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ETHERCHIPSETMIBDef.ETHERCHIPSETMIB); }
 
     /** August 24, 199*/
     public final EtherChipsetMIBEnt etherChipsetMIB;

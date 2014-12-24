@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class FDDISMT73MIBDef extends MIB
 {
     public static final FDDISMT73MIBDef FDDISMT73MIB = new FDDISMT73MIBDef();
-
-    static { MIBs.getInstance().registerMIB(FDDISMT73MIBDef.FDDISMT73MIB); }
 
     /** This MIB module uses the extended OBJECT-TYPE macro asdefined in [7].
 

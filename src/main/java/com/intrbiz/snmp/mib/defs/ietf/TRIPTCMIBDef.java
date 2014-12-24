@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]*/
 public final class TRIPTCMIBDef extends MIB
 {
     public static final TRIPTCMIBDef TRIPTCMIB = new TRIPTCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TRIPTCMIBDef.TRIPTCMIB); }
 
     /** [RFC2579]
 

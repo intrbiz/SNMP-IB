@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**None defined at present
 Chipsets may someday be
@@ -9,8 +8,6 @@ defined here*/
 public final class RFC1285MIBDef extends MIB
 {
     public static final RFC1285MIBDef RFC1285MIB = new RFC1285MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1285MIBDef.RFC1285MIB); }
 
     /** This MIB module uses the extended OBJECT-TYPE macro asdefined in [7].
 

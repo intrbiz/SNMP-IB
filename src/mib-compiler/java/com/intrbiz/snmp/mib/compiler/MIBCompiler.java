@@ -8,10 +8,19 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
 import net.percederberg.mibble.Mib;
 import net.percederberg.mibble.MibLoader;
+import net.percederberg.mibble.MibValueSymbol;
 import net.percederberg.mibble.browser.MibNode;
 import net.percederberg.mibble.browser.MibTreeBuilder;
+import net.percederberg.mibble.snmp.SnmpModuleIdentity;
+
+import com.intrbiz.snmp.mib.MIBs.MIBIndex;
+import com.intrbiz.snmp.mib.MIBs.MIBInfo;
 
 @SuppressWarnings("unchecked")
 public class MIBCompiler
@@ -39,29 +48,41 @@ public class MIBCompiler
     
     private static void compilePackage(File dir, MibLoader loader, String pack) throws Exception
     {
-        /*try (FileWriter idx = new FileWriter(new File(new File("./src/main/java/com/intrbiz/snmp/mib/defs"), pack.toUpperCase() + ".java")))
+        // make package dir
+        new File("./src/main/java/com/intrbiz/snmp/mib/defs/" + pack).mkdirs();
+        // our index
+        MIBIndex idx = new MIBIndex();
+        // process the MIBs
+        for (File aMib : dir.listFiles())
         {
-            idx.write("package com.intrbiz.snmp.mib.defs;\n");
-            idx.write("\n");
-            idx.write("import com.intrbiz.snmp.mib.defs." + pack + ".*;\n");
-            idx.write("\n");
-            idx.write("/** All common " + pack + " MIBs, to be used as static imports /");
-            idx.write("public final class " + pack.toUpperCase() + "\n");
-            idx.write("{\n");*/
-            // compile and index MIBs
-            for (File aMib : dir.listFiles())
+            System.out.println("Compiling: " + aMib.getAbsolutePath());    
+            Mib mib = loader.load(aMib);
+            if (mib.getRootSymbol() != null)
             {
-                System.out.println("Compiling: " + aMib.getAbsolutePath());    
-                Mib mib = loader.load(aMib);
-                compileMIB(mib, pack, null /*idx*/);
+                // valid MIBs will have a root symbol
+                compileMIB(mib, pack, idx);
             }
-            //
-            /*idx.write("}\n");
-            idx.flush();
-        }*/
+        }
+        // write the MIB index
+        try
+        {
+            JAXBContext ctx = JAXBContext.newInstance(MIBIndex.class, MIBInfo.class);
+            Marshaller m = ctx.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FRAGMENT, true);
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            try (FileWriter fw = new FileWriter(new File(new File("./src/main/java/com/intrbiz/snmp/mib/defs/" + pack), "index.xml")))
+            {
+                m.marshal(idx, fw);
+                fw.flush();
+            }
+        }
+        catch (JAXBException e)
+        {
+            e.printStackTrace();
+        }
     }
     
-    private static void compileMIB(Mib mib, String subPackage, FileWriter idx) throws IOException
+    private static void compileMIB(Mib mib, String subPackage, MIBIndex idx) throws IOException
     {
         // build the tree
         MibTreeBuilder treeBuilder = MibTreeBuilder.getInstance();
@@ -75,33 +96,40 @@ public class MIBCompiler
         }
     }
     
-    public static void compileMIB(MibNode node, String subPackage, FileWriter idx, Mib mib) throws IOException
+    public static void compileMIB(MibNode node, String subPackage, MIBIndex idx, Mib mib) throws IOException
     {
+        String mibFQClassName = "com.intrbiz.snmp.mib.defs." + subPackage + "." + cleanName(node.getName()) + "Def";
+        String fieldName = cleanName(node.getName());
         try (FileWriter fw = new FileWriter(new File(new File("./src/main/java/com/intrbiz/snmp/mib/defs/" + subPackage), cleanName(node.getName()) + "Def.java")))
         {
             Enumeration<MibNode> children;
             boolean ns;
             // index
-            /*
-            idx.write("    public static final " + ucfirst(cleanName(node.getName())) + "Def " + cleanName(node.getName()) + " = " + ucfirst(cleanName(node.getName())) + "Def." + cleanName(node.getName()) + ";\n");
-            idx.write("\n");*/
-            /*idx.write("    public static final " + ucfirst(cleanName(node.getName())) + "Def " + cleanName(node.getName()) + "() { return " + ucfirst(cleanName(node.getName())) + "Def." + cleanName(node.getName()) + "; }\n");
-            idx.write("\n");*/
-            //
+            MibValueSymbol root = mib.getRootSymbol();
+            MIBInfo info;
+            if (root.getType() instanceof SnmpModuleIdentity)
+            {
+                info = new MIBInfo(node.getName(), new String[] { root.getName() }, root.getValue().toString(), ((SnmpModuleIdentity) root.getType()).getLastUpdated(), mibFQClassName, fieldName, ((SnmpModuleIdentity) root.getType()).getDescription());
+            }
+            else
+            {
+                info = new MIBInfo(node.getName(), new String[] { root.getName() }, root.getValue().toString(), "", mibFQClassName, fieldName, null);
+            }
+            idx.addMIB(info);
+            // write the definition
             fw.write("package com.intrbiz.snmp.mib.defs." + subPackage + ";\n");
             fw.write("\n");
             fw.write("import com.intrbiz.snmp.mib.MIB;\n");
-            fw.write("import com.intrbiz.snmp.mib.MIBs;\n");
             fw.write("\n");
             if (mib.getHeaderComment() != null) fw.write("/**" + mib.getHeaderComment() + "*/\n");
             fw.write("public final class " + ucfirst(cleanName(node.getName())) + "Def extends MIB\n");
             fw.write("{\n");
-            fw.write("    public static final " + ucfirst(cleanName(node.getName())) + "Def " + cleanName(node.getName()) + " = new " + ucfirst(cleanName(node.getName())) + "Def();\n");
+            fw.write("    public static final " + ucfirst(cleanName(node.getName())) + "Def " + fieldName + " = new " + ucfirst(cleanName(node.getName())) + "Def();\n");
             fw.write("\n");
-            fw.write("    static { MIBs.getInstance().registerMIB(" + ucfirst(cleanName(node.getName())) + "Def." + cleanName(node.getName()) + "); }\n");
-            fw.write("\n");
-            /*fw.write("    public static final " + ucfirst(cleanName(node.getName())) + "Def " + cleanName(node.getName()) + "() { return " + ucfirst(cleanName(node.getName())) + "Def." + cleanName(node.getName()) + "; }\n");
-            fw.write("\n");*/
+            /*
+             * fw.write("    public static final " + ucfirst(cleanName(node.getName())) + "Def " + cleanName(node.getName()) + "() { return " + ucfirst(cleanName(node.getName())) + "Def." + cleanName(node.getName()) + "; }\n");
+             * fw.write("\n");
+             */
             // members
             children = ((MibNode) node.children().nextElement()).children();
             while (children.hasMoreElements())
@@ -156,7 +184,7 @@ public class MIBCompiler
             while (children.hasMoreElements())
             {
                 MibNode child = children.nextElement();
-                printEntryClass(fw, "    ", ucfirst(cleanName(node.getName())) + "Def", child);
+                printEntryClass(fw, "    ", ucfirst(cleanName(node.getName())) + "Def", child, info);
             }
             //
             fw.write("}\n");
@@ -164,11 +192,13 @@ public class MIBCompiler
         }
     }
     
-    public static void printEntryClass(FileWriter fw, String padding, String mibClass, MibNode node) throws IOException
+    public static void printEntryClass(FileWriter fw, String padding, String mibClass, MibNode node, MIBInfo info) throws IOException
     {
         Enumeration<MibNode> children;
         boolean ns;
-        //
+        // index this node
+        info.getOids().add(node.getOid());
+        // write the def
         fw.write(padding + "public static final class " + ucfirst(cleanName(node.getSymbol().getName())) + "Ent extends MIBEntry<" + mibClass + ">\n");
         fw.write(padding + "{\n");
         // members
@@ -224,7 +254,7 @@ public class MIBCompiler
         while (children.hasMoreElements())
         {
             MibNode child = children.nextElement();
-            printEntryClass(fw, padding + "    ", mibClass, child);
+            printEntryClass(fw, padding + "    ", mibClass, child, info);
         }
         // end class
         fw.write(padding + "}\n");

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RAQMONMIBDef extends MIB
 {
     public static final RAQMONMIBDef RAQMONMIB = new RAQMONMIBDef();
-
-    static { MIBs.getInstance().registerMIB(RAQMONMIBDef.RAQMONMIB); }
 
     /** October 10, 2006*/
     public final RaqmonMIBEnt raqmonMIB;

@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**Because the characters allowed in an SNA control
 point name come from a restricted character set,
@@ -9,8 +8,6 @@ these names are not subject to internationalization.*/
 public final class EBNMIBDef extends MIB
 {
     public static final EBNMIBDef EBNMIB = new EBNMIBDef();
-
-    static { MIBs.getInstance().registerMIB(EBNMIBDef.EBNMIB); }
 
     /** April 28, 1998*/
     public final EbnMIBEnt ebnMIB;

@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2579]
@@ -12,8 +11,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class TUNNELMIBDef extends MIB
 {
     public static final TUNNELMIBDef TUNNELMIB = new TUNNELMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TUNNELMIBDef.TUNNELMIB); }
 
     /** [IFTYPE]
 

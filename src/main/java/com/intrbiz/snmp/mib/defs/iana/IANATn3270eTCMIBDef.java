@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IANATn3270eTCMIBDef extends MIB
 {
     public static final IANATn3270eTCMIBDef IANATn3270eTCMIB = new IANATn3270eTCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANATn3270eTCMIBDef.IANATn3270eTCMIB); }
 
     /** May 10, 2000*/
     public final IanaTn3270eTcMibEnt ianaTn3270eTcMib;

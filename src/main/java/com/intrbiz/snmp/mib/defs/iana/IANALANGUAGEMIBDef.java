@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IANALANGUAGEMIBDef extends MIB
 {
     public static final IANALANGUAGEMIBDef IANALANGUAGEMIB = new IANALANGUAGEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANALANGUAGEMIBDef.IANALANGUAGEMIB); }
 
     /** May 10, 2000*/
     public final IanaLanguagesEnt ianaLanguages;

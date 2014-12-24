@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DS0MIBDef extends MIB
 {
     public static final DS0MIBDef DS0MIB = new DS0MIBDef();
-
-    static { MIBs.getInstance().registerMIB(DS0MIBDef.DS0MIB); }
 
     /** This is the MIB module for the DS0 Interface objects.*/
     public final Ds0Ent ds0;

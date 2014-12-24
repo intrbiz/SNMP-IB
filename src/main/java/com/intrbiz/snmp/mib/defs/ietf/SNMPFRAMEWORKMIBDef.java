@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SNMPFRAMEWORKMIBDef extends MIB
 {
     public static final SNMPFRAMEWORKMIBDef SNMPFRAMEWORKMIB = new SNMPFRAMEWORKMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SNMPFRAMEWORKMIBDef.SNMPFRAMEWORKMIB); }
 
     public final SnmpFrameworkMIBEnt snmpFrameworkMIB;
 

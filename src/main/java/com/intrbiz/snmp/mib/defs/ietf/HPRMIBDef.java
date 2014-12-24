@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**end of conformance statement*/
 public final class HPRMIBDef extends MIB
 {
     public static final HPRMIBDef HPRMIB = new HPRMIBDef();
-
-    static { MIBs.getInstance().registerMIB(HPRMIBDef.HPRMIB); }
 
     public final HprMIBEnt hprMIB;
 

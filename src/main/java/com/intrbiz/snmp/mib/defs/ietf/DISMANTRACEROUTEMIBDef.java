@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC2578
 RFC2579
@@ -12,8 +11,6 @@ RFC4001*/
 public final class DISMANTRACEROUTEMIBDef extends MIB
 {
     public static final DISMANTRACEROUTEMIBDef DISMANTRACEROUTEMIB = new DISMANTRACEROUTEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DISMANTRACEROUTEMIBDef.DISMANTRACEROUTEMIB); }
 
     /** RFC4560
 

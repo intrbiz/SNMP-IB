@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2580]
@@ -11,8 +10,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class T11FCROUTEMIBDef extends MIB
 {
     public static final T11FCROUTEMIBDef T11FCROUTEMIB = new T11FCROUTEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(T11FCROUTEMIBDef.T11FCROUTEMIB); }
 
     /** [RFC4439]*/
     public final T11FcRouteMIBEnt t11FcRouteMIB;

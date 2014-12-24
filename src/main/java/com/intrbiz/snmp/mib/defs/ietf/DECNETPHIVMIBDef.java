@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DECNETPHIVMIBDef extends MIB
 {
     public static final DECNETPHIVMIBDef DECNETPHIVMIB = new DECNETPHIVMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DECNETPHIVMIBDef.DECNETPHIVMIB); }
 
     /** DECNet Phase-IV MIB*/
     public final PhivEnt phiv;

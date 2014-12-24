@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]*/
 public final class IANAITUALARMTCMIBDef extends MIB
 {
     public static final IANAITUALARMTCMIBDef IANAITUALARMTCMIB = new IANAITUALARMTCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANAITUALARMTCMIBDef.IANAITUALARMTCMIB); }
 
     /** September 09, 2004*/
     public final IanaItuAlarmNumbersEnt ianaItuAlarmNumbers;

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class PPPIPNCPMIBDef extends MIB
 {
     public static final PPPIPNCPMIBDef PPPIPNCPMIB = new PPPIPNCPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(PPPIPNCPMIBDef.PPPIPNCPMIB); }
 
     /** The PPP IP Group.Implementation of this group is mandatory for allPPP implementations that support operating IP over PPP.*/
     public final PppIpEnt pppIp;

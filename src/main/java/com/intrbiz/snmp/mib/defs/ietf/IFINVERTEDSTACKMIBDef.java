@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IFINVERTEDSTACKMIBDef extends MIB
 {
     public static final IFINVERTEDSTACKMIBDef IFINVERTEDSTACKMIB = new IFINVERTEDSTACKMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IFINVERTEDSTACKMIBDef.IFINVERTEDSTACKMIB); }
 
     public final IfInvertedStackMIBEnt ifInvertedStackMIB;
 

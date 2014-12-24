@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2579]
@@ -13,8 +12,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class IPMCASTMIBDef extends MIB
 {
     public static final IPMCASTMIBDef IPMCASTMIB = new IPMCASTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IPMCASTMIBDef.IPMCASTMIB); }
 
     /** [RFC5131]
 

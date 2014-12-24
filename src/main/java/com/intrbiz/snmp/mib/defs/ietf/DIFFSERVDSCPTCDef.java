@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DIFFSERVDSCPTCDef extends MIB
 {
     public static final DIFFSERVDSCPTCDef DIFFSERVDSCPTC = new DIFFSERVDSCPTCDef();
-
-    static { MIBs.getInstance().registerMIB(DIFFSERVDSCPTCDef.DIFFSERVDSCPTC); }
 
     public final DiffServDSCPTCEnt diffServDSCPTC;
 

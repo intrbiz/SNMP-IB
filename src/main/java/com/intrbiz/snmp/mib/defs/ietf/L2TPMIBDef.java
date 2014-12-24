@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class L2TPMIBDef extends MIB
 {
     public static final L2TPMIBDef L2TPMIB = new L2TPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(L2TPMIBDef.L2TPMIB); }
 
     /** 23 August 2002*/
     public final L2tpEnt l2tp;

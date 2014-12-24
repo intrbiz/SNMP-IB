@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class CIRCUITIFMIBDef extends MIB
 {
     public static final CIRCUITIFMIBDef CIRCUITIFMIB = new CIRCUITIFMIBDef();
-
-    static { MIBs.getInstance().registerMIB(CIRCUITIFMIBDef.CIRCUITIFMIB); }
 
     /** January 3, 2002*/
     public final CircuitIfMIBEnt circuitIfMIB;

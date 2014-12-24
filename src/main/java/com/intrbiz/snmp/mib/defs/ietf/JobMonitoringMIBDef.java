@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class JobMonitoringMIBDef extends MIB
 {
     public static final JobMonitoringMIBDef JobMonitoringMIB = new JobMonitoringMIBDef();
-
-    static { MIBs.getInstance().registerMIB(JobMonitoringMIBDef.JobMonitoringMIB); }
 
     /** The following textual-conventions are needed to implementcertain attributes, but are not needed to compile this MIB.They are provided here for convenience:hrDeviceIndex                        FROM HOST-RESOURCES-MIBDateAndTime                          FROM SNMPv2-TCPrtInterpreterLangFamilyTC,CodedCharSet                         FROM Printer-MIB
 Use the enterprises arc assigned to the PWG which is pwg(2699).Group all PWG mibs under mibs(1).*/

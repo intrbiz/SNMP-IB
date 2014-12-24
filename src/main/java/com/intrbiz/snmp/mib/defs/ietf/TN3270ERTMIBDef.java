@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class TN3270ERTMIBDef extends MIB
 {
     public static final TN3270ERTMIBDef TN3270ERTMIB = new TN3270ERTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TN3270ERTMIBDef.TN3270ERTMIB); }
 
     /** July 27, 1998
 RFC Editor to fill in*/

@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 2578
 RFC 2579
@@ -12,8 +11,6 @@ RFC 2863*/
 public final class MIDCOMMIBDef extends MIB
 {
     public static final MIDCOMMIBDef MIDCOMMIB = new MIDCOMMIBDef();
-
-    static { MIBs.getInstance().registerMIB(MIDCOMMIBDef.MIDCOMMIB); }
 
     /** RFC 4008
 

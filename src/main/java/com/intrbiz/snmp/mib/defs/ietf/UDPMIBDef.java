@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class UDPMIBDef extends MIB
 {
     public static final UDPMIBDef UDPMIB = new UDPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(UDPMIBDef.UDPMIB); }
 
     /** May 20, 2005*/
     public final UdpMIBEnt udpMIB;

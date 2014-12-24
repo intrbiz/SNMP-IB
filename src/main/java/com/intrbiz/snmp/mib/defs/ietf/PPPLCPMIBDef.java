@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**Invoking this test causes a PPP Discard Packet to be sent on
 the line. ifExtnsTestResult returns success(2) if the discard
@@ -12,8 +11,6 @@ implementor.*/
 public final class PPPLCPMIBDef extends MIB
 {
     public static final PPPLCPMIBDef PPPLCPMIB = new PPPLCPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(PPPLCPMIBDef.PPPLCPMIB); }
 
     /** PPP MIB*/
     public final PppEnt ppp;

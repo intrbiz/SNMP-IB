@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 2578
 RFC 2579
@@ -12,8 +11,6 @@ RFC 2788*/
 public final class SIPCOMMONMIBDef extends MIB
 {
     public static final SIPCOMMONMIBDef SIPCOMMONMIB = new SIPCOMMONMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SIPCOMMONMIBDef.SIPCOMMONMIB); }
 
     /** RFC 4001*/
     public final SipCommonMIBEnt sipCommonMIB;

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class TCPMIBDef extends MIB
 {
     public static final TCPMIBDef TCPMIB = new TCPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TCPMIBDef.TCPMIB); }
 
     /** 18 February 2005*/
     public final TcpMIBEnt tcpMIB;

@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 2578
 RFC 2579
@@ -11,8 +10,6 @@ http://www.iana.org/assignments/ianamau-mib*/
 public final class MAUMIBDef extends MIB
 {
     public static final MAUMIBDef MAUMIB = new MAUMIBDef();
-
-    static { MIBs.getInstance().registerMIB(MAUMIBDef.MAUMIB); }
 
     public final SnmpDot3MauMgtEnt snmpDot3MauMgt;
 

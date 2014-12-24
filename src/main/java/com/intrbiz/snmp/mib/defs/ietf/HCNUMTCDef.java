@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class HCNUMTCDef extends MIB
 {
     public static final HCNUMTCDef HCNUMTC = new HCNUMTCDef();
-
-    static { MIBs.getInstance().registerMIB(HCNUMTCDef.HCNUMTC); }
 
     public final HcnumTCEnt hcnumTC;
 

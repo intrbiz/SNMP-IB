@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IPMIBDef extends MIB
 {
     public static final IPMIBDef IPMIB = new IPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IPMIBDef.IPMIB); }
 
     public final IpMIBEnt ipMIB;
 

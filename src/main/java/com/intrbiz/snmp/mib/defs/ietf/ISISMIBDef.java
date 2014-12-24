@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC2579
 RFC2578
@@ -12,8 +11,6 @@ RFC2863*/
 public final class ISISMIBDef extends MIB
 {
     public static final ISISMIBDef ISISMIB = new ISISMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ISISMIBDef.ISISMIB); }
 
     /** RFC3291
 

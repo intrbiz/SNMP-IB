@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**Textual Conventions*/
 public final class TOKENRINGRMONMIBDef extends MIB
 {
     public static final TOKENRINGRMONMIBDef TOKENRINGRMONMIB = new TOKENRINGRMONMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TOKENRINGRMONMIBDef.TOKENRINGRMONMIB); }
 
     /** A period of time, measured in units of 0.01 seconds.
 This MIB module uses the extended OBJECT-TYPE macro asdefined in [2].

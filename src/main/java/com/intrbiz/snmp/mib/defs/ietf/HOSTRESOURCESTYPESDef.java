@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class HOSTRESOURCESTYPESDef extends MIB
 {
     public static final HOSTRESOURCESTYPESDef HOSTRESOURCESTYPES = new HOSTRESOURCESTYPESDef();
-
-    static { MIBs.getInstance().registerMIB(HOSTRESOURCESTYPESDef.HOSTRESOURCESTYPES); }
 
     /** 6 March, 2000*/
     public final HostResourcesTypesModuleEnt hostResourcesTypesModule;

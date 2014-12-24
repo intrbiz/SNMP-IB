@@ -1,15 +1,12 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**http://www.iana.org/assignments/ianafinisher-mib
 [RFC2578]*/
 public final class IANAFINISHERMIBDef extends MIB
 {
     public static final IANAFINISHERMIBDef IANAFINISHERMIB = new IANAFINISHERMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANAFINISHERMIBDef.IANAFINISHERMIB); }
 
     /** [RFC2579]
 

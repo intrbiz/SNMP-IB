@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DOT3EPONMIBDef extends MIB
 {
     public static final DOT3EPONMIBDef DOT3EPONMIB = new DOT3EPONMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DOT3EPONMIBDef.DOT3EPONMIB); }
 
     /** March 29, 2007*/
     public final Dot3EponMIBEnt dot3EponMIB;

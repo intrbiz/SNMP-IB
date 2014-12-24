@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**This MIB module contains objects necessary
 for management of the following SNA devices: PU types 1.0, 2.0, 2.1
@@ -18,8 +17,6 @@ end of conformance statement*/
 public final class SNANAUMIBDef extends MIB
 {
     public static final SNANAUMIBDef SNANAUMIB = new SNANAUMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SNANAUMIBDef.SNANAUMIB); }
 
     public final SnanauMIBEnt snanauMIB;
 

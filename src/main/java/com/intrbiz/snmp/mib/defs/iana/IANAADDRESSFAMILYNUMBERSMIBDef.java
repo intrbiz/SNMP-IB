@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IANAADDRESSFAMILYNUMBERSMIBDef extends MIB
 {
     public static final IANAADDRESSFAMILYNUMBERSMIBDef IANAADDRESSFAMILYNUMBERSMIB = new IANAADDRESSFAMILYNUMBERSMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANAADDRESSFAMILYNUMBERSMIBDef.IANAADDRESSFAMILYNUMBERSMIB); }
 
     /** March 14, 2002*/
     public final IanaAddressFamilyNumbersEnt ianaAddressFamilyNumbers;

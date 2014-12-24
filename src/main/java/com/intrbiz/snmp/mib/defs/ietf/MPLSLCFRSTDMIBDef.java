@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class MPLSLCFRSTDMIBDef extends MIB
 {
     public static final MPLSLCFRSTDMIBDef MPLSLCFRSTDMIB = new MPLSLCFRSTDMIBDef();
-
-    static { MIBs.getInstance().registerMIB(MPLSLCFRSTDMIBDef.MPLSLCFRSTDMIB); }
 
     /** 12 January 2006*/
     public final MplsLcFrStdMIBEnt mplsLcFrStdMIB;

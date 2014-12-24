@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class FCIPMGMTMIBDef extends MIB
 {
     public static final FCIPMGMTMIBDef FCIPMGMTMIB = new FCIPMGMTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(FCIPMGMTMIBDef.FCIPMGMTMIB); }
 
     public final FcipMIBEnt fcipMIB;
 

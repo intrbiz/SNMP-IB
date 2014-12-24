@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2579]
@@ -9,8 +8,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class UDPLITEMIBDef extends MIB
 {
     public static final UDPLITEMIBDef UDPLITEMIB = new UDPLITEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(UDPLITEMIBDef.UDPLITEMIB); }
 
     /** [RFC4001]
 

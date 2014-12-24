@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**rfc2571*/
 public final class FIBRECHANNELFEMIBDef extends MIB
 {
     public static final FIBRECHANNELFEMIBDef FIBRECHANNELFEMIB = new FIBRECHANNELFEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(FIBRECHANNELFEMIBDef.FIBRECHANNELFEMIB); }
 
     public final FcFeMIBEnt fcFeMIB;
 

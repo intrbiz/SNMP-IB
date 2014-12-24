@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**From RFC 2021
 From RFC 2856
@@ -13,8 +12,6 @@ From RFC 4133*/
 public final class IFCPMGMTMIBDef extends MIB
 {
     public static final IFCPMGMTMIBDef IFCPMGMTMIB = new IFCPMGMTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IFCPMGMTMIBDef.IFCPMGMTMIB); }
 
     public final IfcpMgmtMIBEnt ifcpMgmtMIB;
 

@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**Extensions to MIB-II's Generic Interface Table*/
 public final class RFC1229MIBDef extends MIB
 {
     public static final RFC1229MIBDef RFC1229MIB = new RFC1229MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1229MIBDef.RFC1229MIB); }
 
     public final IfExtensionsEnt ifExtensions;
 

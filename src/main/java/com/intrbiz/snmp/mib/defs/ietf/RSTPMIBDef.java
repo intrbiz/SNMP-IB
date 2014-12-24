@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**--
 --
@@ -39,8 +38,6 @@ MIB for IEEE 802.1w Rapid Spanning Tree Protocol
 public final class RSTPMIBDef extends MIB
 {
     public static final RSTPMIBDef RSTPMIB = new RSTPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(RSTPMIBDef.RSTPMIB); }
 
     public final RstpMIBEnt rstpMIB;
 

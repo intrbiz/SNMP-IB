@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class FLOWMETERMIBDef extends MIB
 {
     public static final FLOWMETERMIBDef FLOWMETERMIB = new FLOWMETERMIBDef();
-
-    static { MIBs.getInstance().registerMIB(FLOWMETERMIBDef.FLOWMETERMIB); }
 
     /** October 25, 1999*/
     public final FlowMIBEnt flowMIB;

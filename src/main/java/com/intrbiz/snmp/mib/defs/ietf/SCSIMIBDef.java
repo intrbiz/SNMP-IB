@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SCSIMIBDef extends MIB
 {
     public static final SCSIMIBDef SCSIMIB = new SCSIMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SCSIMIBDef.SCSIMIB); }
 
     /** 30th March 2006*/
     public final ScsiMIBEnt scsiMIB;

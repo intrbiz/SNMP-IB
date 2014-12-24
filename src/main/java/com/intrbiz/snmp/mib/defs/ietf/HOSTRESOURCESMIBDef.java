@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class HOSTRESOURCESMIBDef extends MIB
 {
     public static final HOSTRESOURCESMIBDef HOSTRESOURCESMIB = new HOSTRESOURCESMIBDef();
-
-    static { MIBs.getInstance().registerMIB(HOSTRESOURCESMIBDef.HOSTRESOURCESMIB); }
 
     public final HostEnt host;
 

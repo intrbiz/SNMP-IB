@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**--
 --
@@ -38,8 +37,6 @@ MIB for IEEE 802.1D devices
 public final class BRIDGEMIBDef extends MIB
 {
     public static final BRIDGEMIBDef BRIDGEMIB = new BRIDGEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(BRIDGEMIBDef.BRIDGEMIB); }
 
     public final Dot1dBridgeEnt dot1dBridge;
 

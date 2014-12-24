@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class POWERETHERNETMIBDef extends MIB
 {
     public static final POWERETHERNETMIBDef POWERETHERNETMIB = new POWERETHERNETMIBDef();
-
-    static { MIBs.getInstance().registerMIB(POWERETHERNETMIBDef.POWERETHERNETMIB); }
 
     /** November 24, 2003*/
     public final PowerEthernetMIBEnt powerEthernetMIB;

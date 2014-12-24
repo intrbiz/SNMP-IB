@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.intrbiz.snmp.mib.MIB.MIBEntry;
 import com.intrbiz.snmp.model.v2.VarBind;
 
 public class SNMPCollatedTable
@@ -116,7 +117,8 @@ public class SNMPCollatedTable
             for (Entry<String, VarBind> cell : this.getRow(key))
             {
                 if (ns) sb.append(", ");
-                sb.append(cell.getKey() + " => " + cell.getValue().valueToString());
+                MIBEntry<?> entry = cell.getValue().lookupEntry();
+                sb.append(cell.getKey() + (entry == null ? "" : " (" + entry.qualifiedName + ")") + " => " + cell.getValue().valueToString());
                 ns = true;
             }
             sb.append("]\n");

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class AGGREGATEMIBDef extends MIB
 {
     public static final AGGREGATEMIBDef AGGREGATEMIB = new AGGREGATEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(AGGREGATEMIBDef.AGGREGATEMIB); }
 
     /** 27th April, 2006*/
     public final AggrMIBEnt aggrMIB;

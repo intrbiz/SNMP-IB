@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class TIMEAGGREGATEMIBDef extends MIB
 {
     public static final TIMEAGGREGATEMIBDef TIMEAGGREGATEMIB = new TIMEAGGREGATEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TIMEAGGREGATEMIBDef.TIMEAGGREGATEMIB); }
 
     /** 27 April 2006*/
     public final TAggrMIBEnt tAggrMIB;

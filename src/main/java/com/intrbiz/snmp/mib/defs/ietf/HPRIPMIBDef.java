@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class HPRIPMIBDef extends MIB
 {
     public static final HPRIPMIBDef HPRIPMIB = new HPRIPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(HPRIPMIBDef.HPRIPMIB); }
 
     /** September 24, 1998*/
     public final HprIpEnt hprIp;

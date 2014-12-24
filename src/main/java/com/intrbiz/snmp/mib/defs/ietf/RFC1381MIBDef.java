@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**The following describes some of the MIB-II interface
 objects and their relationship with the objects in this
@@ -59,8 +58,6 @@ LLC Busy State Timer 7.8.1.4
 public final class RFC1381MIBDef extends MIB
 {
     public static final RFC1381MIBDef RFC1381MIB = new RFC1381MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1381MIBDef.RFC1381MIB); }
 
     /** LAPB MIB*/
     public final LapbEnt lapb;

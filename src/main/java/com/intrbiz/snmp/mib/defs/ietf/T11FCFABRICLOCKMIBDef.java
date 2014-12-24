@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2579]
@@ -12,8 +11,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class T11FCFABRICLOCKMIBDef extends MIB
 {
     public static final T11FCFABRICLOCKMIBDef T11FCFABRICLOCKMIB = new T11FCFABRICLOCKMIBDef();
-
-    static { MIBs.getInstance().registerMIB(T11FCFABRICLOCKMIBDef.T11FCFABRICLOCKMIB); }
 
     /** [RFC4439]*/
     public final T11FabricLockMIBEnt t11FabricLockMIB;

@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 2578
 RFC 2580
@@ -10,8 +9,6 @@ RFC 4001*/
 public final class SIPUAMIBDef extends MIB
 {
     public static final SIPUAMIBDef SIPUAMIB = new SIPUAMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SIPUAMIBDef.SIPUAMIB); }
 
     /** RFC 4780*/
     public final SipUAMIBEnt sipUAMIB;

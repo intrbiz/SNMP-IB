@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class VRRPMIBDef extends MIB
 {
     public static final VRRPMIBDef VRRPMIB = new VRRPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(VRRPMIBDef.VRRPMIB); }
 
     public final VrrpMIBEnt vrrpMIB;
 

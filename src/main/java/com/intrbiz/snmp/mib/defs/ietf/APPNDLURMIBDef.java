@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**end of conformance statement*/
 public final class APPNDLURMIBDef extends MIB
 {
     public static final APPNDLURMIBDef APPNDLURMIB = new APPNDLURMIBDef();
-
-    static { MIBs.getInstance().registerMIB(APPNDLURMIBDef.APPNDLURMIB); }
 
     public final DlurMIBEnt dlurMIB;
 

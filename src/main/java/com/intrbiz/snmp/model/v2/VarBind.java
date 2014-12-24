@@ -7,6 +7,8 @@ import org.bouncycastle.asn1.DERInteger;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 
+import com.intrbiz.snmp.mib.MIB.MIBEntry;
+import com.intrbiz.snmp.mib.MIBs;
 import com.intrbiz.snmp.model.asn1.Counter32;
 import com.intrbiz.snmp.model.asn1.Counter64;
 import com.intrbiz.snmp.model.asn1.TimeTicks;
@@ -206,11 +208,17 @@ public class VarBind
         this.objectName  = SNMPUtil.decodeOid(seq, 0).getId();
         this.objectValue = SNMPUtil.decodeApplicationSpecific(SNMPUtil.decodeValue(seq, 1));
     }
+    
+    public MIBEntry<?> lookupEntry()
+    {
+        return MIBs.getInstance().lookupEntry(this.getObjectName());
+    }
 
     public String toString()
     {
+        MIBEntry<?> entry = this.lookupEntry();
         return "VarBind[\n" + 
-               "   objectName: " + this.objectName + ";\n" + 
+               "   objectName: " + this.objectName + (entry == null ? "" : " (" + entry.qualifiedName + ")") + ";\n" + 
                "   objectValue: " + this.valueToString() + ";\n" + 
                "  ]";
     }

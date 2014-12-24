@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class OSPFTRAPMIBDef extends MIB
 {
     public static final OSPFTRAPMIBDef OSPFTRAPMIB = new OSPFTRAPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(OSPFTRAPMIBDef.OSPFTRAPMIB); }
 
     /** November 10, 2006 00:00:00 EST*/
     public final OspfTrapEnt ospfTrap;

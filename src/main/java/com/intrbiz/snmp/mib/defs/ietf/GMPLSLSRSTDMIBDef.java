@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 2578
 RFC 2580
@@ -13,8 +12,6 @@ RFC 3811*/
 public final class GMPLSLSRSTDMIBDef extends MIB
 {
     public static final GMPLSLSRSTDMIBDef GMPLSLSRSTDMIB = new GMPLSLSRSTDMIBDef();
-
-    static { MIBs.getInstance().registerMIB(GMPLSLSRSTDMIBDef.GMPLSLSRSTDMIB); }
 
     /** 27 February 2007 00:00:00 GMT*/
     public final GmplsLsrStdMIBEnt gmplsLsrStdMIB;

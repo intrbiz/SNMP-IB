@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**FIX: added additional imports (Counter32, Gauge32)*/
 public final class DSAMIBDef extends MIB
 {
     public static final DSAMIBDef DSAMIB = new DSAMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DSAMIBDef.DSAMIB); }
 
     public final DsaMIBEnt dsaMIB;
 

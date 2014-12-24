@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IPFORWARDMIBDef extends MIB
 {
     public static final IPFORWARDMIBDef IPFORWARDMIB = new IPFORWARDMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IPFORWARDMIBDef.IPFORWARDMIB); }
 
     public final IpForwardEnt ipForward;
 

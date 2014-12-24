@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**--
 --
@@ -39,8 +38,6 @@ MIB for IEEE 802.1Q Devices
 public final class QBRIDGEMIBDef extends MIB
 {
     public static final QBRIDGEMIBDef QBRIDGEMIB = new QBRIDGEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(QBRIDGEMIBDef.QBRIDGEMIB); }
 
     public final QBridgeMIBEnt qBridgeMIB;
 

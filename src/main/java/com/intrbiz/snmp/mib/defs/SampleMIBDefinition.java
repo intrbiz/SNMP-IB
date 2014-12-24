@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public class SampleMIBDefinition extends MIB
 {
     public static final SampleMIBDefinition TestMIB = new SampleMIBDefinition();
-    
-    static { MIBs.getInstance().registerMIB(TestMIB); }
     
     public static final SampleMIBDefinition TestMIB() { return TestMIB; }
     

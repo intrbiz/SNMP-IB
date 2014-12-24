@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RFC1243MIBDef extends MIB
 {
     public static final RFC1243MIBDef RFC1243MIB = new RFC1243MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1243MIBDef.RFC1243MIB); }
 
     /** This MIB module uses the extended OBJECT-TYPE macro asdefined in RFC-1212.
 The following reference is used in this MIB:[Inside AppleTalk]This refers to Gursharan S. Sidhu, Richard F. Andrews, andAlan B. Oppenheimer, Inside AppleTalk, Second Edition,Addison Wesley, (1990).

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RSVPMIBDef extends MIB
 {
     public static final RSVPMIBDef RSVPMIB = new RSVPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(RSVPMIBDef.RSVPMIB); }
 
     /** Thu Aug 28 09:03:53 PDT 1997*/
     public final RsvpEnt rsvp;

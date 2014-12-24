@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class APPNMIBDef extends MIB
 {
     public static final APPNMIBDef APPNMIB = new APPNMIBDef();
-
-    static { MIBs.getInstance().registerMIB(APPNMIBDef.APPNMIB); }
 
     /** July 15, 1998*/
     public final AppnMIBEnt appnMIB;

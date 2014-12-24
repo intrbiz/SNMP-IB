@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class FRSLDMIBDef extends MIB
 {
     public static final FRSLDMIBDef FRSLDMIB = new FRSLDMIBDef();
-
-    static { MIBs.getInstance().registerMIB(FRSLDMIBDef.FRSLDMIB); }
 
     /** January 3, 2002*/
     public final FrsldMIBEnt frsldMIB;

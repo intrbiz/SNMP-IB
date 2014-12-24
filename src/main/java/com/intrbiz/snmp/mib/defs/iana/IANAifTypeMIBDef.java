@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IANAifTypeMIBDef extends MIB
 {
     public static final IANAifTypeMIBDef IANAifTypeMIB = new IANAifTypeMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANAifTypeMIBDef.IANAifTypeMIB); }
 
     /** September 13, 2007*/
     public final IanaifTypeEnt ianaifType;

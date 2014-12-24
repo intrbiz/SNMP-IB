@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class NETWORKSERVICESMIBDef extends MIB
 {
     public static final NETWORKSERVICESMIBDef NETWORKSERVICESMIB = new NETWORKSERVICESMIBDef();
-
-    static { MIBs.getInstance().registerMIB(NETWORKSERVICESMIBDef.NETWORKSERVICESMIB); }
 
     public final ApplicationEnt application;
 

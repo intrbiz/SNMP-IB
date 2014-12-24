@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class HCPerfHistTCMIBDef extends MIB
 {
     public static final HCPerfHistTCMIBDef HCPerfHistTCMIB = new HCPerfHistTCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(HCPerfHistTCMIBDef.HCPerfHistTCMIB); }
 
     /** February 3, 2004*/
     public final HcPerfHistTCMIBEnt hcPerfHistTCMIB;

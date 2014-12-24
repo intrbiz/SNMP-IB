@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2579]
@@ -11,8 +10,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class EFMCUMIBDef extends MIB
 {
     public static final EFMCUMIBDef EFMCUMIB = new EFMCUMIBDef();
-
-    static { MIBs.getInstance().registerMIB(EFMCUMIBDef.EFMCUMIB); }
 
     /** November 14, 2007*/
     public final EfmCuMIBEnt efmCuMIB;

@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 2578
 RFC 2580
@@ -12,8 +11,6 @@ End of LMP-MIB*/
 public final class LMPMIBDef extends MIB
 {
     public static final LMPMIBDef LMPMIB = new LMPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(LMPMIBDef.LMPMIB); }
 
     /** RFC 4220
 

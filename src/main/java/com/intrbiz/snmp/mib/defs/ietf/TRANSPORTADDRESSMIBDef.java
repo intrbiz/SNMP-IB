@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class TRANSPORTADDRESSMIBDef extends MIB
 {
     public static final TRANSPORTADDRESSMIBDef TRANSPORTADDRESSMIB = new TRANSPORTADDRESSMIBDef();
-
-    static { MIBs.getInstance().registerMIB(TRANSPORTADDRESSMIBDef.TRANSPORTADDRESSMIB); }
 
     public final TransportAddressMIBEnt transportAddressMIB;
 

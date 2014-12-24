@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DNSSERVERMIBDef extends MIB
 {
     public static final DNSSERVERMIBDef DNSSERVERMIB = new DNSSERVERMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DNSSERVERMIBDef.DNSSERVERMIB); }
 
     public final DnsEnt dns;
 

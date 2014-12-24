@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**--
 --
@@ -38,8 +37,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class COPSCLIENTMIBDef extends MIB
 {
     public static final COPSCLIENTMIBDef COPSCLIENTMIB = new COPSCLIENTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(COPSCLIENTMIBDef.COPSCLIENTMIB); }
 
     /** REFERENCE
 

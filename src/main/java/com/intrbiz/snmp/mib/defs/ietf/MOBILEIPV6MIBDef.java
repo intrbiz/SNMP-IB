@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class MOBILEIPV6MIBDef extends MIB
 {
     public static final MOBILEIPV6MIBDef MOBILEIPV6MIB = new MOBILEIPV6MIBDef();
-
-    static { MIBs.getInstance().registerMIB(MOBILEIPV6MIBDef.MOBILEIPV6MIB); }
 
     /** 1st February 2006*/
     public final Mip6MIBEnt mip6MIB;

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class ISDNMIBDef extends MIB
 {
     public static final ISDNMIBDef ISDNMIB = new ISDNMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ISDNMIBDef.ISDNMIB); }
 
     /** Sep 23, 1996*/
     public final IsdnMibEnt isdnMib;

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class APMMIBDef extends MIB
 {
     public static final APMMIBDef APMMIB = new APMMIBDef();
-
-    static { MIBs.getInstance().registerMIB(APMMIBDef.APMMIB); }
 
     /** Application Performance Measurement MIB
 

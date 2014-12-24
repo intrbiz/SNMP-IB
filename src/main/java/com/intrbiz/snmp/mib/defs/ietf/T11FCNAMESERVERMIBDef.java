@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**The MIB for management of the Fibre Channel functionality which
 implements the Name Server function.
@@ -14,8 +13,6 @@ implements the Name Server function.
 public final class T11FCNAMESERVERMIBDef extends MIB
 {
     public static final T11FCNAMESERVERMIBDef T11FCNAMESERVERMIB = new T11FCNAMESERVERMIBDef();
-
-    static { MIBs.getInstance().registerMIB(T11FCNAMESERVERMIBDef.T11FCNAMESERVERMIB); }
 
     /** [FC-FAM-MIB]*/
     public final T11FcNameServerMIBEnt t11FcNameServerMIB;

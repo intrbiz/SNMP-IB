@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RADIUSAUTHSERVERMIBDef extends MIB
 {
     public static final RADIUSAUTHSERVERMIBDef RADIUSAUTHSERVERMIB = new RADIUSAUTHSERVERMIBDef();
-
-    static { MIBs.getInstance().registerMIB(RADIUSAUTHSERVERMIBDef.RADIUSAUTHSERVERMIB); }
 
     /** 21 August 2006*/
     public final RadiusAuthServMIBEnt radiusAuthServMIB;

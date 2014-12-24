@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RFC1316MIBDef extends MIB
 {
     public static final RFC1316MIBDef RFC1316MIB = new RFC1316MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1316MIBDef.RFC1316MIB); }
 
     public final CharEntryEnt charEntry;
 

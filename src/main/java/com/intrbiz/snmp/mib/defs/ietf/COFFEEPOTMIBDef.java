@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class COFFEEPOTMIBDef extends MIB
 {
     public static final COFFEEPOTMIBDef COFFEEPOTMIB = new COFFEEPOTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(COFFEEPOTMIBDef.COFFEEPOTMIB); }
 
     public final CoffeeEnt coffee;
 

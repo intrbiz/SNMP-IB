@@ -58,6 +58,28 @@ public abstract class MIB
         return null;
     }
     
+    @SuppressWarnings("unchecked")
+    public final <E extends MIBEntry<?>> E findEntryForOID(String oid)
+    {
+        for (MIBEntry<?> e : this.entries)
+        {
+            // direct match
+            if (e.oid.equals(oid))
+                return (E) e;
+            // prefix match
+            if (oid.startsWith(e.oid))
+            {
+                // descend
+                E c = e.findEntryForOID(oid);
+                if (c != null) 
+                    return c;
+                // default to the best prefix
+                return (E) e;
+            }
+        }
+        return null;
+    }
+    
     public String toString()
     {
         return this.name;
@@ -152,6 +174,28 @@ public abstract class MIB
             {
                 if (e.oid.startsWith(oidPrefix))
                     return (E) e;
+            }
+            return null;
+        }
+        
+        @SuppressWarnings("unchecked")
+        public final <E extends MIBEntry<?>> E findEntryForOID(String oid)
+        {
+            for (MIBEntry<?> e : this.entries)
+            {
+                // direct match
+                if (e.oid.equals(oid))
+                    return (E) e;
+                // prefix match
+                if (oid.startsWith(e.oid))
+                {
+                    // descend
+                    E c = e.findEntryForOID(oid);
+                    if (c != null) 
+                        return c;
+                    // default to the best prefix
+                    return (E) e;
+                }
             }
             return null;
         }

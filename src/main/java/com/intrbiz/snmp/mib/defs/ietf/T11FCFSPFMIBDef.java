@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**For management of FSPF, the Fibre Channel routing protocol.
 
@@ -14,8 +13,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class T11FCFSPFMIBDef extends MIB
 {
     public static final T11FCFSPFMIBDef T11FCFSPFMIB = new T11FCFSPFMIBDef();
-
-    static { MIBs.getInstance().registerMIB(T11FCFSPFMIBDef.T11FCFSPFMIB); }
 
     /** [RFC4439]*/
     public final T11FcFspfMIBEnt t11FcFspfMIB;

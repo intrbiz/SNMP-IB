@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RMONMIBDef extends MIB
 {
     public static final RMONMIBDef RMONMIB = new RMONMIBDef();
-
-    static { MIBs.getInstance().registerMIB(RMONMIBDef.RMONMIB); }
 
     public final RmonEnt rmon;
 

@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IPATMIPMCMIBDef extends MIB
 {
     public static final IPATMIPMCMIBDef IPATMIPMCMIB = new IPATMIPMCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IPATMIPMCMIBDef.IPATMIPMCMIB); }
 
     /** 15 April 1998*/
     public final MarsMIBEnt marsMIB;

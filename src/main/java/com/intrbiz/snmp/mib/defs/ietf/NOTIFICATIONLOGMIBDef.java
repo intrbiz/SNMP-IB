@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class NOTIFICATIONLOGMIBDef extends MIB
 {
     public static final NOTIFICATIONLOGMIBDef NOTIFICATIONLOGMIB = new NOTIFICATIONLOGMIBDef();
-
-    static { MIBs.getInstance().registerMIB(NOTIFICATIONLOGMIBDef.NOTIFICATIONLOGMIB); }
 
     /** 27 November 2000*/
     public final NotificationLogMIBEnt notificationLogMIB;

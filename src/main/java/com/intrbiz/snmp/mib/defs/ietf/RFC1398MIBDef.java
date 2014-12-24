@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**For those chipsets not represented above, OBJECT IDENTIFIER
 assignment is required in other documentation, e.g., assignment
@@ -10,8 +9,6 @@ individual enterprises (see RFC 1155).*/
 public final class RFC1398MIBDef extends MIB
 {
     public static final RFC1398MIBDef RFC1398MIB = new RFC1398MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1398MIBDef.RFC1398MIB); }
 
     public final Dot3Ent dot3;
 

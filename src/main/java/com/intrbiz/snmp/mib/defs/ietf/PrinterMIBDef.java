@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2579]
@@ -11,8 +10,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class PrinterMIBDef extends MIB
 {
     public static final PrinterMIBDef PrinterMIB = new PrinterMIBDef();
-
-    static { MIBs.getInstance().registerMIB(PrinterMIBDef.PrinterMIB); }
 
     public final PrintmibEnt printmib;
 

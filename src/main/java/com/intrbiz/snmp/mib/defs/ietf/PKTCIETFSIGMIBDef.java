@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC4001]
@@ -12,8 +11,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class PKTCIETFSIGMIBDef extends MIB
 {
     public static final PKTCIETFSIGMIBDef PKTCIETFSIGMIB = new PKTCIETFSIGMIBDef();
-
-    static { MIBs.getInstance().registerMIB(PKTCIETFSIGMIBDef.PKTCIETFSIGMIB); }
 
     /** [RFC3289]
 

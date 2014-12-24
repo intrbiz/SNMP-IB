@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DNSRESOLVERMIBDef extends MIB
 {
     public static final DNSRESOLVERMIBDef DNSRESOLVERMIB = new DNSRESOLVERMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DNSRESOLVERMIBDef.DNSRESOLVERMIB); }
 
     /** DNS Resolver MIB*/
     public final DnsResMIBEnt dnsResMIB;

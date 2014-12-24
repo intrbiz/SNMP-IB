@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DISMANSCHEDULEMIBDef extends MIB
 {
     public static final DISMANSCHEDULEMIBDef DISMANSCHEDULEMIB = new DISMANSCHEDULEMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DISMANSCHEDULEMIBDef.DISMANSCHEDULEMIB); }
 
     public final SchedMIBEnt schedMIB;
 

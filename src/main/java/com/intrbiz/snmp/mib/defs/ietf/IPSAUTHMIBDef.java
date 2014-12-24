@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC 3411*/
 public final class IPSAUTHMIBDef extends MIB
 {
     public static final IPSAUTHMIBDef IPSAUTHMIB = new IPSAUTHMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IPSAUTHMIBDef.IPSAUTHMIB); }
 
     /** May 22, 2006*/
     public final IpsAuthMibModuleEnt ipsAuthMibModule;

@@ -1,15 +1,12 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**http://www.iana.org/assignments/ianacharset-mib
 [RFC2578]*/
 public final class IANACHARSETMIBDef extends MIB
 {
     public static final IANACHARSETMIBDef IANACHARSETMIB = new IANACHARSETMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANACHARSETMIBDef.IANACHARSETMIB); }
 
     /** [RFC2579]*/
     public final IanaCharsetMIBEnt ianaCharsetMIB;

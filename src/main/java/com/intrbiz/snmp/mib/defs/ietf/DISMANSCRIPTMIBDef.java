@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DISMANSCRIPTMIBDef extends MIB
 {
     public static final DISMANSCRIPTMIBDef DISMANSCRIPTMIB = new DISMANSCRIPTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DISMANSCRIPTMIBDef.DISMANSCRIPTMIB); }
 
     public final ScriptMIBEnt scriptMIB;
 

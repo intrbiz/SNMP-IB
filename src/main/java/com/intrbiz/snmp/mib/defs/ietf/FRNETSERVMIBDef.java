@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class FRNETSERVMIBDef extends MIB
 {
     public static final FRNETSERVMIBDef FRNETSERVMIB = new FRNETSERVMIBDef();
-
-    static { MIBs.getInstance().registerMIB(FRNETSERVMIBDef.FRNETSERVMIB); }
 
     /** September 28, 2000*/
     public final FrnetservMIBEnt frnetservMIB;

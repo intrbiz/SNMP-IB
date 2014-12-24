@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class ENTITYSENSORMIBDef extends MIB
 {
     public static final ENTITYSENSORMIBDef ENTITYSENSORMIB = new ENTITYSENSORMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ENTITYSENSORMIBDef.ENTITYSENSORMIB); }
 
     public final EntitySensorMIBEnt entitySensorMIB;
 

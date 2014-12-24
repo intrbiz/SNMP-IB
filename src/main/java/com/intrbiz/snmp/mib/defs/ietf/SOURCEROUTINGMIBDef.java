@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SOURCEROUTINGMIBDef extends MIB
 {
     public static final SOURCEROUTINGMIBDef SOURCEROUTINGMIB = new SOURCEROUTINGMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SOURCEROUTINGMIBDef.SOURCEROUTINGMIB); }
 
     /** groups in the SR MIB
 dot1dSr is imported from the Bridge MIB*/

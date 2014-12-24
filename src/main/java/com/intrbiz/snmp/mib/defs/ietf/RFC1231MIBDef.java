@@ -1,15 +1,12 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**IEEE 802.5 Token Ring MIB
 FIX: added additional import (Counter)*/
 public final class RFC1231MIBDef extends MIB
 {
     public static final RFC1231MIBDef RFC1231MIB = new RFC1231MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RFC1231MIBDef.RFC1231MIB); }
 
     /** This MIB Module uses the extended OBJECT-TYPE macro asdefined in [9].*/
     public final Dot5Ent dot5;

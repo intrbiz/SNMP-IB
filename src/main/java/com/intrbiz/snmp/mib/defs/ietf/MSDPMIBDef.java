@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class MSDPMIBDef extends MIB
 {
     public static final MSDPMIBDef MSDPMIB = new MSDPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(MSDPMIBDef.MSDPMIB); }
 
     public final MsdpMIBEnt msdpMIB;
 

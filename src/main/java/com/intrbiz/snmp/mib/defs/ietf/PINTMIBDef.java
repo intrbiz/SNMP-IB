@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class PINTMIBDef extends MIB
 {
     public static final PINTMIBDef PINTMIB = new PINTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(PINTMIBDef.PINTMIB); }
 
     /** RFC 2571 [2]
 

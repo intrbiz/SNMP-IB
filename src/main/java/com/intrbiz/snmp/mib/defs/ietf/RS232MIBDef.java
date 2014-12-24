@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class RS232MIBDef extends MIB
 {
     public static final RS232MIBDef RS232MIB = new RS232MIBDef();
-
-    static { MIBs.getInstance().registerMIB(RS232MIBDef.RS232MIB); }
 
     public final Rs232Ent rs232;
 

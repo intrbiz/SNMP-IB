@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class VPNTCSTDMIBDef extends MIB
 {
     public static final VPNTCSTDMIBDef VPNTCSTDMIB = new VPNTCSTDMIBDef();
-
-    static { MIBs.getInstance().registerMIB(VPNTCSTDMIBDef.VPNTCSTDMIB); }
 
     /** 15 November 2005*/
     public final VpnTcMIBEnt vpnTcMIB;

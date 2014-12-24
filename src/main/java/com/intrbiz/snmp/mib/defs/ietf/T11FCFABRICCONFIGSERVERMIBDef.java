@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2580]
@@ -14,8 +13,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class T11FCFABRICCONFIGSERVERMIBDef extends MIB
 {
     public static final T11FCFABRICCONFIGSERVERMIBDef T11FCFABRICCONFIGSERVERMIB = new T11FCFABRICCONFIGSERVERMIBDef();
-
-    static { MIBs.getInstance().registerMIB(T11FCFABRICCONFIGSERVERMIBDef.T11FCFABRICCONFIGSERVERMIB); }
 
     /** [RFC4439]*/
     public final T11FcFabricConfigServerMIBEnt t11FcFabricConfigServerMIB;

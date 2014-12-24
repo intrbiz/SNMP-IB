@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class DOT12RPTRMIBDef extends MIB
 {
     public static final DOT12RPTRMIBDef DOT12RPTRMIB = new DOT12RPTRMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DOT12RPTRMIBDef.DOT12RPTRMIB); }
 
     /** May 19, 1997*/
     public final VgRptrMIBEnt vgRptrMIB;

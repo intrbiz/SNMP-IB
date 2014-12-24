@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class INTEGRATEDSERVICESGUARANTEEDMIBDef extends MIB
 {
     public static final INTEGRATEDSERVICESGUARANTEEDMIBDef INTEGRATEDSERVICESGUARANTEEDMIB = new INTEGRATEDSERVICESGUARANTEEDMIBDef();
-
-    static { MIBs.getInstance().registerMIB(INTEGRATEDSERVICESGUARANTEEDMIBDef.INTEGRATEDSERVICESGUARANTEEDMIB); }
 
     /** This MIB module uses the extended OBJECT-TYPE macro asdefined in [9].
 

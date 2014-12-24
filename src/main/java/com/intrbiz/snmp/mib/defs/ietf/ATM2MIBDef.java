@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class ATM2MIBDef extends MIB
 {
     public static final ATM2MIBDef ATM2MIB = new ATM2MIBDef();
-
-    static { MIBs.getInstance().registerMIB(ATM2MIBDef.ATM2MIB); }
 
     public final Atm2MIBEnt atm2MIB;
 

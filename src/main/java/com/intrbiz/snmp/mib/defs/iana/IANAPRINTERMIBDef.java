@@ -1,15 +1,12 @@
 package com.intrbiz.snmp.mib.defs.iana;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**http://www.iana.org/assignments/ianaprinter-mib
 [RFC2578]*/
 public final class IANAPRINTERMIBDef extends MIB
 {
     public static final IANAPRINTERMIBDef IANAPRINTERMIB = new IANAPRINTERMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IANAPRINTERMIBDef.IANAPRINTERMIB); }
 
     /** [RFC2579]
 

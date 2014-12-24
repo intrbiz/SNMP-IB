@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class ADSL2LINETCMIBDef extends MIB
 {
     public static final ADSL2LINETCMIBDef ADSL2LINETCMIB = new ADSL2LINETCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ADSL2LINETCMIBDef.ADSL2LINETCMIB); }
 
     /** October 4th, 2006*/
     public final Adsl2TCMIBEnt adsl2TCMIB;

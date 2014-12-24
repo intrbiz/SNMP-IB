@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class ModemMIBDef extends MIB
 {
     public static final ModemMIBDef ModemMIB = new ModemMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ModemMIBDef.ModemMIB); }
 
     public final MdmMibEnt mdmMib;
 

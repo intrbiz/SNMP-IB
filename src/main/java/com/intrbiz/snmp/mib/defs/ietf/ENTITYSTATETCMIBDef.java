@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class ENTITYSTATETCMIBDef extends MIB
 {
     public static final ENTITYSTATETCMIBDef ENTITYSTATETCMIB = new ENTITYSTATETCMIBDef();
-
-    static { MIBs.getInstance().registerMIB(ENTITYSTATETCMIBDef.ENTITYSTATETCMIB); }
 
     public final EntityStateTcEnt entityStateTc;
 

@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2579]
@@ -14,8 +13,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class MPLSFTNSTDMIBDef extends MIB
 {
     public static final MPLSFTNSTDMIBDef MPLSFTNSTDMIB = new MPLSFTNSTDMIBDef();
-
-    static { MIBs.getInstance().registerMIB(MPLSFTNSTDMIBDef.MPLSFTNSTDMIB); }
 
     /** June 6, 2004*/
     public final MplsFTNStdMIBEnt mplsFTNStdMIB;

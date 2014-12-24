@@ -1,7 +1,6 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**[RFC2578]
 [RFC2580]
@@ -13,8 +12,6 @@ import com.intrbiz.snmp.mib.MIBs;
 public final class MPLSLDPFRAMERELAYSTDMIBDef extends MIB
 {
     public static final MPLSLDPFRAMERELAYSTDMIBDef MPLSLDPFRAMERELAYSTDMIB = new MPLSLDPFRAMERELAYSTDMIBDef();
-
-    static { MIBs.getInstance().registerMIB(MPLSLDPFRAMERELAYSTDMIBDef.MPLSLDPFRAMERELAYSTDMIB); }
 
     /** June 3, 2004*/
     public final MplsLdpFrameRelayStdMIBEnt mplsLdpFrameRelayStdMIB;

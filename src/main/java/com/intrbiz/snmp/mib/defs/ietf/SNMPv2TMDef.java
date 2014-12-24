@@ -1,14 +1,11 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**::= { rfc1157Proxy 2 }            this OID is obsolete*/
 public final class SNMPv2TMDef extends MIB
 {
     public static final SNMPv2TMDef SNMPv2TM = new SNMPv2TMDef();
-
-    static { MIBs.getInstance().registerMIB(SNMPv2TMDef.SNMPv2TM); }
 
     public final Snmpv2tmEnt snmpv2tm;
 

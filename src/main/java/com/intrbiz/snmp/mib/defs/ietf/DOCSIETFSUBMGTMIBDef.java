@@ -1,15 +1,12 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 /**RFC2670
 RFC3289*/
 public final class DOCSIETFSUBMGTMIBDef extends MIB
 {
     public static final DOCSIETFSUBMGTMIBDef DOCSIETFSUBMGTMIB = new DOCSIETFSUBMGTMIBDef();
-
-    static { MIBs.getInstance().registerMIB(DOCSIETFSUBMGTMIBDef.DOCSIETFSUBMGTMIB); }
 
     /** March 29, 2005*/
     public final DocsSubMgtEnt docsSubMgt;

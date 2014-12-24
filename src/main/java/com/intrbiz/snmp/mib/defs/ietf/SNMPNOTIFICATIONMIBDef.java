@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class SNMPNOTIFICATIONMIBDef extends MIB
 {
     public static final SNMPNOTIFICATIONMIBDef SNMPNOTIFICATIONMIB = new SNMPNOTIFICATIONMIBDef();
-
-    static { MIBs.getInstance().registerMIB(SNMPNOTIFICATIONMIBDef.SNMPNOTIFICATIONMIB); }
 
     public final SnmpNotificationMIBEnt snmpNotificationMIB;
 

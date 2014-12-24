@@ -1,13 +1,10 @@
 package com.intrbiz.snmp.mib.defs.ietf;
 
 import com.intrbiz.snmp.mib.MIB;
-import com.intrbiz.snmp.mib.MIBs;
 
 public final class IPV6TCPMIBDef extends MIB
 {
     public static final IPV6TCPMIBDef IPV6TCPMIB = new IPV6TCPMIBDef();
-
-    static { MIBs.getInstance().registerMIB(IPV6TCPMIBDef.IPV6TCPMIB); }
 
     public final Ipv6TcpMIBEnt ipv6TcpMIB;
 
