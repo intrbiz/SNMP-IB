@@ -81,7 +81,7 @@ public class TestV1TrapDecode
         assertThat(trap.getEnterprise(), is(equalTo("1.3.6.1.4.1.2.6.158.4")));
         assertThat(trap.getGenericTrap(), is(equalTo(GenericTrap.COLD_START)));
         assertThat(trap.getSpecificTrap(), is(equalTo(0)));
-        assertThat(trap.getTimestamp().getTicks(), is(equalTo(900)));
+        assertThat(trap.getTimestamp().getTicks(), is(equalTo(900L)));
         assertThat(trap.getAgentAddr().getValue(), is(equalTo(InetAddress.getByAddress(new byte[] { (byte) 172, 30, 13, 20 }))));
     }
 }
