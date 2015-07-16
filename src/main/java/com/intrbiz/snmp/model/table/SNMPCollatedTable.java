@@ -117,8 +117,9 @@ public class SNMPCollatedTable
             for (Entry<String, VarBind> cell : this.getRow(key))
             {
                 if (ns) sb.append(", ");
-                MIBEntry<?> entry = cell.getValue().lookupEntry();
-                sb.append(cell.getKey() + (entry == null ? "" : " (" + entry.qualifiedName + ")") + " => " + cell.getValue().valueToString());
+                VarBind val = cell.getValue();
+                MIBEntry<?> entry = val == null ? null : val.lookupEntry();
+                sb.append(cell.getKey() + (entry == null ? "" : " (" + entry.qualifiedName + ")") + " => " + (val == null ? null : val.valueToString()));
                 ns = true;
             }
             sb.append("]\n");
