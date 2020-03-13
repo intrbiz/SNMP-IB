@@ -1,6 +1,6 @@
 package com.intrbiz.snmp.model.v2;
 
-import org.bouncycastle.asn1.DERTaggedObject;
+import org.bouncycastle.asn1.ASN1TaggedObject;
 
 public class GetResponsePDU extends VarBindPDU 
 {
@@ -11,7 +11,7 @@ public class GetResponsePDU extends VarBindPDU
         super();
     }
     
-    public GetResponsePDU(DERTaggedObject val)
+    public GetResponsePDU(ASN1TaggedObject val)
     {
         this();
         this.decode(val);

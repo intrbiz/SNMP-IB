@@ -5,11 +5,12 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
+import org.bouncycastle.asn1.ASN1ApplicationSpecific;
+import org.bouncycastle.asn1.ASN1Encodable;
+import org.bouncycastle.asn1.ASN1Integer;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.BERTags;
 import org.bouncycastle.asn1.DERApplicationSpecific;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERInteger;
-import org.bouncycastle.asn1.DERObject;
-import org.bouncycastle.asn1.DERTags;
 
 /**
  * A representation of the SNMP TimeTicks unit
@@ -17,7 +18,7 @@ import org.bouncycastle.asn1.DERTags;
  * A TimeTick is the number of 1/100s of a second since an epoch
  * 
  */
-public class TimeTicks implements DEREncodable
+public class TimeTicks implements ASN1Encodable
 {
     public static final int APPLICATION_TAG = 3;
 
@@ -98,11 +99,11 @@ public class TimeTicks implements DEREncodable
     }
 
     @Override
-    public DERObject getDERObject()
+    public ASN1Primitive toASN1Primitive()
     {
         try
         {
-            return new DERApplicationSpecific(false, APPLICATION_TAG, new DERInteger(BigInteger.valueOf(this.ticks)));
+            return new DERApplicationSpecific(false, APPLICATION_TAG, new ASN1Integer(BigInteger.valueOf(this.ticks)));
         }
         catch (IOException e)
         {
@@ -110,9 +111,9 @@ public class TimeTicks implements DEREncodable
         return null;
     }
 
-    public static TimeTicks fromApplicationSpecific(DERApplicationSpecific app) throws IOException
+    public static TimeTicks fromApplicationSpecific(ASN1ApplicationSpecific app) throws IOException
     {
-        DERInteger i = (DERInteger) app.getObject(DERTags.INTEGER);
+        ASN1Integer i = (ASN1Integer) app.getObject(BERTags.INTEGER);
         return new TimeTicks(i.getPositiveValue().longValue());
     }
 

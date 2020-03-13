@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.bouncycastle.asn1.ASN1Encodable;
+import org.bouncycastle.asn1.ASN1Encoding;
 import org.bouncycastle.asn1.ASN1InputStream;
-import org.bouncycastle.asn1.BEROutputStream;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.ASN1OutputStream;
+import org.bouncycastle.asn1.ASN1Primitive;
 
 import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.SNMPContextResolver;
@@ -82,14 +83,19 @@ public abstract class SNMPMessage
 
     public void encodeToStream(OutputStream out, SNMPContext<?> context) throws IOException
     {
-        try (BEROutputStream aout = new BEROutputStream(out))
+        ASN1OutputStream aout = ASN1OutputStream.create(out, ASN1Encoding.DER);
+        try
         {
-            DEREncodable obj = this.encode(context);
+            ASN1Encodable obj = this.encode(context);
             aout.writeObject(obj);
+        }
+        finally
+        {
+            aout.close();
         }
     }
     
-    public abstract DEREncodable encode(SNMPContext<?> context) throws IOException;
+    public abstract ASN1Encodable encode(SNMPContext<?> context) throws IOException;
     
     // decode
 
@@ -114,5 +120,5 @@ public abstract class SNMPMessage
         }
     }
 
-    public abstract void decode(DERObject seq, SNMPContextResolver res) throws IOException;
+    public abstract void decode(ASN1Primitive seq, SNMPContextResolver res) throws IOException;
 }

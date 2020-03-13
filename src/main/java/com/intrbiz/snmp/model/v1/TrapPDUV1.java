@@ -5,10 +5,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.DEREncodable;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.ASN1TaggedObject;
 import org.bouncycastle.asn1.DERNull;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
@@ -54,14 +56,14 @@ public class TrapPDUV1 extends PDU implements Iterable<VarBind>
         return TAG;
     }
 
-    public DERTaggedObject encode()
+    public ASN1TaggedObject encode()
     {
         ASN1EncodableVector vec = new ASN1EncodableVector();
         vec.add(new ASN1ObjectIdentifier(this.enterprise));
-        vec.add(this.agentAddr.getDERObject());
+        vec.add(this.agentAddr.toASN1Primitive());
         vec.add(new ASN1Integer(this.genericTrap.ordinal()));
         vec.add(new ASN1Integer(this.specificTrap));
-        vec.add(this.timestamp.getDERObject());
+        vec.add(this.timestamp.toASN1Primitive());
         ASN1EncodableVector vbvec = new ASN1EncodableVector();
         for (VarBind vb : this.varBinds)
         {
@@ -70,15 +72,15 @@ public class TrapPDUV1 extends PDU implements Iterable<VarBind>
         return new DERTaggedObject(false, this._tag(), new DERSequence(vec));
     }
 
-    public void decode(DERTaggedObject val)
+    public void decode(ASN1TaggedObject val)
     {
-        DERSequence seq = SNMPUtil.getSequence(val);
+        ASN1Sequence seq = SNMPUtil.getSequence(val);
         this.enterprise = SNMPUtil.decodeOid(seq, 0).getId();
         this.agentAddr = (IPAddress) SNMPUtil.decodeApplicationSpecific(SNMPUtil.decodeValue(seq, 1));
         this.genericTrap = GenericTrap.valueOf(SNMPUtil.decodeInt(seq, 2));
         this.specificTrap = SNMPUtil.decodeInt(seq, 3);
         this.timestamp = (TimeTicks) SNMPUtil.decodeApplicationSpecific(SNMPUtil.decodeValue(seq, 4));
-        DERSequence binds = SNMPUtil.getSequence(seq, 5);
+        ASN1Sequence binds = SNMPUtil.getSequence(seq, 5);
         Enumeration<?> objs = binds.getObjects();
         while (objs.hasMoreElements())
         {
@@ -158,14 +160,14 @@ public class TrapPDUV1 extends PDU implements Iterable<VarBind>
         this.varBinds.add(vb);
     }
 
-    public void addVarBind(String oid, DEREncodable val)
+    public void addVarBind(String oid, ASN1Encodable val)
     {
         this.addVarBind(new VarBind(oid, val));
     }
 
     public void addVarBind(String oid)
     {
-        this.addVarBind(new VarBind(oid, new DERNull()));
+        this.addVarBind(new VarBind(oid, DERNull.INSTANCE));
     }
 
     public void addVarBind(String oid, String val)

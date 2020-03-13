@@ -2,6 +2,8 @@ package com.intrbiz.snmp.model.v2;
 
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1Integer;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.ASN1TaggedObject;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 
@@ -55,7 +57,7 @@ public abstract class GenericPDU extends PDU
         this.errorIndex = errorIndex;
     }
 
-    public DERTaggedObject encode()
+    public ASN1TaggedObject encode()
     {
         ASN1EncodableVector vec = new ASN1EncodableVector();
         vec.add(new ASN1Integer(this.requestId));
@@ -71,16 +73,16 @@ public abstract class GenericPDU extends PDU
     {
     }
 
-    public void decode(DERTaggedObject val)
+    public void decode(ASN1TaggedObject val)
     {
-        DERSequence seq  = SNMPUtil.getSequence(val);
+        ASN1Sequence seq  = SNMPUtil.getSequence(val);
         this.requestId   = SNMPUtil.decodeInt(seq, 0);
         this.errorStatus = SNMPUtil.decodeInt(seq, 1);
         this.errorIndex  = SNMPUtil.decodeInt(seq, 2);
         this._decode(seq);
     }
     
-    protected void _decode(DERSequence seq)
+    protected void _decode(ASN1Sequence seq)
     {
     }
 }

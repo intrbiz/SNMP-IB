@@ -2,12 +2,13 @@ package com.intrbiz.snmp.model.v2;
 
 import java.io.IOException;
 
+import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERInteger;
-import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.ASN1Integer;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.ASN1TaggedObject;
 import org.bouncycastle.asn1.DERSequence;
-import org.bouncycastle.asn1.DERTaggedObject;
 
 import com.intrbiz.snmp.SNMPContext;
 import com.intrbiz.snmp.SNMPContextResolver;
@@ -83,25 +84,25 @@ public class SNMPMessageV2 extends SNMPMessage
     }
 
     @Override
-    public DEREncodable encode(SNMPContext<?> ctx)
+    public ASN1Encodable encode(SNMPContext<?> ctx)
     {
         this.context = ctx;
         ASN1EncodableVector vec = new ASN1EncodableVector();
-        vec.add(new DERInteger(this.version.getTag()));
+        vec.add(new ASN1Integer(this.version.getTag()));
         vec.add(SNMPUtil.encodeString(this.community));
         vec.add(this.pdu.encode());
         return new DERSequence(vec);
     }
 
     @Override
-    public void decode(DERObject obj, SNMPContextResolver res) throws IOException
+    public void decode(ASN1Primitive obj, SNMPContextResolver res) throws IOException
     {
         // decode
-        DERSequence seq = (DERSequence) obj;
+        ASN1Sequence seq = (ASN1Sequence) obj;
         this.version = SNMPVersion.fromTag(SNMPUtil.decodeInt(seq, 0));
         this.community = SNMPUtil.decodeString(seq, 1);
         // decode the PDU
-        DERTaggedObject pduObj = SNMPUtil.getTaggedObject(seq, 2);
+        ASN1TaggedObject pduObj = SNMPUtil.getTaggedObject(seq, 2);
         this.pdu = PDU.newPdu(this.version, pduObj.getTagNo());
         this.pdu.decode(pduObj);
         // load the context

@@ -5,15 +5,16 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 
+import org.bouncycastle.asn1.ASN1ApplicationSpecific;
+import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.DERApplicationSpecific;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERInteger;
-import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.ASN1OctetString;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.ASN1TaggedObject;
 import org.bouncycastle.asn1.DEROctetString;
-import org.bouncycastle.asn1.DERSequence;
-import org.bouncycastle.asn1.DERTaggedObject;
 
 import com.intrbiz.snmp.SNMPVersion;
 import com.intrbiz.snmp.asn1.ASNByteBuffer;
@@ -34,12 +35,12 @@ public class SNMPUtil
 
     // string
 
-    public static String decodeString(DEROctetString oct)
+    public static String decodeString(ASN1OctetString oct)
     {
         return new String(oct.getOctets(), UTF8);
     }
 
-    public static DEROctetString encodeString(String str)
+    public static ASN1OctetString encodeString(String str)
     {
         byte[] octets = str.getBytes(UTF8);
         return new DEROctetString(octets);
@@ -47,90 +48,90 @@ public class SNMPUtil
 
     // integer
 
-    public static int decodeInt(DERInteger val)
+    public static int decodeInt(ASN1Integer val)
     {
         return val.getValue().intValue();
     }
 
     // byte string
 
-    public static byte decodeSingleByteString(DEROctetString str)
+    public static byte decodeSingleByteString(ASN1OctetString str)
     {
         return str.getOctets()[0];
     }
 
-    public static byte[] decodeByteString(DEROctetString str)
+    public static byte[] decodeByteString(ASN1OctetString str)
     {
         return str.getOctets();
     }
 
-    public static DEROctetString encodeByteString(byte[] octets)
+    public static ASN1OctetString encodeByteString(byte[] octets)
     {
         return new DEROctetString(octets);
     }
 
-    public static DEROctetString encodeSingleByteString(byte octet)
+    public static ASN1OctetString encodeSingleByteString(byte octet)
     {
         return new DEROctetString(new byte[] { octet });
     }
 
     // sequence helpers
 
-    public static String decodeString(DERSequence seq, int index)
+    public static String decodeString(ASN1Sequence seq, int index)
     {
-        return decodeString((DEROctetString) seq.getObjectAt(index));
+        return decodeString((ASN1OctetString) seq.getObjectAt(index));
     }
 
-    public static int decodeInt(DERSequence seq, int index)
+    public static int decodeInt(ASN1Sequence seq, int index)
     {
-        return decodeInt((DERInteger) seq.getObjectAt(index));
+        return decodeInt((ASN1Integer) seq.getObjectAt(index));
     }
 
-    public static ASN1ObjectIdentifier decodeOid(DERSequence seq, int index)
+    public static ASN1ObjectIdentifier decodeOid(ASN1Sequence seq, int index)
     {
         return (ASN1ObjectIdentifier) seq.getObjectAt(index);
     }
 
-    public static DEREncodable decodeValue(DERSequence seq, int index)
+    public static ASN1Encodable decodeValue(ASN1Sequence seq, int index)
     {
         return seq.getObjectAt(index);
     }
 
-    public static byte decodeSingleByteString(DERSequence seq, int index)
+    public static byte decodeSingleByteString(ASN1Sequence seq, int index)
     {
-        return decodeSingleByteString((DEROctetString) seq.getObjectAt(index));
+        return decodeSingleByteString((ASN1OctetString) seq.getObjectAt(index));
     }
 
-    public static byte[] decodeByteString(DERSequence seq, int index)
+    public static byte[] decodeByteString(ASN1Sequence seq, int index)
     {
-        return decodeByteString((DEROctetString) seq.getObjectAt(index));
+        return decodeByteString((ASN1OctetString) seq.getObjectAt(index));
     }
 
     // object helpers
 
-    public static DERSequence getSequence(DERTaggedObject obj)
+    public static ASN1Sequence getSequence(ASN1TaggedObject obj)
     {
-        return (DERSequence) obj.getObject();
+        return (ASN1Sequence) obj.getObject();
     }
 
-    public static DERSequence getSequence(DERSequence seq, int index)
+    public static ASN1Sequence getSequence(ASN1Sequence seq, int index)
     {
-        return (DERSequence) seq.getObjectAt(index);
+        return (ASN1Sequence) seq.getObjectAt(index);
     }
 
-    public static DERTaggedObject getTaggedObject(DERSequence seq, int index)
+    public static ASN1TaggedObject getTaggedObject(ASN1Sequence seq, int index)
     {
-        return (DERTaggedObject) seq.getObjectAt(index);
+        return (ASN1TaggedObject) seq.getObjectAt(index);
     }
 
     // app specific
 
-    public static DEREncodable decodeApplicationSpecific(DEREncodable enc)
+    public static ASN1Encodable decodeApplicationSpecific(ASN1Encodable enc)
     {
         // TODO
-        if (enc instanceof DERApplicationSpecific)
+        if (enc instanceof ASN1ApplicationSpecific)
         {
-            DERApplicationSpecific app = (DERApplicationSpecific) enc;
+            ASN1ApplicationSpecific app = (ASN1ApplicationSpecific) enc;
             try
             {
                      if (app.getApplicationTag() == IPAddress.APPLICATION_TAG) return IPAddress.fromApplicationSpecific(app);
@@ -144,9 +145,9 @@ public class SNMPUtil
                 throw new RuntimeException("Failed to decode application specific entity", e);
             }
         }
-        else if (enc instanceof DERTaggedObject)
+        else if (enc instanceof ASN1TaggedObject)
         {
-            DERTaggedObject obj = (DERTaggedObject) enc;
+            ASN1TaggedObject obj = (ASN1TaggedObject) enc;
                  if (obj.getTagNo() == NoSuchObject.TAG)   return new NoSuchObject();
             else if (obj.getTagNo() == NoSuchInstance.TAG) return new NoSuchInstance();
             else if (obj.getTagNo() == EndOfMIBView.TAG)   return new EndOfMIBView();
@@ -163,7 +164,7 @@ public class SNMPUtil
 
     // parse
 
-    public static DERObject parse(byte[] data) throws IOException
+    public static ASN1Primitive parse(byte[] data) throws IOException
     {
         try (ASN1InputStream in = new ASN1InputStream(new ByteArrayInputStream(data)))
         {

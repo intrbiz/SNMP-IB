@@ -5,8 +5,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.DEREncodable;
+import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DERNull;
 import org.bouncycastle.asn1.DERSequence;
 
@@ -36,14 +37,14 @@ public abstract class VarBindPDU extends GenericPDU implements Iterable<VarBind>
         this.varBinds.add(vb);
     }
     
-    public void addVarBind(String oid, DEREncodable val)
+    public void addVarBind(String oid, ASN1Encodable val)
     {
         this.addVarBind(new VarBind(oid, val));
     }
     
     public void addVarBind(String oid)
     {
-        this.addVarBind(new VarBind(oid, new DERNull()));
+        this.addVarBind(new VarBind(oid, DERNull.INSTANCE));
     }
     
     public void addVarBind(String oid, String val)
@@ -125,14 +126,14 @@ public abstract class VarBindPDU extends GenericPDU implements Iterable<VarBind>
     }
 
     @Override
-    protected void _decode(DERSequence seq)
+    protected void _decode(ASN1Sequence seq)
     {
-        DERSequence binds = SNMPUtil.getSequence(seq, 3);
+        ASN1Sequence binds = SNMPUtil.getSequence(seq, 3);
         Enumeration<?> objs = binds.getObjects();
         while (objs.hasMoreElements())
         {
             VarBind vb = new VarBind();
-            vb.decode((DERSequence) objs.nextElement());
+            vb.decode((ASN1Sequence) objs.nextElement());
             this.varBinds.add(vb);
         }
     }

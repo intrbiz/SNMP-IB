@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
+import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERInteger;
-import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.ASN1Integer;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DERSequence;
 
 import com.intrbiz.snmp.SNMPContext;
@@ -101,7 +102,7 @@ public class SNMPMessageV3 extends SNMPMessage
      * Encode the message,
      */
     @Override
-    public DEREncodable encode(SNMPContext<?> ctx) throws IOException
+    public ASN1Encodable encode(SNMPContext<?> ctx) throws IOException
     {
         // we need a V3 context
         this.context = ctx;
@@ -115,7 +116,7 @@ public class SNMPMessageV3 extends SNMPMessage
         }
         // encode
         ASN1EncodableVector vec = new ASN1EncodableVector();
-        vec.add(new DERInteger(this.version.getTag()));
+        vec.add(new ASN1Integer(this.version.getTag()));
         vec.add(this.header.encode());
         // security parameters
         vec.add(SNMPUtil.encodeByteString(this.securityParameters.encodeToBytes()));
@@ -151,11 +152,11 @@ public class SNMPMessageV3 extends SNMPMessage
     /**
      * Decode the message, but do not decrypt it if the message has privacy protection
      */
-    public void decode(DERObject obj, SNMPContextResolver res) throws IOException
+    public void decode(ASN1Primitive obj, SNMPContextResolver res) throws IOException
     {
-        DERSequence seq = (DERSequence) obj;
+        ASN1Sequence seq = (ASN1Sequence) obj;
         this.version = SNMPVersion.fromTag(SNMPUtil.decodeInt(seq, 0));
-        this.header = new HeaderData((DERObject) SNMPUtil.decodeValue(seq, 1));
+        this.header = new HeaderData((ASN1Primitive) SNMPUtil.decodeValue(seq, 1));
         // decode the security params
         if (this.header.isUserSecurityModel())
         {
@@ -177,7 +178,7 @@ public class SNMPMessageV3 extends SNMPMessage
         }
         else
         {
-            this.scopedPdu = new ScopedPDU((DERObject) SNMPUtil.decodeValue(seq, 3));
+            this.scopedPdu = new ScopedPDU((ASN1Primitive) SNMPUtil.decodeValue(seq, 3));
         }
     }
     

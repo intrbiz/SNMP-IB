@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.bouncycastle.asn1.ASN1Encodable;
+import org.bouncycastle.asn1.ASN1Encoding;
 import org.bouncycastle.asn1.ASN1InputStream;
-import org.bouncycastle.asn1.BEROutputStream;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.ASN1OutputStream;
+import org.bouncycastle.asn1.ASN1Primitive;
 
 
 public abstract class SNMPTranscodable
@@ -43,14 +44,19 @@ public abstract class SNMPTranscodable
 
     public void encodeToStream(OutputStream out) throws IOException
     {
-        try (BEROutputStream aout = new BEROutputStream(out))
+        ASN1OutputStream aout = ASN1OutputStream.create(out, ASN1Encoding.DER);
+        try
         {
-            DEREncodable obj = this.encode();
+            ASN1Encodable obj = this.encode();
             aout.writeObject(obj);
+        }
+        finally
+        {
+            aout.close();
         }
     }
     
-    public abstract DEREncodable encode() throws IOException;
+    public abstract ASN1Encodable encode() throws IOException;
     
     // decode
 
@@ -75,5 +81,5 @@ public abstract class SNMPTranscodable
         }
     }
 
-    public abstract void decode(DERObject seq) throws IOException;
+    public abstract void decode(ASN1Primitive seq) throws IOException;
 }

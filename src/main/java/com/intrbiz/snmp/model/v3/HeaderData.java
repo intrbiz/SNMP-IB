@@ -2,10 +2,11 @@ package com.intrbiz.snmp.model.v3;
 
 import java.io.IOException;
 
+import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERInteger;
-import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.ASN1Integer;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DERSequence;
 
 import com.intrbiz.snmp.model.SNMPTranscodable;
@@ -42,7 +43,7 @@ public class HeaderData extends SNMPTranscodable
         super(data);
     }
 
-    public HeaderData(DERObject obj)
+    public HeaderData(ASN1Primitive obj)
     {
         super();
         this.decode(obj);
@@ -123,19 +124,19 @@ public class HeaderData extends SNMPTranscodable
         return this.securityModel == USMSecurityParameters.SECURITY_MODEL;
     }
 
-    public DEREncodable encode()
+    public ASN1Encodable encode()
     {
         ASN1EncodableVector vec = new ASN1EncodableVector();
-        vec.add(new DERInteger(this.id));
-        vec.add(new DERInteger(this.maxSize));
+        vec.add(new ASN1Integer(this.id));
+        vec.add(new ASN1Integer(this.maxSize));
         vec.add(SNMPUtil.encodeSingleByteString(this.flags));
-        vec.add(new DERInteger(this.securityModel));
+        vec.add(new ASN1Integer(this.securityModel));
         return new DERSequence(vec);
     }
 
-    public void decode(DERObject obj)
+    public void decode(ASN1Primitive obj)
     {
-        DERSequence seq = (DERSequence) obj;
+        ASN1Sequence seq = (ASN1Sequence) obj;
         this.id = SNMPUtil.decodeInt(seq, 0);
         this.maxSize = SNMPUtil.decodeInt(seq, 1);
         this.flags = SNMPUtil.decodeSingleByteString(seq, 2);

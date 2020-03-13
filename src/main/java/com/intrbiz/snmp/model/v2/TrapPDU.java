@@ -1,6 +1,6 @@
 package com.intrbiz.snmp.model.v2;
 
-import org.bouncycastle.asn1.DERTaggedObject;
+import org.bouncycastle.asn1.ASN1TaggedObject;
 
 import com.intrbiz.snmp.model.asn1.TimeTicks;
 
@@ -13,7 +13,7 @@ public class TrapPDU extends VarBindPDU
         super();
     }
     
-    public TrapPDU(DERTaggedObject val)
+    public TrapPDU(ASN1TaggedObject val)
     {
         this();
         this.decode(val);

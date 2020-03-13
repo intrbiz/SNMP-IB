@@ -3,16 +3,17 @@ package com.intrbiz.snmp.model.asn1;
 import java.io.IOException;
 import java.net.InetAddress;
 
+import org.bouncycastle.asn1.ASN1ApplicationSpecific;
+import org.bouncycastle.asn1.ASN1Encodable;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.BERTags;
 import org.bouncycastle.asn1.DERApplicationSpecific;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DEROctetString;
-import org.bouncycastle.asn1.DERTags;
 
 /**
  * An IPv4 Address
  */
-public class IPAddress implements DEREncodable
+public class IPAddress implements ASN1Encodable
 {
     public static final int APPLICATION_TAG = 0;
 
@@ -40,7 +41,7 @@ public class IPAddress implements DEREncodable
     }
 
     @Override
-    public DERObject getDERObject()
+    public ASN1Primitive toASN1Primitive()
     {
         try
         {
@@ -52,9 +53,9 @@ public class IPAddress implements DEREncodable
         return null;
     }
 
-    public static IPAddress fromApplicationSpecific(DERApplicationSpecific app) throws IOException
+    public static IPAddress fromApplicationSpecific(ASN1ApplicationSpecific app) throws IOException
     {
-        DEROctetString addr = (DEROctetString) app.getObject(DERTags.OCTET_STRING);
+        DEROctetString addr = (DEROctetString) app.getObject(BERTags.OCTET_STRING);
         return new IPAddress(InetAddress.getByAddress(addr.getOctets()));
     }
 

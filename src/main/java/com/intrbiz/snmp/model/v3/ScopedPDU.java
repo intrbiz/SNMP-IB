@@ -2,11 +2,12 @@ package com.intrbiz.snmp.model.v3;
 
 import java.io.IOException;
 
+import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.ASN1TaggedObject;
 import org.bouncycastle.asn1.DERSequence;
-import org.bouncycastle.asn1.DERTaggedObject;
 
 import com.intrbiz.snmp.SNMPVersion;
 import com.intrbiz.snmp.model.PDU;
@@ -32,7 +33,7 @@ public class ScopedPDU extends SNMPTranscodable
         super(data);
     }
     
-    public ScopedPDU(DERObject obj) throws IOException
+    public ScopedPDU(ASN1Primitive obj) throws IOException
     {
         super();
         this.decode(obj);
@@ -68,7 +69,7 @@ public class ScopedPDU extends SNMPTranscodable
         this.pdu = pdu;
     }
 
-    public DEREncodable encode() throws IOException
+    public ASN1Encodable encode() throws IOException
     {
         ASN1EncodableVector vec = new ASN1EncodableVector();
         vec.add(SNMPUtil.encodeByteString(this.contextEngineId));
@@ -77,13 +78,13 @@ public class ScopedPDU extends SNMPTranscodable
         return new DERSequence(vec);
     }
 
-    public void decode(DERObject obj) throws IOException
+    public void decode(ASN1Primitive obj) throws IOException
     {
-        DERSequence seq = (DERSequence) obj;
+        ASN1Sequence seq = (ASN1Sequence) obj;
         this.contextEngineId = SNMPUtil.decodeByteString(seq, 0);
         this.contextName = SNMPUtil.decodeString(seq, 1);
         // decode the PDU
-        DERTaggedObject pduObj = SNMPUtil.getTaggedObject(seq, 2);
+        ASN1TaggedObject pduObj = SNMPUtil.getTaggedObject(seq, 2);
         this.pdu = PDU.newPdu(SNMPVersion.V3, pduObj.getTagNo());
         if (this.pdu != null) this.pdu.decode(pduObj);
     }

@@ -1,10 +1,11 @@
 package com.intrbiz.snmp.model.v2;
 
+import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
+import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERInteger;
-import org.bouncycastle.asn1.DEROctetString;
+import org.bouncycastle.asn1.ASN1OctetString;
+import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DERSequence;
 
 import com.intrbiz.snmp.mib.MIB.MIBEntry;
@@ -18,7 +19,7 @@ public class VarBind
 {
     private String objectName;
 
-    private DEREncodable objectValue;
+    private ASN1Encodable objectValue;
 
     public VarBind()
     {
@@ -31,7 +32,7 @@ public class VarBind
         this.objectName = name;
     }
     
-    public VarBind(String name, DEREncodable value)
+    public VarBind(String name, ASN1Encodable value)
     {
         super();
         this.objectName = name;
@@ -106,12 +107,12 @@ public class VarBind
         this.objectName = objectName;
     }
 
-    public DEREncodable getObjectValue()
+    public ASN1Encodable getObjectValue()
     {
         return objectValue;
     }
 
-    public void setObjectValue(DEREncodable objectValue)
+    public void setObjectValue(ASN1Encodable objectValue)
     {
         this.objectValue = objectValue;
     }
@@ -123,27 +124,27 @@ public class VarBind
     
     public void setIntValue(int val)
     {
-        this.objectValue = new DERInteger(val);
+        this.objectValue = new ASN1Integer(val);
     }
     
     public String getStringValue()
     {
-        return SNMPUtil.decodeString((DEROctetString) this.objectValue);
+        return SNMPUtil.decodeString((ASN1OctetString) this.objectValue);
     }
     
     public boolean isStringValue()
     {
-        return this.objectValue instanceof DEROctetString;
+        return this.objectValue instanceof ASN1OctetString;
     }
     
     public int getIntValue()
     {
-        return SNMPUtil.decodeInt((DERInteger) this.objectValue);
+        return SNMPUtil.decodeInt((ASN1Integer) this.objectValue);
     }
     
     public boolean isIntValue()
     {
-        return this.objectValue instanceof DERInteger;
+        return this.objectValue instanceof ASN1Integer;
     }
     
     public boolean isTimeTicksValue()
@@ -195,7 +196,7 @@ public class VarBind
     
     //
     
-    public DEREncodable encode()
+    public ASN1Encodable encode()
     {
         ASN1EncodableVector vec = new ASN1EncodableVector();
         vec.add(new ASN1ObjectIdentifier(this.objectName));
@@ -203,7 +204,7 @@ public class VarBind
         return new DERSequence(vec);
     }
 
-    public void decode(DERSequence seq)
+    public void decode(ASN1Sequence seq)
     {
         this.objectName  = SNMPUtil.decodeOid(seq, 0).getId();
         this.objectValue = SNMPUtil.decodeApplicationSpecific(SNMPUtil.decodeValue(seq, 1));

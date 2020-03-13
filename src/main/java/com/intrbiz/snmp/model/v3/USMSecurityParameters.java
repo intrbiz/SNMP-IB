@@ -2,10 +2,11 @@ package com.intrbiz.snmp.model.v3;
 
 import java.io.IOException;
 
+import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
-import org.bouncycastle.asn1.DEREncodable;
-import org.bouncycastle.asn1.DERInteger;
-import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.ASN1Integer;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DERSequence;
 
 import com.intrbiz.snmp.util.SNMPUtil;
@@ -100,13 +101,13 @@ public class USMSecurityParameters extends SecurityParameters
     }
 
     @Override
-    public DEREncodable encode() throws IOException
+    public ASN1Encodable encode() throws IOException
     {
         // encode
         ASN1EncodableVector vec = new ASN1EncodableVector();
         vec.add(SNMPUtil.encodeByteString(this.authoritativeEngineId));
-        vec.add(new DERInteger(this.authoritativeEngineBoots));
-        vec.add(new DERInteger(this.authoritativeEngineTime));
+        vec.add(new ASN1Integer(this.authoritativeEngineBoots));
+        vec.add(new ASN1Integer(this.authoritativeEngineTime));
         vec.add(SNMPUtil.encodeString(this.userName));
         vec.add(SNMPUtil.encodeByteString(this.authenticationParameters));
         vec.add(SNMPUtil.encodeByteString(this.privacyParameters));
@@ -114,9 +115,9 @@ public class USMSecurityParameters extends SecurityParameters
     }
 
     @Override
-    public void decode(DERObject obj) throws IOException
+    public void decode(ASN1Primitive obj) throws IOException
     {
-        DERSequence seq = (DERSequence) obj;
+        ASN1Sequence seq = (ASN1Sequence) obj;
         this.authoritativeEngineId = SNMPUtil.decodeByteString(seq, 0);
         this.authoritativeEngineBoots = SNMPUtil.decodeInt(seq, 1);
         this.authoritativeEngineTime = SNMPUtil.decodeInt(seq, 2);

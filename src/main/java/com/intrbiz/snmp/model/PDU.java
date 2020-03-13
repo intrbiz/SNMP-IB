@@ -1,6 +1,6 @@
 package com.intrbiz.snmp.model;
 
-import org.bouncycastle.asn1.DERTaggedObject;
+import org.bouncycastle.asn1.ASN1TaggedObject;
 
 import com.intrbiz.snmp.SNMPVersion;
 import com.intrbiz.snmp.model.v1.TrapPDUV1;
@@ -20,11 +20,11 @@ public abstract class PDU
         super();
     }
 
-    public abstract DERTaggedObject encode();
+    public abstract ASN1TaggedObject encode();
     
     protected abstract int _tag();
     
-    public abstract void decode(DERTaggedObject val);
+    public abstract void decode(ASN1TaggedObject val);
     
     public abstract int getRequestId();
     
