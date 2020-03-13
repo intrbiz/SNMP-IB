@@ -22,7 +22,7 @@ public class IFDescrV2c
         // SNMPV2Context swAgent  = transport.openV2Context("172.30.12.1").setCommunity("public");
         // SNMPV2Context sw2Agent = transport.openV2Context("172.30.12.3").setCommunity("public");
         
-        SNMPV2Context sw3Agent = transport.openV2Context("172.30.13.1").setCommunity("public");
+        SNMPV2Context sw3Agent = transport.openV2Context("192.168.1.250").setCommunity("public");
         
         // Use the context to send messages
         // The callback will be executed when a response to a request is received
