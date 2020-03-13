@@ -58,7 +58,7 @@ SNMP is bolloxed, SNMP implemented badly, etc.
 
 ## License
 SNMP-IB
-Copyright (c) 2005, Chris Ellis
+Copyright (c) 2013, Chris Ellis
 All rights reserved.
 
 SNMP-IB is free software: you can redistribute it and/or modify
@@ -80,6 +80,6 @@ Chris Ellis
 
 Twitter: @intrbiz
 
-Web: balsa-framework.org or intrbiz.com
+Web: intrbiz.com
 
 Copyright (c) Chris Ellis 2013

@@ -1,7 +1,7 @@
 License
 =======
 SNMP-IB
-Copyright (c) 2005, Chris Ellis
+Copyright (c) 2013, Chris Ellis
 All rights reserved.
 
 
